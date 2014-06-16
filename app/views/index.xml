@@ -1,0 +1,7 @@
+<Alloy>
+	<Window class="container">
+		<TextField id="userId" color="#336699" top="10" left="10" hintText="ユーザ名"/>
+		<TextField id="password" color="#336699" top="100" left="10" hintText="パスワード"/>
+		<Button id="loginBtn" title="ログイン" onClick="login" top="170" width="150" height="60" />
+	</Window>
+</Alloy>

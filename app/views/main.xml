@@ -1,0 +1,10 @@
+<Alloy>
+	<TabGroup id="mainTabGroup">
+		<Tab id="myPage">
+			<Window id="myPageWindow" title="マイページ" />
+		</Tab>
+		<Tab id="exhibition">
+			<Window id="exhibitionWindow" title="出品" />
+		</Tab>
+	</TabGroup>
+</Alloy>
