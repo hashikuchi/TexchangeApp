@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>com.texchg</id>
-    <name>Texchange</name>
+    <name>TexchangeApp</name>
     <version>1.0</version>
     <publisher>hashikuchikazunori</publisher>
     <url>http://texchg.com</url>
