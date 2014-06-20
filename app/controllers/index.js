@@ -3,21 +3,18 @@ function login(){
 	var loginClient = Ti.Network.createHTTPClient({
 		onload: function(e){
 			if(this.responseText.match('login_error')){
-				// this.responseText <- 返ってきたHTML
-				alert('error!');	
+				alert('IDとパスワードの組合せが不正です。');	
 			}else{
 				alert('login!');
 			}
 		},
 		onerror: function(e){
+			alert('通信エラーが発生しました。電波状況を確認してください。');
 			Ti.API.debug("error:" + e.error);
 		},
 		timeout: 5000
 	});
-	loginClient.open("POST", url); // GETはただデータ取ってくるだけ POSTは登録やログインなどセキュリティ、権限に関わる処理
-	// GET http://texchg.com/index.php?username=hoge&pass=fuga
-	// POST 通信そのものにパラメータを埋め込む
-	// パラメータの設定
+	loginClient.open("POST", url); 
 	loginClient.send({
 		'log': $.userId.value, 
 		'pwd': $.password.value
