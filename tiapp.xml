@@ -11,7 +11,7 @@
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>true</analytics>
-    <guid>e675ebb7-85fc-4e64-808d-9a5344b3506c</guid>
+    <guid>92E90DBD-AC65-4A00-A7C6-EDD413CD8D30</guid>
     <property name="ti.ui.defaultunit" type="string">dp</property>
     <ios>
         <plist>
@@ -47,7 +47,10 @@
         </splash>
         <theme>default</theme>
     </mobileweb>
-    <modules/>
+    <modules>
+    	<module version="1.3.1" platform="android">com.mirasense.scanditsdk</module> 
+		<module version="1.3.1" platform="iphone">com.mirasense.scanditsdk</module>
+    </modules>
     <deployment-targets>
         <target device="android">true</target>
         <target device="blackberry">false</target>

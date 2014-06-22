@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:module xmlns:ti="http://ti.appcelerator.org" xmlns:android="http://schemas.android.com/apk/res/android">
+	<!--
+		Similar to tiapp.xml, but contains module/platform specific
+		configuration in <iphone>, <android>, and <mobileweb> sections
+	-->
+	<iphone>
+	</iphone>
+	<android xmlns:android="http://schemas.android.com/apk/res/android">
+	    <manifest>
+	        <uses-permission android:name="android.permission.CAMERA"/>
+	        <uses-permission android:name="android.permission.INTERNET"/>
+	        <uses-permission android:name="android.permission.VIBRATE"/>
+	        
+	        <uses-feature android:name="android.hardware.camera"/>
+	        <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+	        <uses-feature android:name="android.hardware.camera.flash" android:required="false"/>
+	    </manifest>
+	</android>
+	<mobileweb>
+	</mobileweb>
+</ti:module>

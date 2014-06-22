@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="exhibitionWindow" title="出品" backgroundColor="white">
+		<Button id="exhibitionBtn" title="バーコードを読み取る" onClick="readBarcode" top="170" width="150" height="60" />
+	</Window>
+</Alloy>
