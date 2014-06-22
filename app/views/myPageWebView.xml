@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="myPageWindow" title="マイページ">
+		<WebView id="myPageWebView" />
+	</Window>
+</Alloy>

@@ -5,7 +5,10 @@ function login(){
 			if(this.responseText.match('login_error')){
 				alert('IDとパスワードの組合せが不正です。');	
 			}else{
-				alert('login!');
+				var mainWin = Alloy.createController('main',{
+					loginId: $.userId.value
+				}).getView();
+				mainWin.open();
 			}
 		},
 		onerror: function(e){

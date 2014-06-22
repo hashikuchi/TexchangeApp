@@ -1,7 +1,7 @@
 <Alloy>
 	<TabGroup id="mainTabGroup">
 		<Tab id="myPage">
-			<Window id="myPageWindow" title="マイページ" />
+			<Require type="view" src="myPageWebView" id="myPageTab">
 		</Tab>
 		<Tab id="exhibition">
 			<Window id="exhibitionWindow" title="出品" />
