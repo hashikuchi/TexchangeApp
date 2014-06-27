@@ -1,5 +1,5 @@
 function login(){
-	var url = 'http://127.0.0.1/wp/texchange/wp-login.php';
+	var url = 'http://beak.sakura.ne.jp/freecycle/';
 	var loginClient = Ti.Network.createHTTPClient({
 		onload: function(e){
 			if(this.responseText.match('login_error')){
