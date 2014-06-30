@@ -1,19 +1,19 @@
-var scanditsdk = require("com.mirasense.scanditsdk");
+var scanditsdk = require('com.mirasense.scanditsdk');
 var picker = scanditsdk.createView({
-        width:"100%",
-        height:"100%"
+        width:'100%',
+        height:'100%'
     });
 var window = Titanium.UI.createWindow({  
-        title:'Scandit SDK',
+        title:'バーコード読み取り',
         navBarHidden:true
 });
 
 function readBarcode(){
-	var appKey = "3AU15vnIEeOTtjZAwaMb8kJj8PCFuC6h6olUpIUD8eI"; 
+	var appKey = '3AU15vnIEeOTtjZAwaMb8kJj8PCFuC6h6olUpIUD8eI';
 	// Create a window to add the picker to and display it. 
 	picker = scanditsdk.createView({
-        width:"100%",
-        height:"100%"
+        width:'100%',
+        height:'100%'
     });
     picker.init(appKey, 0);
     
@@ -23,7 +23,20 @@ function readBarcode(){
     // Set callback functions for when scanning succeedes and for when the 
     // scanning is canceled.
     picker.setSuccessCallback(function(e) {
-        alert("success (" + e.symbology + "): " + e.barcode);
+    	var url = 'http://ancient-escarpment-4022.herokuapp.com/inside.php';
+    	var searchClient = Ti.Network.createHTTPClient({
+    		onload: function(e){
+				var xml = Ti.XML.parseString(this.responseText);
+				if(xml.getElementsByTagName('Title').item(0) === null){
+					alert('商品データが取得できませんでした。');
+				}else{
+					alert('title:' + xml.getElementsByTagName('Title').item(0).getTextContent());
+				}
+    		},
+			timeout: 5000
+    	});
+    	searchClient.open('GET', url + '?ISBN=' + e.barcode);
+    	searchClient.send();
     });
     picker.setCancelCallback(function(e) {
         closeScanner();
