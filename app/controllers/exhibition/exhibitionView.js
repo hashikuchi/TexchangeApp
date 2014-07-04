@@ -30,7 +30,24 @@ function readBarcode(){
 				if(xml.getElementsByTagName('Title').item(0) === null){
 					alert('商品データが取得できませんでした。');
 				}else{
-					alert('title:' + xml.getElementsByTagName('Title').item(0).getTextContent());
+					var title,
+						midiumImageElements,
+						image;
+					title = xml.getElementsByTagName('Title').item(0).getTextContent();
+					midiumImageElements = xml.getElementsByTagName('MediumImage').item(0).getChildNodes();
+					for(var i=0; i < midiumImageElements.length; i++){
+						var item = midiumImageElements.item(i);
+						if(item.getNodeName() === 'URL'){
+							image = item.getTextContent();
+							break;
+						}
+					}
+					closeScanner();
+					var confirmWindow = Alloy.createController('exhibition/confirmation', {
+						title: title,
+						image: image
+					}).getView();
+					confirmWindow.open();
 				}
     		},
 			timeout: 5000

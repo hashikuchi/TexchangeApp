@@ -4,7 +4,7 @@
 			<Require type="view" src="myPageWebView" id="myPageTab">
 		</Tab>
 		<Tab id="exhibition">
-			<Require type="view" src="exhibitionView" id="exhibitionTab">
+			<Require type="view" src="exhibition/exhibitionView" id="exhibitionTab">
 		</Tab>
 	</TabGroup>
 </Alloy>

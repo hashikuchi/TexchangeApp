@@ -1,0 +1,12 @@
+".container": {
+	backgroundColor:"white"
+},
+"TextField": {
+	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+	width: 250,
+	height: 60,
+},
+"Button": {
+	borderRadius: 10,
+	backgroundColor: '#fffacd'
+}

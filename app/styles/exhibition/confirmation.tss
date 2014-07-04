@@ -1,0 +1,13 @@
+".container": {
+	backgroundColor: "white"
+}
+"#itemTitle": {
+	top: 30,
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
+}
+"#exhibit": {
+	left:30
+}
+"#cancel": {
+	right:30
+}
