@@ -1,4 +1,4 @@
-var data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'appData.txt').read());
+var data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt').read());
 var loginId = data.loginId;
 var password = data.password;
 var scanditsdk = require('com.mirasense.scanditsdk');

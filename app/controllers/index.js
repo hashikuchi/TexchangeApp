@@ -5,7 +5,7 @@ function login(){
 			if(this.responseText.match('login_error')){
 				alert('IDとパスワードの組合せが不正です。');	
 			}else{
-				var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'appData.txt');
+				var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt');
 				if(!file.exists){
 					file.createFile();
 				}
