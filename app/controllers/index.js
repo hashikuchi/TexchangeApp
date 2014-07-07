@@ -1,4 +1,8 @@
 function login(){
+	if($.userId.value.length === 0 || $.password.value.length === 0){
+		alert('ユーザ名またはパスワードを入力してください。');
+		return;
+	}
 	var url = 'http://beak.sakura.ne.jp/freecycle/wp-login.php';
 	var loginClient = Ti.Network.createHTTPClient({
 		onload: function(e){
