@@ -5,6 +5,14 @@ function login(){
 			if(this.responseText.match('login_error')){
 				alert('IDとパスワードの組合せが不正です。');	
 			}else{
+				var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'appData.txt');
+				if(!file.exists){
+					file.createFile();
+				}
+				file.write(JSON.stringify({
+					'loginId': $.userId.value,
+					'password': $.password.value
+				}));
 				var mainWin = Alloy.createController('main',{
 					loginId: $.userId.value
 				}).getView();

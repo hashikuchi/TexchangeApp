@@ -2,7 +2,7 @@
 	<Window id="confirmationWindow" class="container" title="出品">
 		<Label id="itemTitle"/>
 		<ImageView id="itemImage"/>
-		<Button id="exhibit" title="出品"/>
-		<Button id="cancel" title="キャンセル"/>
+		<Button id="exhibit" title="出品" onClick="exhibit"/>
+		<Button id="cancel" title="キャンセル" onClick="cancel"/>
 	</Window>
 </Alloy>

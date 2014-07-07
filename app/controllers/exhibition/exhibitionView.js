@@ -1,3 +1,6 @@
+var data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'appData.txt').read());
+var loginId = data.loginId;
+var password = data.password;
 var scanditsdk = require('com.mirasense.scanditsdk');
 var picker = scanditsdk.createView({
         width:'100%',
@@ -42,12 +45,13 @@ function readBarcode(){
 							break;
 						}
 					}
-					closeScanner();
-					var confirmWindow = Alloy.createController('exhibition/confirmation', {
+					var confirmationWindow = Alloy.createController('exhibition/confirmation', {
 						title: title,
-						image: image
+						image: image,
+						loginId: loginId,
+						password: password
 					}).getView();
-					confirmWindow.open();
+					confirmationWindow.open();
 				}
     		},
 			timeout: 5000
