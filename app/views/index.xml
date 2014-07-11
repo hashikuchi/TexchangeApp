@@ -1,7 +1,9 @@
 <Alloy>
 	<Window class="container">
-		<TextField id="userId" color="#336699" top="10" left="10" hintText="ユーザ名"/>
-		<TextField id="password" color="#336699" top="100" left="10" hintText="パスワード"/>
-		<Button id="loginBtn" title="ログイン" onClick="login" top="170" width="150" height="60" />
+		<TextField id="userId" color="#336699" top="40" left="35" hintText="ユーザ名"/>
+		<TextField id="password" color="#336699" top="130" left="35" hintText="パスワード"/>
+		<Button id="loginBtn" title="ログイン" onClick="login" top="200" width="150" height="60" />
+		<Switch id="remembermeSwitch" value="false" top="300" left="10"/>
+		<Label top="300" left="70">ユーザ名とパスワードを記憶</Label>
 	</Window>
 </Alloy>
