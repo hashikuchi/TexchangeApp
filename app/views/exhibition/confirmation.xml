@@ -3,6 +3,6 @@
 		<Label id="itemTitle"/>
 		<ImageView id="itemImage"/>
 		<Button id="exhibit" title="出品" onClick="exhibit"/>
-		<Button id="cancel" title="キャンセル" onClick="cancel"/>
+		<Button id="cancel" title="キャンセル" class="cancel" onClick="cancel"/>
 	</Window>
 </Alloy>

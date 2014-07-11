@@ -1,5 +1,8 @@
 ".container": {
-	backgroundColor:"white"
+	backgroundColor: "white"
+},
+".cancel": {
+	backgroundColor: "#d3d3d3"
 },
 "TextField": {
 	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,

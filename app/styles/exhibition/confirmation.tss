@@ -2,12 +2,16 @@
 	backgroundColor: "white"
 }
 "#itemTitle": {
-	top: 30,
+	top: 50,
 	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 }
 "#exhibit": {
-	left:30
+	left: 40,
+	top: 350,
+	width: 100
 }
 "#cancel": {
-	right:30
+	right: 40,
+	top: 350,
+	width: 100
 }
