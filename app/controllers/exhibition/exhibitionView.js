@@ -30,9 +30,7 @@ function readBarcode(){
     	var searchClient = Ti.Network.createHTTPClient({
     		onload: function(e){
 				var xml = Ti.XML.parseString(this.responseText);
-				if(xml.getElementsByTagName('Title').item(0) === null){
-					alert('商品データが取得できませんでした。');
-				}else{
+				if(xml.getElementsByTagName('Title').item(0) !== null){
 					var title,
 						midiumImageElements,
 						image;
