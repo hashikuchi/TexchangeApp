@@ -50,6 +50,11 @@ function readBarcode(){
 						password: password
 					}).getView();
 					confirmationWindow.open();
+				}else{
+					var errorDialog = Ti.UI.createAlertDialog({
+						message:"商品データが取得できませんでした。"
+					});
+					errorDialog.show();
 				}
     		},
 			timeout: 5000
