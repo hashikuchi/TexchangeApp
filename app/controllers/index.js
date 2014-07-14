@@ -40,7 +40,6 @@ function login(){
 var data;
 try{
 	data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt').read());
-Ti.API.info(data.rememberme == 'true');
 	if(data.rememberme){
 		$.userId.value = data.loginId;
 		$.password.value = data.password;
