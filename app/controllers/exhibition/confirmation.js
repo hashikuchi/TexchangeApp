@@ -12,7 +12,8 @@ function exhibit(){
 		onload: function(e){
 			alert(this.responseText);
 			$.confirmationWindow.close();
-		}
+		},
+		timeout: 5000
 	});
 	exhibitClient.open('POST', url);
 	exhibitClient.send({
