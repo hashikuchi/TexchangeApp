@@ -6,6 +6,15 @@ var picker = scanditsdk.createView({
         width:'100%',
         height:'100%'
     });
+// disable unnecessary functions
+picker.set2DScanningEnabled(false);
+picker.setCode39Enabled(false);
+picker.setCode128Enabled(false);
+picker.setItfEnabled(false);
+picker.setQrEnabled(false);
+picker.setDataMatrixEnabled(false);
+picker.setPDF417Enabled(false);
+picker.setMsiPlesseyEnabled(false);
 var window = Titanium.UI.createWindow({  
         title:'バーコード読み取り',
         navBarHidden:true
@@ -26,6 +35,7 @@ function readBarcode(){
     // Set callback functions for when scanning succeedes and for when the 
     // scanning is canceled.
     picker.setSuccessCallback(function(e) {
+    	picker.stopScanning();
     	var url = 'http://ancient-escarpment-4022.herokuapp.com/inside.php';
     	var searchClient = Ti.Network.createHTTPClient({
     		onload: function(e){
@@ -49,10 +59,16 @@ function readBarcode(){
 						loginId: loginId,
 						password: password
 					}).getView();
+					confirmationWindow.addEventListener('close', function(e){
+						picker.startScanning();
+					});
 					confirmationWindow.open();
 				}else{
 					var errorDialog = Ti.UI.createAlertDialog({
 						message:"商品データが取得できませんでした。"
+					});
+					errorDialog.addEventListener('click', function(e){
+						picker.startScanning();
 					});
 					errorDialog.show();
 				}

@@ -10,8 +10,13 @@ function exhibit(){
 	var url='http://beak.sakura.ne.jp/freecycle/wp-admin/admin-ajax.php';
 	var exhibitClient = Ti.Network.createHTTPClient({
 		onload: function(e){
-			alert(this.responseText);
-			$.confirmationWindow.close();
+			var dialog = Ti.UI.createAlertDialog({
+				message: this.responseText
+			});
+			dialog.addEventListener('click', function(e){
+				$.confirmationWindow.close();
+			});
+			dialog.show();
 		},
 		timeout: 5000
 	});
