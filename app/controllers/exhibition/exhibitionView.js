@@ -39,7 +39,12 @@ function readBarcode(){
     	var url = 'http://ancient-escarpment-4022.herokuapp.com/inside.php';
     	var searchClient = Ti.Network.createHTTPClient({
     		onload: function(e){
-				var xml = Ti.XML.parseString(this.responseText);
+    			var res = this.responseText;
+    			if(res === null){
+					showCannotFindItemDialog();
+					return;
+    			}
+				var xml = Ti.XML.parseString(res);
 				if(xml.getElementsByTagName('Title').item(0) !== null){
 					var title,
 						midiumImageElements,
@@ -64,13 +69,7 @@ function readBarcode(){
 					});
 					confirmationWindow.open();
 				}else{
-					var errorDialog = Ti.UI.createAlertDialog({
-						message:"商品データが取得できませんでした。"
-					});
-					errorDialog.addEventListener('click', function(e){
-						picker.startScanning();
-					});
-					errorDialog.show();
+					showCannotFindItemDialog();
 				}
     		},
     		onerror: function(e){
@@ -109,7 +108,6 @@ function readBarcode(){
     window.open();
 }
 
-
 // Stops the scanner, removes it from the window and closes the latter.
 var closeScanner = function() {
     if (picker != null) {
@@ -118,3 +116,13 @@ var closeScanner = function() {
     }
     window.close();
 };
+
+function showCannotFindItemDialog(){
+	var errorDialog = Ti.UI.createAlertDialog({
+		message:"商品データが取得できませんでした。"
+	});
+	errorDialog.addEventListener('click', function(e){
+		picker.startScanning();
+	});
+	errorDialog.show();
+}
