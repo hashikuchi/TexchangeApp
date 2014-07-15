@@ -9,3 +9,10 @@
 // object. For example:
 //
 // Alloy.Globals.someGlobalFunction = function(){};
+
+Alloy.Globals.getConnectionErrorDialog = function(){
+	return Ti.UI.createAlertDialog({
+		title: "通信エラー",
+		message: "ネットワーク状況を確認してください。"
+	});
+};

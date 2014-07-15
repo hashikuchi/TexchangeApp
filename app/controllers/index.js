@@ -25,10 +25,11 @@ function login(){
 			}
 		},
 		onerror: function(e){
-			alert('通信エラーが発生しました。電波状況を確認してください。');
-			Ti.API.debug("error:" + e.error);
+			Ti.API.debug(e.error);
+			var errorDialog = Alloy.Globals.getConnectionErrorDialog();
+			errorDialog.show();
 		},
-		timeout: 5000
+		timeout: 8000
 	});
 	loginClient.open("POST", url); 
 	loginClient.send({

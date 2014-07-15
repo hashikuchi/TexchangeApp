@@ -73,7 +73,15 @@ function readBarcode(){
 					errorDialog.show();
 				}
     		},
-			timeout: 5000
+    		onerror: function(e){
+    			Ti.API.debug(e.error);
+    			var errorDialog = Alloy.Globals.getConnectionErrorDialog();
+				errorDialog.addEventListener('click', function(e){
+					picker.startScanning();
+				});
+				errorDialog.show();
+    		},
+			timeout: 8000
     	});
     	searchClient.open('GET', url + '?ISBN=' + e.barcode);
     	searchClient.send();

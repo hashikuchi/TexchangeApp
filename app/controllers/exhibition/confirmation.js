@@ -18,6 +18,11 @@ function exhibit(){
 			});
 			dialog.show();
 		},
+		onerror: function(e){
+			Ti.API.debug(e.error);
+			var errorDialog = Alloy.Globals.getConnectionErrorDialog();
+			errorDialog.show();
+		},
 		timeout: 5000
 	});
 	exhibitClient.open('POST', url);
