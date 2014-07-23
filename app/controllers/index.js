@@ -16,7 +16,8 @@ function login(){
 				file.write(JSON.stringify({
 					'loginId': $.userId.value,
 					'password': $.password.value,
-					'rememberme': $.remembermeSwitch.value
+					'rememberme': $.remembermeSwitch.value,
+					'enablePushNotification': data.enablePushNotification
 				}));
 				var mainWin = Alloy.createController('main',{
 					loginId: $.userId.value
@@ -38,6 +39,22 @@ function login(){
 	});
 }
 
+// setting methods for push notifications
+// Process incoming push notifications
+var Cloud = require("ti.cloud");
+function receivePush(e) {
+    alert('Received push: ' + JSON.stringify(e));
+}
+
+// Save the device token for subsequent API calls
+function deviceTokenSuccess(e) {
+    Alloy.Globals.deviceToken = e.deviceToken;
+}
+
+function deviceTokenError(e) {
+    alert('Failed to register for push notifications! ' + e.error);
+}
+
 var data;
 try{
 	data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt').read());
@@ -49,4 +66,18 @@ try{
 }catch(e){
 	// do nothing
 }
+
+// this method is for iOS devices only
+Ti.Network.registerForPushNotifications({
+    // Specifies which notifications to receive
+    types: [
+        Ti.Network.NOTIFICATION_TYPE_BADGE,
+        Ti.Network.NOTIFICATION_TYPE_ALERT,
+        Ti.Network.NOTIFICATION_TYPE_SOUND
+    ],
+    success: deviceTokenSuccess,
+    error: deviceTokenError,
+    callback: receivePush
+});
+
 $.index.open();

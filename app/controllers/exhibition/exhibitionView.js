@@ -80,7 +80,7 @@ function readBarcode(){
 				});
 				errorDialog.show();
     		},
-			timeout: 8000
+			timeout: 10000
     	});
     	searchClient.open('GET', url + '?ISBN=' + e.barcode);
     	searchClient.send();

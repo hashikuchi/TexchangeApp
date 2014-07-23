@@ -6,5 +6,8 @@
 		<Tab id="exhibition">
 			<Require type="view" src="exhibition/exhibitionView" id="exhibitionTab">
 		</Tab>
+		<Tab id="settings">
+			<Require type="view" src="settingsView" id="settingsTab">
+		</Tab>
 	</TabGroup>
 </Alloy>

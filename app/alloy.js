@@ -18,3 +18,5 @@ Alloy.Globals.getConnectionErrorDialog = function(){
 		message: "ネットワーク状況を確認してください。"
 	});
 };
+
+Alloy.Globals.deviceToken = null;
