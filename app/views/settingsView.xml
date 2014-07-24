@@ -1,6 +1,0 @@
-<Alloy>
-	<Window id="settingsWindow" class='container' title="設定">
-	<Switch id="pushNotificationSwitch" top="200" left="10"/>
-		<Label top="200" left="70">プッシュ通知を受け取る</Label>
-	</Window>
-</Alloy>

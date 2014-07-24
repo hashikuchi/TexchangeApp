@@ -16,8 +16,7 @@ function login(){
 				file.write(JSON.stringify({
 					'loginId': $.userId.value,
 					'password': $.password.value,
-					'rememberme': $.remembermeSwitch.value,
-					'enablePushNotification': data.enablePushNotification
+					'rememberme': $.remembermeSwitch.value
 				}));
 				var mainWin = Alloy.createController('main',{
 					loginId: $.userId.value
@@ -49,10 +48,27 @@ function receivePush(e) {
 // Save the device token for subsequent API calls
 function deviceTokenSuccess(e) {
     Alloy.Globals.deviceToken = e.deviceToken;
+    if(data.enablePushNotification){
+    	subscribeToChannel();
+    }
 }
 
 function deviceTokenError(e) {
     alert('Failed to register for push notifications! ' + e.error);
+}
+
+function subscribeToChannel() {
+	Cloud.PushNotifications.subscribeToken({
+        device_token: Alloy.Globals.deviceToken,
+        channel: 'news_alerts',
+        type: Ti.Platform.name == 'android' ? 'android' : 'ios'
+    }, function (e) {
+        if (e.success) {
+			// do nothing
+        } else {
+            alert('Error:\n' + ((e.error && e.message) || JSON.stringify(e)));
+        }
+    });
 }
 
 var data;
