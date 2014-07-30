@@ -18,6 +18,7 @@ function login(){
 					'password': $.password.value,
 					'rememberme': $.remembermeSwitch.value
 				}));
+				registerDeviceToken();
 				var mainWin = Alloy.createController('main',{
 					loginId: $.userId.value
 				}).getView();
@@ -41,20 +42,17 @@ function login(){
 // setting methods for push notifications
 // Process incoming push notifications
 var Cloud = require("ti.cloud");
-function receivePush(e) {
-    alert('Received push: ' + JSON.stringify(e));
-}
 
 // Save the device token for subsequent API calls
 function deviceTokenSuccess(e) {
     Alloy.Globals.deviceToken = e.deviceToken;
-    if(data.enablePushNotification){
-    	subscribeToChannel();
-    }
+    subscribeToChannel();
+    $.index.open();
 }
 
 function deviceTokenError(e) {
-    alert('Failed to register for push notifications! ' + e.error);
+    alert('プッシュ通知の登録に失敗しました。 ' + e.error);
+    $.index.open();
 }
 
 function subscribeToChannel() {
@@ -71,6 +69,26 @@ function subscribeToChannel() {
     });
 }
 
+function registerDeviceToken(){
+	var url = Alloy.Globals.BASE_URL + '/wp-admin/admin-ajax.php';
+	var registerClient = Ti.Network.createHTTPClient({
+		onload: function(e){
+			// do nothing
+		},
+		onerror: function(e){
+			Ti.API.debug(e.error);
+			var errorDialog = Alloy.Globals.getConnectionErrorDialog();
+			errorDialog.show();
+		},
+		timeout: 5000
+	});
+	registerClient.open("POST", url);
+	registerClient.send({
+		'action': 'register_app_information',
+		'deviceToken': Alloy.Globals.deviceToken
+	});
+}
+
 var data;
 try{
 	data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt').read());
@@ -80,7 +98,7 @@ try{
 		$.remembermeSwitch.value = data.rememberme;
 	}
 }catch(e){
-	// do nothing
+	Ti.API.info('do nothing!');
 }
 
 // this method is for iOS devices only
@@ -92,8 +110,5 @@ Ti.Network.registerForPushNotifications({
         Ti.Network.NOTIFICATION_TYPE_SOUND
     ],
     success: deviceTokenSuccess,
-    error: deviceTokenError,
-    callback: receivePush
+    error: deviceTokenError
 });
-
-$.index.open();
