@@ -1,7 +1,7 @@
 <Alloy>
 	<TabGroup id="mainTabGroup">
-		<Tab id="myPage">
-			<Require type="view" src="myPageWebView" id="myPageTab">
+		<Tab id="main">
+			<Require type="view" src="mainWebView" id="mainTab">
 		</Tab>
 		<Tab id="exhibition">
 			<Require type="view" src="exhibition/exhibitionView" id="exhibitionTab">

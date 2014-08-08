@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="mainWindow" title="テクスチェンジ">
+		<WebView id="mainWebView" />
+	</Window>
+</Alloy>

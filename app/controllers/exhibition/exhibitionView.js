@@ -1,6 +1,3 @@
-var data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt').read());
-var loginId = data.loginId;
-var password = data.password;
 var scanditsdk = require('com.mirasense.scanditsdk');
 var picker = scanditsdk.createView({
         width:'100%',
@@ -60,9 +57,7 @@ function readBarcode(){
 					}
 					var confirmationWindow = Alloy.createController('exhibition/confirmation', {
 						title: title,
-						image: image,
-						loginId: loginId,
-						password: password
+						image: image
 					}).getView();
 					confirmationWindow.addEventListener('close', function(e){
 						picker.startScanning();

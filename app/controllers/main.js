@@ -1,4 +1,5 @@
 var args = arguments[0] || {};
+var url = args.url || Alloy.Globals.BASE_URL;
 var loginId = args.loginId || '';
-var myPageWebView = $.myPageTab.getView('myPageWebView');
-myPageWebView.url = Alloy.Globals.BASE_URL +  '/members/' + loginId;
+var mainWebView = $.mainTab.getView('mainWebView');
+mainWebView.url = url;

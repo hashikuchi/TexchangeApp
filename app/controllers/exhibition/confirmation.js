@@ -1,8 +1,6 @@
 var args = arguments[0] || {};
 var title = args.title;
 var image = args.image;
-var loginId = args.loginId;
-var password = args.password;
 $.itemTitle.setText(title);
 $.itemImage.setImage(image);
 
@@ -28,8 +26,6 @@ function exhibit(){
 	exhibitClient.open('POST', url);
 	exhibitClient.send({
 		'action': 'exhibit_from_app',
-		'exhibitor_id': loginId,
-		'password': password,
 		'item_name': title,
 		'image_url': image
 	});
