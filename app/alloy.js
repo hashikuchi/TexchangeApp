@@ -9,7 +9,7 @@
 // object. For example:
 //
 // Alloy.Globals.someGlobalFunction = function(){};
-
+Alloy.Globals.Facebook = require('facebook');
 Alloy.Globals.BASE_URL = 'http://beak.sakura.ne.jp/freecycle';
 
 Alloy.Globals.getConnectionErrorDialog = function(){

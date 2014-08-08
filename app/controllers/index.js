@@ -1,19 +1,14 @@
 var Cloud = require("ti.cloud");
-var facebook = require('facebook');
+var facebook = Alloy.Globals.Facebook;
 facebook.appid = '616913395091992'; //test
 facebook.permissions = ['publish_stream', 'offline_access'];
 facebook.addEventListener('login', function (e) {
     if (e.success) {
-        // facebook.requestWithGraphPath('me', {}, {}, 'GET', function (e) {
-            // if (e.success) {
-                // var json = JSON.parse(e.result);
-				// var mainWin = Alloy.createController('main',{
-					// url: Alloy.Globals.BASE_URL +  '/members/' + json.name
-				// }).getView();
-				// mainWin.open();
-            // }
-        // });
-        alert('success');
+        facebook.requestWithGraphPath('me', {}, 'GET', function (e) {
+            if (e.success) {
+				jumpToFacebookLoginLink();
+            }
+        });
     } else if (e.error) {
         alert('error');
     } else if (e.cancelled) {
@@ -61,7 +56,7 @@ function login(){
 	});
 }
 
-function _loginByFacebook(){
+function jumpToFacebookLoginLink(){
 	var url = Alloy.Globals.BASE_URL;
 	var pattern = /https:\/\/www.facebook.com\/dialog\/oauth.*scope=email/;
 	
@@ -83,7 +78,7 @@ function _loginByFacebook(){
 	loginClient.send();
 }
 
-function _loginByTwitter(){
+function jumpToTwitterLoginLink(){
 	var url = Alloy.Globals.BASE_URL;
 	var pattern = /https:\/\/api.twitter.com\/oauth\/authenticate\?oauth_token=[a-zA-Z0-9]*/;
 	var loginClient = Ti.Network.createHTTPClient({
@@ -115,9 +110,8 @@ function loginByTwitter(){
             Ti.App.Properties.setString('twitterAccessTokenSecret', e.accessTokenSecret);
             twitter.request('1.1/account/verify_credentials.json', {}, {}, 'GET', function (e) {
                 if (e.success) {
-                    var json = JSON.parse(e.result.text);
                     registerDeviceToken();
-                  	_loginByTwitter();
+                  	jumpToTwitterLoginLink();
                 } else {
 					alert(e.result);
                 }
