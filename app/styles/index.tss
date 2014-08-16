@@ -1,5 +1,13 @@
 "#password": {
 	passwordMask: true
+},
+
+".facebook": {
+	backgroundColor: "#3b5998",
+	color: "white"
+},
+
+".twitter": {
+	backgroundColor: "#55ACEE",
+	color: "white"
 }
-
-

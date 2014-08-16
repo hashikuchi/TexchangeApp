@@ -1,20 +1,28 @@
 var Cloud = require("ti.cloud");
 var facebook = Alloy.Globals.Facebook;
+var data;
+var configJSON;
+var config;
+var twitter;
+var modalWindow = Alloy.createController('modal').getView();
+
 facebook.appid = '616913395091992'; //test
 facebook.permissions = ['publish_stream', 'offline_access'];
 facebook.addEventListener('login', function (e) {
     if (e.success) {
         facebook.requestWithGraphPath('me', {}, 'GET', function (e) {
             if (e.success) {
+            	rememberme('facebook');
 				jumpToFacebookLoginLink();
             }
         });
     } else if (e.error) {
-        alert('error');
+        alert('facebookログインに失敗しました。');
     } else if (e.cancelled) {
-        alert('cancell');
+    	// do nothing
     }
 });
+
 function login(){
 	if($.userId.value.length === 0 || $.password.value.length === 0){
 		alert('ユーザ名またはパスワードを入力してください。');
@@ -26,15 +34,7 @@ function login(){
 			if(this.responseText.match('login_error')){
 				alert('IDとパスワードの組合せが不正です。');	
 			}else{
-				var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt');
-				if(!file.exists){
-					file.createFile();
-				}
-				file.write(JSON.stringify({
-					'loginId': $.userId.value,
-					'password': $.password.value,
-					'rememberme': $.remembermeSwitch.value
-				}));
+				rememberme('texchange');
 				registerDeviceToken();
 				var mainWin = Alloy.createController('main',{
 					url: Alloy.Globals.BASE_URL +  '/members/' + $.userId.value
@@ -110,6 +110,7 @@ function loginByTwitter(){
             Ti.App.Properties.setString('twitterAccessTokenSecret', e.accessTokenSecret);
             twitter.request('1.1/account/verify_credentials.json', {}, {}, 'GET', function (e) {
                 if (e.success) {
+                	rememberme('twitter');
                     registerDeviceToken();
                   	jumpToTwitterLoginLink();
                 } else {
@@ -130,7 +131,9 @@ function loginByTwitter(){
 function deviceTokenSuccess(e) {
     Alloy.Globals.deviceToken = e.deviceToken;
     subscribeToChannel();
-    $.index.open();
+    if(!data || !data.rememberme){
+    	openIndexWindow();
+    }
 }
 
 function deviceTokenError(e) {
@@ -172,28 +175,41 @@ function registerDeviceToken(){
 	});
 }
 
-var data;
-var configJSON;
-var config;
+function rememberme(type){
+	var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt');
+	if(!file.exists){
+		file.createFile();
+	}
+	file.write(JSON.stringify({
+		'loginId': $.userId.value,
+		'password': $.password.value,
+		'rememberme': $.remembermeSwitch.value,
+		'remembermeType': type
+	}));
+}
+
+function openIndexWindow(){
+	$.index.open();
+}
+
+
+function modal(){
+	modalWindow.open({
+		modal: true,
+	    modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
+	    modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET
+	});
+}
+
 configJSON = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'config.json');
 config = JSON.parse(configJSON.read().toString());
-var twitter = require('twitter').Twitter({
+
+twitter = require('twitter').Twitter({
 	consumerKey:config.twitter.consumerKey,
 	consumerSecret:config.twitter.consumerSecret,
 	accessTokenKey: Ti.App.Properties.getString('twitterAccessTokenKey', ''),
 	accessTokenSecret: Ti.App.Properties.getString('twitterAccessTokenSecret', '')
 });
-
-try{
-	data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt').read());
-	if(data.rememberme){
-		$.userId.value = data.loginId;
-		$.password.value = data.password;
-		$.remembermeSwitch.value = data.rememberme;
-	}
-}catch(e){
-	Ti.API.info('do nothing!');
-}
 
 // this method is for iOS devices only
 Ti.Network.registerForPushNotifications({
@@ -206,3 +222,25 @@ Ti.Network.registerForPushNotifications({
     success: deviceTokenSuccess,
     error: deviceTokenError
 });
+
+try{
+	data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt').read());
+	$.remembermeSwitch.value = data.rememberme;
+	if(data.rememberme){
+		$.userId.value = data.loginId;
+		$.password.value = data.password;
+		switch(data.remembermeType){
+			case 'twitter':
+				loginByTwitter();
+				break;
+			case 'facebook':
+				loginByFacebook();
+				break;
+			case 'texchange':
+				login();
+				break;
+		}
+	}
+}catch(e){
+	Ti.API.info('do nothing!');
+}

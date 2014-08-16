@@ -3,9 +3,9 @@
 		<TextField id="userId" color="#336699" top="40" left="35" hintText="ユーザ名"/>
 		<TextField id="password" color="#336699" top="130" left="35" hintText="パスワード"/>
 		<Button id="loginBtn" title="ログイン" onClick="login" top="200" width="150" height="60" />
-		<Switch id="remembermeSwitch" value="false" top="300" left="10"/>
-		<Label top="300" left="70">ユーザ名とパスワードを記憶</Label>
-		<Button id="facebookLoginButton" title="Facebookでログイン" onClick="loginByFacebook" bottom="70" width="150"/>
-		<Button id="twitterLoginButton" title="Twitterでログイン" onClick="loginByTwitter" bottom="30" width="150"/>
+		<Button id="facebookLoginButton" class="facebook" title="Facebookでログイン" onClick="loginByFacebook" top="300" width="150"/>
+		<Button id="twitterLoginButton" class="twitter" title="Twitterでログイン" onClick="loginByTwitter" top="350" width="150"/>
+		<Switch id="remembermeSwitch" value="true" top="400" left="35"/>
+		<Label top="400" left="105">ログイン状態を維持</Label>
 	</Window>
 </Alloy>
