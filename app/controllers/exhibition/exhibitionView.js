@@ -121,3 +121,12 @@ function showCannotFindItemDialog(){
 	});
 	errorDialog.show();
 }
+
+function showHelp(){
+	var helpWindow = Alloy.createController('exhibition/help').getView();
+	helpWindow.open({
+		modal: true,
+	    modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
+	    modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET
+	});
+}

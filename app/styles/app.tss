@@ -4,6 +4,23 @@
 ".cancel": {
 	backgroundColor: "#d3d3d3"
 },
+
+".alignleft": {
+	textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT
+},
+
+".header": {
+	font: {fontSize: 20, fontWeight: "bold"}
+},
+
+".body": {
+	font: {fontSize: 17}
+},
+
+".notes": {
+	font: {fontSize: 13}
+},
+
 "TextField": {
 	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
 	width: 250,

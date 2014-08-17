@@ -1,0 +1,3 @@
+function closeWindow(){
+	$.helpWindow.close();
+}
