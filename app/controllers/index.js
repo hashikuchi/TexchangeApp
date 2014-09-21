@@ -4,9 +4,10 @@ var data;
 var configJSON;
 var config;
 var twitter;
-var modalWindow = Alloy.createController('modal').getView();
 
-facebook.appid = '616913395091992'; //test
+// facebook.appid = '616913395091992'; // TEST
+facebook.appid = '523987747717891'; // PRODUCT
+
 facebook.permissions = ['publish_stream', 'offline_access'];
 facebook.addEventListener('login', function (e) {
     if (e.success) {
@@ -131,14 +132,10 @@ function loginByTwitter(){
 function deviceTokenSuccess(e) {
     Alloy.Globals.deviceToken = e.deviceToken;
     subscribeToChannel();
-    if(!data || !data.rememberme){
-    	openIndexWindow();
-    }
 }
 
 function deviceTokenError(e) {
     alert('プッシュ通知の登録に失敗しました。 ' + e.error);
-    $.index.open();
 }
 
 function subscribeToChannel() {
@@ -192,15 +189,6 @@ function openIndexWindow(){
 	$.index.open();
 }
 
-
-function modal(){
-	modalWindow.open({
-		modal: true,
-	    modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
-	    modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET
-	});
-}
-
 configJSON = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'config.json');
 config = JSON.parse(configJSON.read().toString());
 
@@ -243,4 +231,9 @@ try{
 	}
 }catch(e){
 	Ti.API.info('do nothing!');
+}
+
+// open index window on initial running or not remember me
+if(!data || !data.rememberme){
+	openIndexWindow();
 }
