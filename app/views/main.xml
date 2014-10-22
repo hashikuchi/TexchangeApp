@@ -1,10 +1,10 @@
 <Alloy>
 	<TabGroup id="mainTabGroup">
 		<Tab id="main" title='Web' icon='images/tabs/web-32.png'>
-			<Require type="view" src="mainWebView" id="mainTab">
+			<Require type="view" src="mainWebView" id="mainTab" />
 		</Tab>
 		<Tab id="exhibition" title='出品' icon='images/tabs/barcode_scanner-32.png'>
-			<Require type="view" src="exhibition/exhibitionView" id="exhibitionTab">
+			<Require type="view" src="exhibition/exhibitionView" id="exhibitionTab" />
 		</Tab>
 	</TabGroup>
 </Alloy>
