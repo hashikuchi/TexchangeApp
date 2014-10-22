@@ -3,5 +3,6 @@ function goBack(){
 }
 
 function reloadWindow(){
-	$.mainWebView.reload();
+	var url = $.mainWebView.getUrl();
+	$.mainWebView.setUrl(url);
 }
