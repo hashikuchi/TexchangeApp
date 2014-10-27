@@ -120,6 +120,7 @@ function loginByTwitter(){
             });
         } else {
             // error proc…
+            alert(e.error);
         }
     });
     twitter.authorize();
