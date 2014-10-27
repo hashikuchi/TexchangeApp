@@ -64,7 +64,7 @@ function jumpToFacebookLoginLink(){
 	var loginClient = Ti.Network.createHTTPClient({
 		onload: function(e){
 			var mainWin = Alloy.createController('main',{
-				url: this.responseText.match(pattern)[0]
+				url: this.responseText.match(pattern)?this.responseText.match(pattern)[0]:Alloy.Globals.BASE_URL
 			}).getView();
 			mainWin.open();
 		},
