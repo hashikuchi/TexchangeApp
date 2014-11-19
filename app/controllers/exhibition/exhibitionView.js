@@ -75,7 +75,7 @@ function readBarcode(){
 				});
 				errorDialog.show();
     		},
-			timeout: 10000
+			timeout: 3000
     	});
     	searchClient.open('GET', url + '?ISBN=' + e.barcode);
     	searchClient.send();
