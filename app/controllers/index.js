@@ -1,13 +1,9 @@
 var Cloud = require("ti.cloud");
 var facebook = Alloy.Globals.Facebook;
 var data;
-var configJSON;
-var config;
 var twitter;
 
-// facebook.appid = '616913395091992'; // TEST
-facebook.appid = '523987747717891'; // PRODUCT
-
+facebook.appid = Alloy.Globals.config.facebook.appid;
 facebook.permissions = ['publish_stream', 'offline_access'];
 facebook.addEventListener('login', function (e) {
     if (e.success) {
@@ -29,7 +25,7 @@ function login(){
 		alert('ユーザ名またはパスワードを入力してください。');
 		return;
 	}
-	var url = Alloy.Globals.BASE_URL + '/wp-login.php';
+	var url = Alloy.Globals.config.baseurl + '/wp-login.php';
 	var loginClient = Ti.Network.createHTTPClient({
 		onload: function(e){
 			if(this.responseText.match('login_error')){
@@ -38,7 +34,7 @@ function login(){
 				rememberme('texchange');
 				registerDeviceToken();
 				var mainWin = Alloy.createController('main',{
-					url: Alloy.Globals.BASE_URL +  '/members/' + $.userId.value
+					url: Alloy.Globals.config.baseurl +  '/members/' + $.userId.value
 				}).getView();
 				mainWin.open();
 			}
@@ -58,13 +54,13 @@ function login(){
 }
 
 function jumpToFacebookLoginLink(){
-	var url = Alloy.Globals.BASE_URL;
+	var url = Alloy.Globals.config.baseurl;
 	var pattern = /https:\/\/www.facebook.com\/dialog\/oauth.*scope=email/;
 	
 	var loginClient = Ti.Network.createHTTPClient({
 		onload: function(e){
 			var mainWin = Alloy.createController('main',{
-				url: this.responseText.match(pattern)?this.responseText.match(pattern)[0]:Alloy.Globals.BASE_URL
+				url: this.responseText.match(pattern)?this.responseText.match(pattern)[0]:Alloy.Globals.config.baseurl
 			}).getView();
 			mainWin.open();
 		},
@@ -80,12 +76,12 @@ function jumpToFacebookLoginLink(){
 }
 
 function jumpToTwitterLoginLink(){
-	var url = Alloy.Globals.BASE_URL;
+	var url = Alloy.Globals.config.baseurl;
 	var pattern = /https:\/\/api.twitter.com\/oauth\/authenticate\?oauth_token=[a-zA-Z0-9]*/;
 	var loginClient = Ti.Network.createHTTPClient({
 		onload: function(e){
 			var mainWin = Alloy.createController('main',{
-				url: this.responseText.match(pattern)[0]
+				url: this.responseText.match(pattern)?this.responseText.match(pattern)[0]:Alloy.Globals.config.baseurl
 			}).getView();
 			mainWin.open();
 		},
@@ -154,7 +150,7 @@ function subscribeToChannel() {
 }
 
 function registerDeviceToken(){
-	var url = Alloy.Globals.BASE_URL + '/wp-admin/admin-ajax.php';
+	var url = Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php';
 	var registerClient = Ti.Network.createHTTPClient({
 		onload: function(e){
 			// do nothing
@@ -190,12 +186,9 @@ function openIndexWindow(){
 	$.index.open();
 }
 
-configJSON = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'config.json');
-config = JSON.parse(configJSON.read().toString());
-
 twitter = require('twitter').Twitter({
-	consumerKey:config.twitter.consumerKey,
-	consumerSecret:config.twitter.consumerSecret,
+	consumerKey: Alloy.Globals.config.twitter.consumerKey,
+	consumerSecret: Alloy.Globals.config.twitter.consumerSecret,
 	accessTokenKey: Ti.App.Properties.getString('twitterAccessTokenKey', ''),
 	accessTokenSecret: Ti.App.Properties.getString('twitterAccessTokenSecret', '')
 });

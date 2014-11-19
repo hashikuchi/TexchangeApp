@@ -1,3 +1,4 @@
 build/
 Resources/
 tiapp.xml
+app/lib/config.json

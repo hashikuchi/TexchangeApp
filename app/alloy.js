@@ -9,8 +9,18 @@
 // object. For example:
 //
 // Alloy.Globals.someGlobalFunction = function(){};
+
+var configJSON;
+var config;
+
+configJSON = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'config.json');
+// switch test mode and production mode
+config = JSON.parse(configJSON.read().toString()).test;
+// config = JSON.parse(configJSON.read().toString()).production;
+
+Alloy.Globals.config = config;
+
 Alloy.Globals.Facebook = require('facebook');
-Alloy.Globals.BASE_URL = 'http://beak.sakura.ne.jp/freecycle';
 
 Alloy.Globals.getConnectionErrorDialog = function(){
 	return Ti.UI.createAlertDialog({

@@ -5,7 +5,7 @@ $.itemTitle.setText(title);
 $.itemImage.setImage(image);
 
 function exhibit(){
-	var url= Alloy.Globals.BASE_URL + '/wp-admin/admin-ajax.php';
+	var url= Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php';
 	var exhibitClient = Ti.Network.createHTTPClient({
 		onload: function(e){
 			var dialog = Ti.UI.createAlertDialog({
