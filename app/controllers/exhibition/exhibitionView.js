@@ -10,7 +10,6 @@ picker.setCode128Enabled(false);
 picker.setItfEnabled(false);
 picker.setQrEnabled(false);
 picker.setDataMatrixEnabled(false);
-picker.setPDF417Enabled(false);
 picker.setMsiPlesseyEnabled(false);
 var window = Titanium.UI.createWindow({  
         title:'バーコード読み取り',
