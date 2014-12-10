@@ -2,6 +2,9 @@ var Cloud = require("ti.cloud");
 var facebook = Alloy.Globals.Facebook;
 var data;
 var twitter;
+var osname = Ti.Platform.getOsname();
+var osversion = Ti.Platform.getVersion();
+var cookie;
 
 facebook.appid = Alloy.Globals.config.facebook.appid;
 facebook.permissions = ['publish_stream', 'offline_access'];
@@ -36,6 +39,14 @@ function login(){
 				var mainWin = Alloy.createController('main',{
 					url: Alloy.Globals.config.baseurl +  '/members/' + $.userId.value
 				}).getView();
+
+				if(osname == 'android'){
+					// Save cookie for Android WebView
+					var cookies = Ti.Network.getHTTPCookiesForDomain('beak.sakura.ne.jp');
+					cookies.forEach(function(cookie){
+						Ti.Network.addSystemCookie(cookie);
+					});
+				}
 				mainWin.open();
 			}
 		},
@@ -125,12 +136,14 @@ function loginByTwitter(){
 // setting methods for push notifications
 // Process incoming push notifications
 
+// function called when device token is gotten
 // Save the device token for subsequent API calls
 function deviceTokenSuccess(e) {
     Alloy.Globals.deviceToken = e.deviceToken;
     subscribeToChannel();
 }
 
+// function called when device token cannot be taken
 function deviceTokenError(e) {
     alert('プッシュ通知の登録に失敗しました。 ' + e.error);
 }
@@ -153,7 +166,7 @@ function registerDeviceToken(){
 	var url = Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php';
 	var registerClient = Ti.Network.createHTTPClient({
 		onload: function(e){
-			// do nothing
+			Ti.API.info("registerDeviceToken: device token is registered successfully");
 		},
 		onerror: function(e){
 			Ti.API.debug(e.error);
@@ -163,6 +176,7 @@ function registerDeviceToken(){
 		timeout: 5000
 	});
 	registerClient.open("POST", url);
+	Ti.API.info("device token is " + Alloy.Globals.deviceToken);
 	registerClient.send({
 		'action': 'register_app_information',
 		'deviceToken': Alloy.Globals.deviceToken
@@ -193,7 +207,69 @@ twitter = require('twitter').Twitter({
 	accessTokenSecret: Ti.App.Properties.getString('twitterAccessTokenSecret', '')
 });
 
+Ti.API.info("osname =" + osname);
+Ti.API.info("osname =" + osversion);
+
+// 検証すべき内容
+// 1. 新規ユーザとしてログインした際にデバイストークンが登録されるか？
+// 2. プッシュ通知を受け取ることができるか？
+// 以上2点をiphone新旧 および Androidにて検証する
+
+// checklist
+// android ログイン完了。
+// iphone ios6 デバイストークンの登録、サジェスト登録はされるが、ウェブサービスからのプッシュ通知がうまくいってない
+// iphone ios8　デバイストークンの登録、サジェスト登録はされるが、ウェブサービスからのプッシュ通知がうまくいってない
+// appceleratorのログを見るとプッシュ通知は送信されているようだが、届いてない
+
+if(osname == "android"){
+	var CloudPush= require("ti.cloudpush"); // import cloud push module for Android devices
+	// Obtain device token for android devices
+	CloudPush.retrieveDeviceToken({
+    	success: deviceTokenSuccess,
+    	error: deviceTokenError
+	});
+}else if(osname == "iphone"){
+	if(osversion.split(".")[0] >= 8){
+		// ios8 or later
+		function registerForPush() {
+	        Ti.Network.registerForPushNotifications({
+	            success: deviceTokenSuccess,
+	            error: deviceTokenError
+	        });
+	        // Remove event listener once registered for push notifications
+	        Ti.App.iOS.removeEventListener('usernotificationsettings', registerForPush);
+	    };
+
+		// Wait for user settings to be registered before registering for push notifications
+	    Ti.App.iOS.addEventListener('usernotificationsettings', registerForPush);
+
+	    // Register notification types to use
+	    Ti.App.iOS.registerUserNotificationSettings({
+		    types: [
+	            Ti.App.iOS.USER_NOTIFICATION_TYPE_ALERT,
+	            Ti.App.iOS.USER_NOTIFICATION_TYPE_SOUND,
+	            Ti.App.iOS.USER_NOTIFICATION_TYPE_BADGE
+	        ]
+	    });
+	}else{
+		// ios7 or older
+		Ti.Network.registerForPushNotifications({
+		    // Specifies which notifications to receive
+		    types: [
+		        Ti.Network.NOTIFICATION_TYPE_BADGE,
+		        Ti.Network.NOTIFICATION_TYPE_ALERT,
+		        Ti.Network.NOTIFICATION_TYPE_SOUND
+		    ],
+		    success: deviceTokenSuccess,
+		    error: deviceTokenError
+		});
+	}
+}
+
+// TODO call registerUserNotificationSettings method here
+
 // this method is for iOS devices only
+/* moved to if statement above...
 Ti.Network.registerForPushNotifications({
     // Specifies which notifications to receive
     types: [
@@ -204,7 +280,7 @@ Ti.Network.registerForPushNotifications({
     success: deviceTokenSuccess,
     error: deviceTokenError
 });
-
+*/
 try{
 	data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt').read());
 	$.remembermeSwitch.value = data.rememberme;
