@@ -1,9 +1,9 @@
 <Alloy>
 	<Window id="mainWindow" title="テクスチェンジ">
-		<LeftNavButton platform=ios>
+		<LeftNavButton platform="ios">
             <Button title="Back" onClick="goBack" />
         </LeftNavButton>
-        <RightNavButton platform=ios>
+        <RightNavButton platform="ios">
             <Button title="Reload" onClick="reloadWindow" />
         </RightNavButton>
 		<WebView id="mainWebView" />
