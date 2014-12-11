@@ -28,5 +28,6 @@
 },
 "Button": {
 	borderRadius: 10,
-	backgroundColor: '#fffacd'
+	backgroundColor: '#fffacd',
+	color: '#6495ed'
 }
