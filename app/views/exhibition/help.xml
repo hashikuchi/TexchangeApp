@@ -2,10 +2,10 @@
 	<Window id="helpWindow" backgroundColor="white">
 		<Label class="header" top="50">出品機能はかんたん3ステップ！</Label>
 		<Label class="body" top="120" left="15" right="15">1.「バーコードを読み取る」ボタンを押します。</Label>
-		<Label class="body" top="180" left="15" right="15">2.スマホのカメラで出品したい本のバーコードを読み取ります。</Label>
+		<Label class="body" top="180" left="15" right="15">2.スマホのカメラで出品したい本の"上の方の"バーコードを読み取ります。</Label>
 		<Label class="body" top="240" left="15" right="15">3.続いて表示される画面で「出品」ボタンを押します。出品完了です！</Label>
 		<Label class="alignleft notes" top="300" left="15" right="15">※一度で正常に読み取れない場合には再度読み取りをお試しください。</Label>
-		<Label class="alignleft notes" top="350" left="15" right="15">※カメラでバーコードが読み取れない場合、バーコード下の数字を直接入力しても出品できます。</Label>
+		<Label class="alignleft notes" top="350" left="15" right="15">※カメラでバーコードが読み取れない場合、バーコード下の数字を上部のフォームに直接入力しても出品できます。</Label>
 		<Label onClick="closeWindow" color="#6495ed" top="400">この画面を閉じる</Label>
 	</Window>
 </Alloy>
