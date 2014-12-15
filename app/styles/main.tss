@@ -1,0 +1,7 @@
+"MenuItem": {
+    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS,
+},
+"#menuReload": {
+	icon: "images/menus/reload-32.png",
+    title: 'reload'
+}

@@ -1,5 +1,8 @@
 <Alloy>
 	<TabGroup id="mainTabGroup">
+        <Menu platform="android">
+        	<MenuItem id="menuReload" onClick="reloadWindowAndroid" />
+        </Menu>
 		<Tab id="main" title='Web' icon='images/tabs/web-32.png'>
 			<Require type="view" src="mainWebView" id="mainTab" />
 		</Tab>

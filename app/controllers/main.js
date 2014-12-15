@@ -10,3 +10,11 @@ $.mainTabGroup.addEventListener("androidback", function(){
 		mainWebView.goBack();
 	}
 });
+
+// configuration of reload function for android
+function reloadWindowAndroid(){
+	if($.main.getActive()){
+		var url = mainWebView.getUrl();
+		mainWebView.setUrl(url);
+	}
+}
