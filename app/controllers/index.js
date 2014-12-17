@@ -19,9 +19,14 @@ facebook.addEventListener('login', function (e) {
     } else if (e.error) {
         alert('facebookログインに失敗しました。');
     } else if (e.cancelled) {
-    	// do nothing
+    	Ti.API.info("facebook login was cancelled...");
     }
 });
+// If already logged in with facebook, directly open screen
+// Without this, web view is not opened in android
+if(facebook.getLoggedIn() && osname == "android"){
+	jumpToFacebookLoginLink();
+}
 
 function login(){
 	if($.userId.value.length === 0 || $.password.value.length === 0){
@@ -42,7 +47,7 @@ function login(){
 
 				if(osname == 'android'){
 					// Save cookie for Android WebView
-					var cookies = Ti.Network.getHTTPCookiesForDomain('beak.sakura.ne.jp');
+					var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
 					cookies.forEach(function(cookie){
 						Ti.Network.addSystemCookie(cookie);
 					});
@@ -73,6 +78,13 @@ function jumpToFacebookLoginLink(){
 			var mainWin = Alloy.createController('main',{
 				url: this.responseText.match(pattern)?this.responseText.match(pattern)[0]:Alloy.Globals.config.baseurl
 			}).getView();
+			if(osname == 'android'){
+				// Save cookie for Android WebView
+				var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
+				cookies.forEach(function(cookie){
+					Ti.Network.addSystemCookie(cookie);
+				});
+			}
 			mainWin.open();
 		},
 		onerror: function(e){
@@ -90,10 +102,12 @@ function jumpToTwitterLoginLink(){
 	var url = Alloy.Globals.config.baseurl;
 	var pattern = /https:\/\/api.twitter.com\/oauth\/authenticate\?oauth_token=[a-zA-Z0-9]*/;
 	var loginClient = Ti.Network.createHTTPClient({
-		onload: function(e){
-			var mainWin = Alloy.createController('main',{
-				url: this.responseText.match(pattern)?this.responseText.match(pattern)[0]:Alloy.Globals.config.baseurl
-			}).getView();
+		onload: function(e){			
+			var mainController = Alloy.createController('main',{
+				url: Alloy.Globals.config.baseurl,
+				twitterlogin: true
+			});
+			var mainWin = mainController.getView();
 			mainWin.open();
 		},
 		onerror: function(e){
