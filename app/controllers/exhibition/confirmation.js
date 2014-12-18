@@ -23,6 +23,22 @@ function exhibit(){
 		},
 		timeout: 5000
 	});
+	
+	// Set system cookie value into http cookie store for android
+	// This is necessary for social login case
+	// addHTTPcookie method does not work at here
+	if(Ti.Platform.getOsname() == 'android'){
+		var systemCookies = Ti.Network.getSystemCookies(Alloy.Globals.config.domain, Alloy.Globals.config.cookiepath, null);
+		var cookiestrings = "";
+		if(systemCookies){
+			systemCookies.forEach(function(cookie){
+				cookiestrings += '; ' + cookie.name + '=' + cookie.value;
+				Ti.API.info('name:' + cookie.name + ' value:' + cookie.value);
+			});
+			exhibitClient.setRequestHeader('Cookie:', cookiestrings);
+		}
+	}
+	
 	exhibitClient.open('POST', url);
 	exhibitClient.send({
 		'action': 'exhibit_from_app',

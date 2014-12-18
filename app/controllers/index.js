@@ -100,7 +100,6 @@ function jumpToFacebookLoginLink(){
 
 function jumpToTwitterLoginLink(){
 	var url = Alloy.Globals.config.baseurl;
-	var pattern = /https:\/\/api.twitter.com\/oauth\/authenticate\?oauth_token=[a-zA-Z0-9]*/;
 	var loginClient = Ti.Network.createHTTPClient({
 		onload: function(e){			
 			var mainController = Alloy.createController('main',{
@@ -108,6 +107,13 @@ function jumpToTwitterLoginLink(){
 				twitterlogin: true
 			});
 			var mainWin = mainController.getView();
+			if(osname == 'android'){
+				// Save cookie for Android WebView
+				var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
+				cookies.forEach(function(cookie){
+					Ti.Network.addSystemCookie(cookie);
+				});
+			}
 			mainWin.open();
 		},
 		onerror: function(e){
