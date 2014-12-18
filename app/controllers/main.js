@@ -32,6 +32,11 @@ function jumpToTwitterLoginLink(){
 	');
 	if(loginUrl && loginUrl !== "undefined"){
 		mainWebView.url = loginUrl;
+	}else if(loginUrl === "undefined"){
+		Ti.UI.createAlertDialog({
+			title: "ログイン処理は完了していません！",
+			message: "「Twitterでログイン」ボタンを押してください。"
+		}).show();
 	}
 	mainWebView.removeEventListener('load', jumpToTwitterLoginLink);
 }
