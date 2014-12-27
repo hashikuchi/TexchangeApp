@@ -24,6 +24,15 @@ function reloadWindowAndroid(){
 	}
 }
 
+function openTroubleshootingWindow(){
+	var troubleshootingWindow = Alloy.createController('troubleshooting').getView();
+	troubleshootingWindow.open({
+		modal: true,
+	    modalTransitionStyle: Ti.UI.iPhone.MODAL_TRANSITION_STYLE_COVER_VERTICAL,
+	    modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET
+	});
+}
+
 function jumpToTwitterLoginLink(){
 	// get link of twitter login button
 	var loginUrl = "";
@@ -32,11 +41,6 @@ function jumpToTwitterLoginLink(){
 	');
 	if(loginUrl && loginUrl !== "undefined"){
 		mainWebView.url = loginUrl;
-	}else if(loginUrl === "undefined"){
-		Ti.UI.createAlertDialog({
-			title: "ログイン処理は完了していません！",
-			message: "「Twitterでログイン」ボタンを押してください。"
-		}).show();
 	}
 	mainWebView.removeEventListener('load', jumpToTwitterLoginLink);
 }

@@ -1,0 +1,8 @@
+<Alloy>
+	<Window id="troubleshootingWindow" backgroundColor="white">
+		<Label class="header" top="50">困ったときは</Label>
+		<Label class="body" top="120" left="15" right="15">Q.出品しようとすると「ログインされていないため出品できません。」と表示されます。</Label>
+		<Label class="body" top="190" left="15" right="15">A.Webのタブに表示されているテクスチェンジの画面がログアウト状態になっていますので、ログインしてください。特に、一部のAndroidスマートフォンでTwitterからログインした場合に起きることがあります。</Label>
+		<Label onClick="closeWindow" color="#6495ed" top="400">この画面を閉じる</Label>
+	</Window>
+</Alloy>

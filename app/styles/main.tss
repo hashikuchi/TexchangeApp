@@ -5,3 +5,7 @@
 	icon: "images/menus/reload-32.png",
     title: 'reload'
 }
+"#menuTroubleshooting": {
+	icon: "images/menus/help-48.png",
+    title: 'help'
+}
