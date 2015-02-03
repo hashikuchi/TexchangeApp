@@ -4,14 +4,14 @@
 "#itemTitle": {
 	top: 50,
 	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
-}
+},
 "#exhibit": {
 	left: 40,
-	top: 350,
+	top: 450,
 	width: 100
 }
 "#cancel": {
 	right: 40,
-	top: 350,
+	top: 450,
 	width: 100
 }

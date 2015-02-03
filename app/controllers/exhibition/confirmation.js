@@ -1,10 +1,53 @@
 var args = arguments[0] || {};
 var title = args.title;
 var image = args.image;
+
+var mainCategory = {};
+var subCategory = {};
+
 $.itemTitle.setText(title);
 $.itemImage.setImage(image);
 
+$.categoriesView.addEventListener("itemclick", function(e){
+	var win;
+	var detailWindow;
+	if(e.itemIndex == 0){
+		openCategoryWindow("mainCategories", {
+			selectedCategory: mainCategory
+		},
+		function(e){
+			updateMainCategory(e.mainCategory);
+			updateSubCategory(e.subCategory);
+		});
+	}else if(e.itemIndex == 1){
+		// return if main category is not selected
+		if(mainCategory.categoryId < 0 || mainCategory.categoryId == null){
+			Ti.UI.createAlertDialog({
+				title: "親カテゴリを選択してください",
+			}).show();
+			return;
+		}		
+		openCategoryWindow("subCategories", {
+			mainCategory: mainCategory,
+			selectedCategory: subCategory
+		},
+		function(e){
+			updateSubCategory(e.subCategory);
+		});
+	}
+});
+
 function exhibit(){
+	// error check
+	// return if subcategory is not selected
+	if(subCategory.categoryId < 0 || subCategory.categoryId == null){
+		Ti.UI.createAlertDialog({
+			title: "カテゴリを選択してください",
+			message: "親カテゴリと子カテゴリを両方選択する必要があります。"
+		}).show();
+		return;
+	}
+	
 	var url= Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php';
 	var exhibitClient = Ti.Network.createHTTPClient({
 		onload: function(e){
@@ -12,7 +55,7 @@ function exhibit(){
 				message: this.responseText
 			});
 			dialog.addEventListener('click', function(e){
-				$.confirmationWindow.close();
+				$.confirmationRootWindow.close();
 			});
 			dialog.show();
 		},
@@ -43,10 +86,32 @@ function exhibit(){
 	exhibitClient.send({
 		'action': 'exhibit_from_app',
 		'item_name': title,
-		'image_url': image
+		'image_url': image,
+		'category': subCategory.categoryId
 	});
 }
 
+function openCategoryWindow(name, args, callback){
+	var win = Alloy.createController('exhibition/categories/' + name, args);
+	var detailWindow = win.getView();
+	$.confirmationRootWindow.openWindow(detailWindow);
+	win.on('select', callback);	
+}
+
+function updateMainCategory(main){
+	mainCategory = main; // update global variable
+	var item = $.categoriesSection.getItemAt(0);
+	item.properties.subtitle = main.title;
+	$.categoriesSection.updateItemAt(0, item);
+}
+
+function updateSubCategory(sub){
+	subCategory = sub; // update global variable
+	var item = $.categoriesSection.getItemAt(1);
+	item.properties.subtitle = sub.title;
+	$.categoriesSection.updateItemAt(1, item);
+}
+
 function cancel(){
-	$.confirmationWindow.close();
+	$.confirmationRootWindow.close();
 }

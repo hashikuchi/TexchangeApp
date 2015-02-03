@@ -1,8 +1,16 @@
 <Alloy>
-	<Window id="confirmationWindow" class="container" title="出品">
-		<Label id="itemTitle"/>
-		<ImageView id="itemImage"/>
-		<Button id="exhibit" title="出品" onClick="exhibit"/>
-		<Button id="cancel" title="キャンセル" class="cancel" onClick="cancel"/>
-	</Window>
+	<NavigationWindow id="confirmationRootWindow" platform="ios">
+		<Window id="confirmationWindow" class="container" title="出品">
+			<Label id="itemTitle"/>
+			<ImageView id="itemImage" top="100"/>
+			<ListView id="categoriesView" canScroll="false" defaultItemTemplate=Titanium.UI.LIST_ITEM_TEMPLATE_SETTINGS height="100" top="300">
+				<ListSection id="categoriesSection">
+				<ListItem title="親カテゴリ" itemId="mainCategory" subtitle="選択してください" />
+				<ListItem title="子カテゴリ" itemId="subCategory" subtitle="選択してください" />
+				</ListSection>
+			</ListView>
+			<Button id="exhibit" title="出品" onClick="exhibit"/>
+			<Button id="cancel" title="キャンセル" class="cancel" onClick="cancel"/>
+		</Window>
+	</NavigationWindow>
 </Alloy>
