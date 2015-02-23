@@ -1,17 +1,27 @@
 ".container": {
 	backgroundColor: "white"
-}
+},
 "#itemTitle": {
 	top: 50,
 	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
 },
+"#itemTitle[platform=android]": {
+	color: "black"
+},
+"#itemImage": {
+	top: 100
+},
+"#categoriesView": {
+	height: 100,
+	top: 250
+},
 "#exhibit": {
 	left: 40,
-	top: 450,
+	bottom: 50,
 	width: 100
-}
+},
 "#cancel": {
 	right: 40,
-	top: 450,
+	bottom: 50,
 	width: 100
 }

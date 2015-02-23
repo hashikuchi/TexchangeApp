@@ -23,7 +23,8 @@ var getCategoryClient = Ti.Network.createHTTPClient({
 				properties: {
 					title: categories[i].name,
 					accessoryType: Ti.UI.LIST_ACCESSORY_TYPE_NONE,
-					categoryId: categories[i].term_id
+					categoryId: categories[i].term_id,
+					color: "black"
 				}
 			});
 		}
