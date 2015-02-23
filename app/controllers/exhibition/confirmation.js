@@ -4,6 +4,7 @@ var image = args.image;
 
 var mainCategory = {};
 var subCategory = {};
+var os = Ti.Platform.getOsname();
 
 $.itemTitle.setText(title);
 $.itemImage.setImage(image);
@@ -55,7 +56,7 @@ function exhibit(){
 				message: this.responseText
 			});
 			dialog.addEventListener('click', function(e){
-				$.confirmationRootWindow.close();
+				cancel();
 			});
 			dialog.show();
 		},
@@ -94,24 +95,40 @@ function exhibit(){
 function openCategoryWindow(name, args, callback){
 	var win = Alloy.createController('exhibition/categories/' + name, args);
 	var detailWindow = win.getView();
-	$.confirmationRootWindow.openWindow(detailWindow);
+	if(os == "iphone"){
+		$.confirmationRootWindow.openWindow(detailWindow);		
+	}else{
+		detailWindow.open();	
+	}
 	win.on('select', callback);	
 }
 
 function updateMainCategory(main){
 	mainCategory = main; // update global variable
 	var item = $.categoriesSection.getItemAt(0);
-	item.properties.subtitle = main.title;
+	if(os == "iphone"){
+		item.properties.subtitle = main.title;
+	}else{
+		item.properties.title = main.title;
+	}
 	$.categoriesSection.updateItemAt(0, item);
 }
 
 function updateSubCategory(sub){
 	subCategory = sub; // update global variable
 	var item = $.categoriesSection.getItemAt(1);
-	item.properties.subtitle = sub.title;
+	if(os == "iphone"){
+		item.properties.subtitle = sub.title;
+	}else{
+		item.properties.title = sub.title;
+	}
 	$.categoriesSection.updateItemAt(1, item);
 }
 
 function cancel(){
-	$.confirmationRootWindow.close();
+	if(os == "iphone"){
+		$.confirmationRootWindow.close();
+	}else{
+		$.confirmationWindow.close();
+	}
 }
