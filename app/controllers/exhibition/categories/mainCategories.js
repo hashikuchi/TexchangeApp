@@ -40,6 +40,8 @@ var getCategoryClient = Ti.Network.createHTTPClient({
 	},
 	timeout: 5000
 });
+
+getCategoryClient = Alloy.Globals.addCookieValueToHTTPClient(getCategoryClient);
 getCategoryClient.open('POST', url);
 getCategoryClient.send({
 	'action': 'get_categories',

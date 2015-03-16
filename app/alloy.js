@@ -15,8 +15,8 @@ var config;
 
 configJSON = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'config.json');
 // switch test mode and production mode
-config = JSON.parse(configJSON.read().toString()).test;
-//config = JSON.parse(configJSON.read().toString()).production;
+// config = JSON.parse(configJSON.read().toString()).test;
+config = JSON.parse(configJSON.read().toString()).production;
 
 Alloy.Globals.config = config;
 
@@ -27,6 +27,23 @@ Alloy.Globals.getConnectionErrorDialog = function(){
 		title: "通信エラー",
 		message: "ネットワーク状況を確認してください。"
 	});
+};
+
+Alloy.Globals.addCookieValueToHTTPClient = function(httpClient){
+	// Set system cookie value into http cookie store for android
+	// This is necessary for social login case
+	// addHTTPcookie method does not work at here
+	if(Ti.Platform.getOsname() == 'android'){
+		var systemCookies = Ti.Network.getSystemCookies(Alloy.Globals.config.domain, Alloy.Globals.config.cookiepath, null);
+		var cookiestrings = "";
+		if(systemCookies){
+			systemCookies.forEach(function(cookie){
+				cookiestrings += '; ' + cookie.name + '=' + cookie.value;
+			});
+			httpClient.setRequestHeader('Cookie:', cookiestrings);
+		}
+	}
+	return httpClient;
 };
 
 Alloy.Globals.deviceToken = null;
