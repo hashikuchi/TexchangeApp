@@ -1,6 +1,6 @@
 <Alloy>
 	<Window class="container" title="子カテゴリ">
-		<ListView id="subCategoties" canScroll="false" defaultItemTemplate="Titanium.UI.LIST_ITEM_TEMPLATE_SETTING">
+		<ListView id="subCategoties" canScroll="true" defaultItemTemplate="Titanium.UI.LIST_ITEM_TEMPLATE_SETTING">
 			<ListSection id="subCategoriesSection">
 			</ListSection>
 		</ListView>
