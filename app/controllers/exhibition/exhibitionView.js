@@ -1,30 +1,27 @@
 var scanditsdk = require('com.mirasense.scanditsdk');
-var picker = scanditsdk.createView({
-        width:'100%',
-        height:'100%'
-    });
-// disable unnecessary functions
-picker.set2DScanningEnabled(false);
-picker.setCode39Enabled(false);
-picker.setCode128Enabled(false);
-picker.setItfEnabled(false);
-picker.setQrEnabled(false);
-picker.setDataMatrixEnabled(false);
-picker.setMsiPlesseyEnabled(false);
+var appKey = Alloy.Globals.config.scandit.appKey;
+var picker;
+
 var window = Titanium.UI.createWindow({  
         title:'バーコード読み取り',
         navBarHidden:true
 });
 
 function readBarcode(){
-	var appKey = Alloy.Globals.config.scandit.appKey;
-	// Create a window to add the picker to and display it. 
 	picker = scanditsdk.createView({
         width:'100%',
         height:'100%'
     });
-    picker.init(appKey, 0);
-    
+	picker.init(appKey, 0);
+	// disable unnecessary functions
+	picker.set2DScanningEnabled(false);
+	picker.setCode39Enabled(false);
+	picker.setCode128Enabled(false);
+	picker.setItfEnabled(false);
+	picker.setQrEnabled(false);
+	picker.setDataMatrixEnabled(false);
+	picker.setMsiPlesseyEnabled(false);
+
     picker.showSearchBar(true);
     // add a tool bar at the bottom of the scan view with a cancel button (iphone/ipad only)
     picker.showToolBar(true);
@@ -82,6 +79,13 @@ function readBarcode(){
     picker.setCancelCallback(function(e) {
         closeScanner();
     });
+
+	// Restrict the area in which the recognition actively searches for barcodes.
+	// This is to avoid the additional scanning in case that multiple barcodes are in one screen
+	picker.restrictActiveScanningArea(true);
+	// Reduce the active area to 10% of the display's height.
+	picker.setScanningHotSpotHeight(0.1);
+
     window.add(picker);
     window.addEventListener('open', function(e) {
         // Adjust to the current orientation.
@@ -107,12 +111,12 @@ var closeScanner = function() {
     if (picker != null) {
         picker.stopScanning();
         window.remove(picker);
+        picker = null; // clear the picker object
     }
     window.close();
 };
 
 function showCannotFindItemDialog(){
-    picker.stopScanning();
 	var errorDialog = Ti.UI.createAlertDialog({
 		message:"商品データが取得できませんでした。"
 	});
