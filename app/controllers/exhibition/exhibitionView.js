@@ -17,7 +17,7 @@ var window = Titanium.UI.createWindow({
 });
 
 function readBarcode(){
-	var appKey = '3AU15vnIEeOTtjZAwaMb8kJj8PCFuC6h6olUpIUD8eI';
+	var appKey = Alloy.Globals.config.amazon.appKey;
 	// Create a window to add the picker to and display it. 
 	picker = scanditsdk.createView({
         width:'100%',
@@ -32,7 +32,7 @@ function readBarcode(){
     // scanning is canceled.
     picker.setSuccessCallback(function(e) {
     	picker.stopScanning();
-    	var url = 'http://ancient-escarpment-4022.herokuapp.com/inside.php';
+    	var url = 'http://texchange.sakura.ne.jp/static/inside.php';
     	var searchClient = Ti.Network.createHTTPClient({
     		onload: function(e){
     			var res = this.responseText;
