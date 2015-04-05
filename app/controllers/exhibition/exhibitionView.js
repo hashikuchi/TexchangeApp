@@ -17,7 +17,7 @@ var window = Titanium.UI.createWindow({
 });
 
 function readBarcode(){
-	var appKey = Alloy.Globals.config.amazon.appKey;
+	var appKey = Alloy.Globals.config.scandit.appKey;
 	// Create a window to add the picker to and display it. 
 	picker = scanditsdk.createView({
         width:'100%',
@@ -36,7 +36,7 @@ function readBarcode(){
     	var searchClient = Ti.Network.createHTTPClient({
     		onload: function(e){
     			var res = this.responseText;
-    			if(res === null){
+    			if(!res){
 					showCannotFindItemDialog();
 					return;
     			}
@@ -59,7 +59,7 @@ function readBarcode(){
 						image: image
 					}).getView();
 					confirmationWindow.addEventListener('close', function(e){
-						picker.startScanning();
+						//picker.startScanning();
 					});
 					confirmationWindow.open();
 				}else{
@@ -112,6 +112,7 @@ var closeScanner = function() {
 };
 
 function showCannotFindItemDialog(){
+    picker.stopScanning();
 	var errorDialog = Ti.UI.createAlertDialog({
 		message:"商品データが取得できませんでした。"
 	});
