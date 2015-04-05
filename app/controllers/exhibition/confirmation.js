@@ -24,7 +24,7 @@ $.categoriesView.addEventListener("itemclick", function(e){
 		// return if main category is not selected
 		if(mainCategory.categoryId < 0 || mainCategory.categoryId == null){
 			Ti.UI.createAlertDialog({
-				title: "親カテゴリを選択してください",
+				title: "大学を選択してください",
 			}).show();
 			return;
 		}		
@@ -43,8 +43,8 @@ function exhibit(){
 	// return if subcategory is not selected
 	if(subCategory.categoryId < 0 || subCategory.categoryId == null){
 		Ti.UI.createAlertDialog({
-			title: "カテゴリを選択してください",
-			message: "親カテゴリと子カテゴリを両方選択する必要があります。"
+			title: "学部を選択してください",
+			message: "大学と学部を両方選択する必要があります。"
 		}).show();
 		return;
 	}

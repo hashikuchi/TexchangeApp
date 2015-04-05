@@ -1,5 +1,5 @@
 <Alloy>
-	<Window class="container" title="親カテゴリ">
+	<Window class="container" title="大学">
 		<ListView id="mainCategoties" canScroll="true" defaultItemTemplate="Titanium.UI.LIST_ITEM_TEMPLATE_SETTING" color="black">
 			<ListSection id="mainCategoriesSection">
 			</ListSection>
