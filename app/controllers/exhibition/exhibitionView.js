@@ -59,7 +59,7 @@ function readBarcode(){
 						image: image
 					}).getView();
 					confirmationWindow.addEventListener('close', function(e){
-						//picker.startScanning();
+						picker.startScanning();
 					});
 					confirmationWindow.open();
 				}else{
