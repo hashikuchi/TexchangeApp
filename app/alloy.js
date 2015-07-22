@@ -15,8 +15,9 @@ var config;
 
 configJSON = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'config.json');
 // switch test mode and production mode
-// config = JSON.parse(configJSON.read().toString()).test;
-config = JSON.parse(configJSON.read().toString()).production;
+
+config = JSON.parse(configJSON.read().toString()).test;
+//config = JSON.parse(configJSON.read().toString()).production;
 
 Alloy.Globals.config = config;
 
