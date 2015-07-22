@@ -1,0 +1,148 @@
+<h1>Scandit Titanium Module - RELEASE NOTES</h1>
+
+<p>for iOS and Android version of plugin</p>
+
+<h2>Changes in ScanditSDK Module for Titanium 4.3.0 (January 10th 2015)</h2>
+
+<ul>
+<li><p>Added support for arm64 under Ti</p></li>
+<li><p>Added methods to activate/deactivate Aztec decoder</p></li>
+<li><p>iOS: Upgraded to native SDK for iOS 4.3.0 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_4.3.0">Release Notes of native Scandit SDK for iOS</a> for details)</p></li>
+<li><p>Android: Upgraded to native SDK for Android 4.3.3 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-android_4.3.3">Release Notes of native Scandit SDK for Android</a> for details)</p></li>
+</ul>
+
+<h2>Changes in ScanditSDK Module for Titanium 4.2.2 (December 18th 2014)</h2>
+
+<ul>
+<li>Fixed bug in onStop and onResume methods that resulted in crashes when the barcode picker was started repeatedly. IMPORTANT: Please note that you should not call picker.setOrientation(window.orientation); when (re-)opening the barcode scanner view. This will reset the view and the activity and lifecylce events won’t be properly handled.  </li>
+</ul>
+
+<h2>Changes in ScanditSDK Module for Titanium 4.2.1 (October 30th 2014)</h2>
+
+<ul>
+<li><p>iOS: Upgraded to native SDK for iOS 4.2.2 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_4.2.2">Release Notes of native Scandit SDK for iOS</a> for details)</p></li>
+<li><p>Android: Upgraded to native SDK for Android 4.2.2 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-android_4.2.2">Release Notes of native Scandit SDK for Android</a> for details)</p></li>
+</ul>
+
+<h2>Changes in ScanditSDK Module for Titanium 4.2.0 (October 7th)</h2>
+
+<ul>
+<li><p>iOS: Upgraded to native SDK for iOS 4.2.1 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_4.2.1">Release Notes of native Scandit SDK for iOS</a> for details)</p></li>
+<li><p>Android: Upgraded to native SDK for Android 4.2.1 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-android_4.2.1">Release Notes of native Scandit SDK for Android</a> for details)</p></li>
+</ul>
+
+<h2>Changes in ScanditSDK Module for Titanium 4.1.0 (August 21st)</h2>
+
+<ul>
+<li><p>iOS: Upgraded to native SDK for iOS 4.1.3 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_4.1.3">Release Notes of native Scandit SDK for iOS</a> for details)</p></li>
+<li><p>Android: Upgraded to native SDK for Android 4.1.2 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-android_4.1.2">Release Notes of native Scandit SDK for Android</a> for details)</p></li>
+<li><p>added new methods to enable Code93 and Codabar decoders (these decoders are only available with the enterprise and the free trial editions). </p></li>
+</ul>
+
+<h2>Changes in ScanditSDK Module for Titanium 4.0.1</h2>
+
+<ul>
+<li><p>we aligned the version number of our Titanium module with the versions of our native Scandit Barcode Scanner SDK for iOS and Android.</p></li>
+<li><p>fixed bug where (mandatory) scanning by Scandit logo did not properly load in Android module.</p></li>
+<li><p>iOS: Upgraded to native SDK for iOS 4.0.1 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_4.0.1">Release Notes of native Scandit SDK for iOS</a> for details)</p></li>
+<li><p>Android: Upgraded to native SDK for Android 4.0.1 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-android_4.0.1">Release Notes of native Scandit SDK for Android</a> for details)</p></li>
+</ul>
+
+<h2>Changes in ScanditSDK Module for Titanium 1.3.3</h2>
+
+<ul>
+<li><p>iOS: Upgraded to native SDK for iOS 3.2.3 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_3.2.3">Release Notes of native Scandit SDK for iOS</a> for details)</p></li>
+<li><p>Android: Upgraded to native SDK for Android 3.5.3 (see <a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-android_3.5.3">Release Notes of native Scandit SDK for Android</a> for details)</p></li>
+</ul>
+
+<h2>Changes in ScanditSDK Module for Titanium 1.3.2</h2>
+
+<ul>
+<li>iOS: Upgraded to native Scandit SDK for iOS 3.2.1 to address a critical issue that leads to app crashes when a MKMapView is present in the view hierarchy on iOS7 devices.</li>
+</ul>
+
+<h2>Changes in ScanditSDK Module for Titanium 1.3.1</h2>
+
+<ul>
+<li><p>iOS: fixed bug that was causing camera control issues when the app was accessing the camera both via the Scandit SDK and directly (e.g. to take a picture).</p></li>
+<li><p>Android/iOS: added API method disableStandbyState (under Android invocating this method has no effect, since there is no
+standby state under Android).</p></li>
+<li><p>Android/iOS: changed Titanium API version in plugin manifest from 3 to 2 for Android and to 1 for iOS. The minSDK version is now set to 2.1.0GA.</p></li>
+<li><p>Android: fixed bug that caused potential app crashes when startScanning or stopScanning were called from a different thread.</p></li>
+<li><p>Android: fixed bug where default scan viewfinder rectangle size was too large.</p></li>
+<li><p>Upgraded to latest version of native Scandit SDK for iOS (3.2.0) and Android (3.5.2)</p></li>
+</ul>
+
+<p><a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_3.2.0">Release Notes of native Scandit SDK for iOS</a></p>
+
+<p><a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_3.5.2">Release Notes of native Scandit SDK for Android</a></p>
+
+<h2>Changes in ScanditSDK Plugin for Titanium 1.3.0</h2>
+
+<ul>
+<li><p>Android: Fixed bug where Scandit API method calls that update the user interface could lead to crashes of the app because of a threading issue.</p></li>
+<li><p>Android: Fixed bug where settings set via the Scandit API were not always executed in the UI when a new activity was created.</p></li>
+<li><p>Upgraded to latest version of native Scandit SDK for iOS (3.1.1) and Android (3.5.1)</p></li>
+</ul>
+
+<p><a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_3.1.1">Release Notes of native Scandit SDK for iOS</a></p>
+
+<p><a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_3.5.1">Release Notes of native Scandit SDK for Android</a></p>
+
+<h2>Changes in ScanditSDK Plugin for Titanium 1.2.2</h2>
+
+<p>iPhone only release</p>
+
+<ul>
+<li>iOS: Replaced old GUID in manifest file with a freshly generated GUID that is now identical
+to the GUID in Android manifest file. The code base of the plugin is unchanged from the 1.2.1 release of the module.</li>
+</ul>
+
+<h2>Changes in ScanditSDK Plugin for Titanium 1.2.1</h2>
+
+<p>iPhone only release</p>
+
+<ul>
+<li>iOS: changed GUID in manifest file back to the one in version 1.1.1 - change of GUID in combination with change of GUID stored in the appcelerator marketplace caused lots of issues with existing Android users of our plugin.</li>
+</ul>
+
+<h2>Changes in ScanditSDK Plugin for Titanium 1.2.0</h2>
+
+<p>iPhone only release - May 31th</p>
+
+<ul>
+<li>iOS: incorporates the latest Scandit SDK for iOS (V3.0.2) - see below for detailed changes in Scandit SDK V3.0.2</li>
+</ul>
+
+<p><a href="https://ssl.scandit.com/account/sdk/release-notes/scanditsdk-community-ios_3.0.4">Release Notes of native Scandit SDK for iOS</a> (see section for 3.0.2 bug fixes in change log)</p>
+
+<ul>
+<li>iOS: updated Ti Plugin API with new methods to use Scandit SDK for iOS 3.0.* functionality. See API documentation for details.</li>
+</ul>
+
+<h2>Changes in ScanditSDK Plugin for Titanium 1.1.1</h2>
+
+<p>Android &amp; iPhone release - February 27th 2013</p>
+
+<ul>
+<li>Android: fixed critical bug in Android Titanium plugin 1.1.0 where all builds had the enterprise trial feature set which requires mandatory network access.</li>
+</ul>
+
+<h2>Changes in ScanditSDK Plugin for Titanium 1.1.0</h2>
+
+<p>Android &amp; iPhone release - February 19th 2013</p>
+
+<ul>
+<li>Important software update to work with orientation changes and to support barcode scanning in landscape mode.</li>
+</ul>
+
+<p>IMPORTANT: this update requires a (small) change to the way you instantiate the Scandit SDK in your Titanium app. See the example for details.</p>
+
+<ul>
+<li><p>Fixed a bug in timodule.xml (Android) that prevented deployment on any device. Autofocus and flash are now also optional (no longer required).</p></li>
+<li><p>Fixed a bug where QR code scanning was only enabled by default on iPhone devices and not on Android devices. QR code scanning is now enabled by default on both platforms.</p></li>
+<li><p>Fixed a bug resulting from a typo in the method stopScanning. the method is now called stopScanning (and no longer stopScannning).  </p></li>
+<li><p>Corrected toolbar offset.</p></li>
+<li><p>Upgraded to Scandit SDK for Android 3.3.0. This includes software updates that address idiosyncrasies of various Android devices (Nexus 4, Nexus 7, …), support for GS1 QR codes, improved scanning performance on a number of Android devices</p></li>
+<li><p>Upgraded to Scandit SDK for iPhone 2.2.7. This includes software updates to fix bug when switching from front to back camera by deallocating and reallocating ScanditBarcodePicker, to address a rare bug related to the OpenUDID implementation, to make 'beep' implementation less greedy, support for GS1 QR code symbology,  </p></li>
+</ul>
