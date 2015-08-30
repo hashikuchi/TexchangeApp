@@ -10,5 +10,8 @@
 		<Tab id="exhibition" title='出品' icon='images/tabs/barcode_scanner-32.png'>
 			<Require type="view" src="exhibition/exhibitionView" id="exhibitionTab" />
 		</Tab>
+		<Tab id="messages" title='メッセージ' icon='images/tabs/barcode_scanner-32.png'>
+			<Require type="view" src="messages/messagesView" id="messagesTab" />
+		</Tab>
 	</TabGroup>
 </Alloy>

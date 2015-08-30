@@ -1,0 +1,4 @@
+<Alloy>
+	<Window id="messagesWindow" title="メッセージ" backgroundColor="white">
+	</Window>
+</Alloy>
