@@ -30,6 +30,18 @@ Ti.App.addEventListener('thread_click', function(e){
 		{thread_id: e.thread_id}).getView());
 });
 
+// Save loggedin user id
+var getLoggedinIdUrl = Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php?action=bp_loggedin_user_id_from_ajax';
+var getLoggedinIdClient = Ti.Network.createHTTPClient({
+	onload: function(e){
+		Alloy.Globals.loggedinId = this.responseText;
+	},
+	timeout: 5000
+});
+getLoggedinIdClient = Alloy.Globals.addCookieValueToHTTPClient(getLoggedinIdClient);
+getLoggedinIdClient.open('GET', getLoggedinIdUrl);
+getLoggedinIdClient.send();
+
 
 // configuration of reload function for android
 function reloadWindowAndroid(){
