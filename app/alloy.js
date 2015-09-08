@@ -48,3 +48,5 @@ Alloy.Globals.addCookieValueToHTTPClient = function(httpClient){
 };
 
 Alloy.Globals.deviceToken = null;
+
+Alloy.Globals.loggedinId = 0;
