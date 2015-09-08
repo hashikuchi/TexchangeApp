@@ -1,0 +1,4 @@
+<Alloy>
+	<Window id="threadsWindow" title="スレッド一覧" backgroundColor="white">
+	</Window>
+</Alloy>

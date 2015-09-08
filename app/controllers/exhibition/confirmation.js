@@ -77,7 +77,6 @@ function exhibit(){
 		if(systemCookies){
 			systemCookies.forEach(function(cookie){
 				cookiestrings += '; ' + cookie.name + '=' + cookie.value;
-				Ti.API.info('name:' + cookie.name + ' value:' + cookie.value);
 			});
 			exhibitClient.setRequestHeader('Cookie:', cookiestrings);
 		}

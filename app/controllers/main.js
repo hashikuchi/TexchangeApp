@@ -5,6 +5,12 @@ var twitterlogin = args.twitterlogin || false;
 var mainWebView = $.mainTab.getView('mainWebView');
 mainWebView.url = url;
 
+// STATIC VALUES
+var TAB_WEB = 0,
+	TAB_EXIBITION = 1,
+	TAB_MESSAGES = 2;
+
+
 if(twitterlogin){
 	mainWebView.addEventListener('load', jumpToTwitterLoginLink);
 }
@@ -15,6 +21,15 @@ $.mainTabGroup.addEventListener("androidback", function(){
 		mainWebView.goBack();
 	}
 });
+
+// set message threads view
+$.mainTabGroup.tabs[TAB_MESSAGES].window = Alloy.createController('messages/threadsView').getView();
+Ti.App.addEventListener('thread_click', function(e){
+	alert(e.thread_id);
+	$.mainTabGroup.tabs[TAB_MESSAGES].open(Alloy.createController('messages/messagesView',
+		{thread_id: e.thread_id}).getView());
+});
+
 
 // configuration of reload function for android
 function reloadWindowAndroid(){
