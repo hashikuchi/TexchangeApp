@@ -1,3 +1,5 @@
+var args = arguments[0] || {};
+
 // メッセージ一覧表示用のビュー
 var scrollView = Titanium.UI.createScrollView({
 	backgroundColor:'#336699',
@@ -10,66 +12,7 @@ var scrollView = Titanium.UI.createScrollView({
 	layout: 'vertical'
 });
 
-var image1 = Ti.UI.createImageView({
-	image: 'images/menus/help-48.png',
-	height: 30,
-	width: 30,
-	left:10,
-	top:18
-});
-
-var tf1 = Titanium.UI.createTextArea({
-	color:'#336699',
-	left:50,
-	top:18,
-	value:'くださいリクエストが承認されました！',
-	backgroundColor: 'transparent',
-	backgroundImage: 'images/chat/chat_others.png',
-	backgroundLeftCap: 20,
-	backgroundTopCap: 0,
-	paddingLeft: 10,
-	textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
-	editable: false
-});
-
-var html1 = Ti.UI.createWebView({
-	html: "<html><body><p>ありがとうございます</p></body></html>",
-	left: 50,
-	top: 18,
-	height: Ti.UI.SIZE,
-	//width: Ti.UI.SIZE,
-	backgroundColor: 'transparent',
-	backgroundImage: 'images/chat/chat_others.png',
-	backgroundLeftCap: 20,
-	backgroundTopCap: 0
-});
-
-var label1 = Ti.UI.createLabel({
-	color: "#FFF",
-	text: "12:34",
-	left: 50,
-	font: {fontSize: 9}
-});
-
-var label2 = Ti.UI.createLabel({
-	color: "#FFF",
-	text: "テストユーザ",
-	left: 50,
-	top: 5,
-	font: {fontSize: 11}
-});
-
-var marea1 = Ti.UI.createView({
-	height: Ti.UI.SIZE,
-	width: 'auto'
-});
-
-marea1.add(image1);
-marea1.add(label2);
-//marea1.add(html1);
-marea1.add(tf1);
-
-// 新規メッセージ送信フォーム用のビュー
+//新規メッセージ送信フォーム用のビュー
 var newMessageView = Ti.UI.createView({
 	backgroundColor:'#F4FFFD',
 	width: 'auto',
@@ -137,13 +80,29 @@ sendButton.addEventListener("click", function(e){
 	scrollView.scrollToBottom();
 });
 
-// scrollView.add(image1);
-// scrollView.add(tf1);
-
-scrollView.add(marea1);
-scrollView.add(label1);
 $.messagesWindow.add(scrollView);
 $.messagesWindow.add(newMessageView);
+
+var url= Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php?action=get_messages_JSON_from_ajax&thread_id=' + args['thread_id'];
+var getMessagesClient = Ti.Network.createHTTPClient({
+	onload:function(e){
+		var messages = JSON.parse(this.responseText);
+		Ti.API.info(messages);
+		for(var i = 0; i < messages.length; i++){
+			Ti.API.info(messages[i]);
+			addMyNewMessage(messages[i].content);
+		}
+	},
+	
+	onerror:function(e){
+		Ti.API.info("error");
+	},
+	timeout: 5000
+});
+
+getMessagesClient = Alloy.Globals.addCookieValueToHTTPClient(getMessagesClient);
+getMessagesClient.open('GET', url);
+getMessagesClient.send();
 
 function addNewMessage(content, mine){
 	var messageParams = {
