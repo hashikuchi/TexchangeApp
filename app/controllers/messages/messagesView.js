@@ -84,13 +84,18 @@ $.messagesWindow.add(scrollView);
 $.messagesWindow.add(newMessageView);
 
 var url= Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php?action=get_messages_JSON_from_ajax&thread_id=' + args['thread_id'];
+var loggedId = Alloy.Globals.loggedinId;
 var getMessagesClient = Ti.Network.createHTTPClient({
 	onload:function(e){
 		var messages = JSON.parse(this.responseText);
-		Ti.API.info(messages);
 		for(var i = 0; i < messages.length; i++){
 			Ti.API.info(messages[i]);
-			addMyNewMessage(messages[i].content);
+			if(loggedId == messages[i].sender_id){
+				addMyNewMessage(messages[i].content, messages[i].avatar_url);	
+			}else{
+				addTheirNewMessage(messages[i].content, messages[i].sender_name, messages[i].avatar_url);
+			}
+			
 		}
 	},
 	
@@ -104,7 +109,7 @@ getMessagesClient = Alloy.Globals.addCookieValueToHTTPClient(getMessagesClient);
 getMessagesClient.open('GET', url);
 getMessagesClient.send();
 
-function addNewMessage(content, mine){
+function addNewMessage(content, name , avatarUrl){
 	var messageParams = {
 		color:'#336699',
 		value: content,
@@ -125,27 +130,27 @@ function addNewMessage(content, mine){
 		width: 'auto'
 	});
 
-	if(mine === true){
-		messageParams.right = 10;
-		messageParams.backgroundImage = 'images/chat/chat_mine.png';
-	}else{
+	if(name){
 		messageParams.left = 50;
 		messageParams.top = 18;
 		messageParams.backgroundImage = 'images/chat/chat_others.png';
 		area.add(Ti.UI.createLabel({
 			color: "#FFF",
-			text: "テストユーザ",
+			text: name,
 			left: 50,
 			top: 5,
 			font: {fontSize: 11}
 		}));
 		area.add(Ti.UI.createImageView({
-			image: 'images/menus/help-48.png',
+			image: avatarUrl,
 			height: 30,
 			width: 30,
 			left: 10,
 			top: 18
 		}));
+	}else{
+		messageParams.right = 10;
+		messageParams.backgroundImage = 'images/chat/chat_mine.png';
 	}
 	
 	var newText = Titanium.UI.createTextArea(messageParams);
@@ -172,13 +177,13 @@ function addTimeLabel(time, mine){
 }
 
 
-function addMyNewMessage(content){
-	addNewMessage(content, true);
+function addMyNewMessage(content, avatarUrl){
+	addNewMessage(content, "", avatarUrl);
 }
 
 
-function addTheirNewMessage(content){
-	addNewMessage(content, false);
+function addTheirNewMessage(content, name, avatarUrl){
+	addNewMessage(content, name, avatarUrl);
 }
 
 function addMyTimeLabel(time){
