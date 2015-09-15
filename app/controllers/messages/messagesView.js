@@ -2,7 +2,7 @@ var args = arguments[0] || {};
 
 // メッセージ一覧表示用のビュー
 var scrollView = Titanium.UI.createScrollView({
-	backgroundColor:'#336699',
+	backgroundColor:'#f5f5f5',
 	contentWidth: 'auto',
 	contentHeight: Ti.UI.SIZE,
 	width: 'auto',
@@ -89,13 +89,30 @@ var getMessagesClient = Ti.Network.createHTTPClient({
 	onload:function(e){
 		var messages = JSON.parse(this.responseText);
 		for(var i = 0; i < messages.length; i++){
-			Ti.API.info(messages[i]);
-			if(loggedId == messages[i].sender_id){
-				addMyNewMessage(messages[i].content, messages[i].avatar_url);	
+			var message = messages[i];
+			if(loggedId == message.sender_id){
+				addMyNewMessage(message.content, message.avatar_url);
 			}else{
-				addTheirNewMessage(messages[i].content, messages[i].sender_name, messages[i].avatar_url);
+				addTheirNewMessage(message.content, message.sender_name, message.avatar_url);
 			}
-			
+			// lat, lngプロパティが定義されていたら、地図を表示する
+			if(message.lat && message.lng){
+				// マーカー表示あり、ズームレベル11
+				var url = "http://maps.google.com/maps?z=18&ll="+message.lat+","+message.lng+"&q="+message.lat+","+message.lng;
+				var mapLink = Ti.UI.createLabel({
+					text: "取引場所の地図を表示",
+					font: {fontSize: 12},
+					color: "#0000cd"
+				});
+				mapLink.addEventListener("touchstart", function(e){
+					this.color = "#00bfff";
+					Ti.Platform.openURL(url);
+				});
+				mapLink.addEventListener("touchend", function(e){
+					this.color = "#0000cd";
+				});
+				scrollView.add(mapLink);
+			}
 		}
 	},
 	
@@ -109,7 +126,7 @@ getMessagesClient = Alloy.Globals.addCookieValueToHTTPClient(getMessagesClient);
 getMessagesClient.open('GET', url);
 getMessagesClient.send();
 
-function addNewMessage(content, name , avatarUrl){
+function addNewMessage(content, name, avatarUrl){
 	var messageParams = {
 		color:'#336699',
 		value: content,
