@@ -80,6 +80,12 @@ sendButton.addEventListener("click", function(e){
 	scrollView.scrollToBottom();
 });
 
+// スクロールビューにフォーカスしたとき、テキストフィールドからフォーカスを外す
+// Fire the blur event when the scroll view is focused
+scrollView.addEventListener("touchstart", function(e){
+	newMessageArea.blur();
+});
+
 $.messagesWindow.add(scrollView);
 $.messagesWindow.add(newMessageView);
 
