@@ -27,7 +27,7 @@ $.mainTabGroup.tabs[TAB_MESSAGES].window = Alloy.createController('messages/thre
 Ti.App.addEventListener('thread_click', function(e){
 	// alert(e.thread_id);
 	$.mainTabGroup.tabs[TAB_MESSAGES].open(Alloy.createController('messages/messagesView',
-		{thread_id: e.thread_id}).getView());
+		{thread_id: e.thread_id, tab_height: $.mainTabGroup.tabHeight}).getView());
 });
 
 // Save loggedin user id

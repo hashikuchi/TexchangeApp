@@ -51,14 +51,14 @@ newMessageView.add(sendButton);
  * イベント定義 (define events)
  */
 
-// キーボードを表示したとき、メッセージフィールドをキーボードの高さ分持ち上げる
+// キーボードを表示したとき、メッセージフィールドを(キーボードの高さ-タブの高さ)分持ち上げる
 // フォーカスが外れたとき、フィールドを一番下に戻す
 // lift the text field by the hight of the keyboard
 Ti.App.addEventListener("keyboardframechanged", function(e){
 	if(Ti.App.keyboardVisible){
-		newMessageView.bottom = e.keyboardFrame.height;
+		$.messagesWindow.bottom = (e.keyboardFrame.height - args.tab_height);
 	}else{
-		newMessageView.bottom = 0;
+		$.messagesWindow.bottom = 0;
 	}
 });
 
