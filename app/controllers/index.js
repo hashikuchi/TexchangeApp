@@ -127,7 +127,7 @@ function jumpToSocialLoginLink(pattern){
 		},
 		timeout: 8000
 	});
-	loginClient.open("GET", Alloy.Globals.config.baseurl);
+	loginClient.open("POST", Alloy.Globals.config.baseurl); // メソッドはPOSTを使用しないとiOSでCookieが正しく引き継がれない。
 	loginClient.send();
 }
 
