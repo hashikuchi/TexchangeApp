@@ -7,7 +7,6 @@ var osversion = Ti.Platform.getVersion();
 var cookie;
 
 facebook.appid = Alloy.Globals.config.facebook.appid;
-facebook.permissions = ['publish_stream', 'offline_access'];
 facebook.addEventListener('login', function (e) {
     if (e.success) {
         facebook.requestWithGraphPath('me', {}, 'GET', function (e) {
