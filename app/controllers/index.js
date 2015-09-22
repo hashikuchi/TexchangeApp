@@ -7,7 +7,6 @@ var osversion = Ti.Platform.getVersion();
 var cookie;
 
 facebook.appid = Alloy.Globals.config.facebook.appid;
-facebook.permissions = ['publish_stream', 'offline_access'];
 facebook.addEventListener('login', function (e) {
     if (e.success) {
         facebook.requestWithGraphPath('me', {}, 'GET', function (e) {
@@ -69,36 +68,8 @@ function login(){
 	});
 }
 
-function jumpToFacebookLoginLink(){
-	var url = Alloy.Globals.config.baseurl;
-	var pattern = /https:\/\/www.facebook.com\/dialog\/oauth.*scope=email/;
-	
-	var loginClient = Ti.Network.createHTTPClient({
-		onload: function(e){
-			var mainWin = Alloy.createController('main',{
-				url: this.responseText.match(pattern)?this.responseText.match(pattern)[0]:Alloy.Globals.config.baseurl
-			}).getView();
-			if(osname == 'android'){
-				// Save cookie for Android WebView
-				var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
-				cookies.forEach(function(cookie){
-					Ti.Network.addSystemCookie(cookie);
-				});
-			}
-			mainWin.open();
-		},
-		onerror: function(e){
-			Ti.API.debug(e.error);
-			var errorDialog = Alloy.Globals.getConnectionErrorDialog();
-			errorDialog.show();
-		},
-		timeout: 8000
-	});
-	loginClient.open("GET", url); 
-	loginClient.send();
-}
-
 // アプリのトップ画面からソーシャルログインを選択した場合に、Web画面トップにあるソーシャルログインリンクを自動的に踏ませるための関数です。
+// アプリのログインとWebのログインは別物のため、別個に処理する必要があるためです。
 // @pattern: String ソーシャルログインボタンのhref属性にマッチする正規表現パターン
 function jumpToSocialLoginLink(pattern){
 	var loginClient = Ti.Network.createHTTPClient({
@@ -131,6 +102,17 @@ function jumpToSocialLoginLink(pattern){
 	loginClient.send();
 }
 
+// Facebookでログイン時に、「Facebookでログイン」ボタンを踏ませます。
+// patternはGianismのバージョンによって変える必要がある可能性があるので注意してください。
+// 現在のパターンはver.1.3.1に合わせてあります。
+function jumpToFacebookLoginLink(){
+	var pattern = /https:\/\/www.facebook.com\/dialog\/oauth.*scope=email/;
+	jumpToSocialLoginLink(pattern);
+}
+
+// Twitterでログイン時に、「Twitterでログイン」ボタンを踏ませます。
+// patternはGianismのバージョンによって変える必要がある可能性があるので注意してください。
+// 現在のパターンはver.1.3.1に合わせてあります。
 function jumpToTwitterLoginLink(){
 	var pattern = /https:\/\/api.twitter.com\/oauth\/authenticate\?oauth_token=[0-9a-zA-Z-_]*/;
 	jumpToSocialLoginLink(pattern);
