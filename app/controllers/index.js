@@ -220,6 +220,12 @@ function openIndexWindow(){
 	$.index.open();
 }
 
+// メールアドレスによる新規登録フォームを外部ブラウザで開く
+function openRegisterForm(){
+	var url = Alloy.Globals.config.baseurl + "/register/";
+	Ti.Platform.openURL(url);
+}
+
 twitter = require('twitter').Twitter({
 	consumerKey: Alloy.Globals.config.twitter.consumerKey,
 	consumerSecret: Alloy.Globals.config.twitter.consumerSecret,
@@ -229,17 +235,6 @@ twitter = require('twitter').Twitter({
 
 Ti.API.info("osname =" + osname);
 Ti.API.info("osname =" + osversion);
-
-// 検証すべき内容
-// 1. 新規ユーザとしてログインした際にデバイストークンが登録されるか？
-// 2. プッシュ通知を受け取ることができるか？
-// 以上2点をiphone新旧 および Androidにて検証する
-
-// checklist
-// android ログイン完了。
-// iphone ios6 デバイストークンの登録、サジェスト登録はされるが、ウェブサービスからのプッシュ通知がうまくいってない
-// iphone ios8　デバイストークンの登録、サジェスト登録はされるが、ウェブサービスからのプッシュ通知がうまくいってない
-// appceleratorのログを見るとプッシュ通知は送信されているようだが、届いてない
 
 if(osname == "android"){
 	var CloudPush= require("ti.cloudpush"); // import cloud push module for Android devices
