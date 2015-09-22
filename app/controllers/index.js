@@ -112,7 +112,7 @@ function jumpToSocialLoginLink(pattern){
 			var mainWin = mainController.getView();
 			if(osname == 'android'){
 				// Save cookie for Android WebView
-				// Android端末の場合、WebViweのCookieがアプリのCookieと同期しないので、手動でセットしてやる必要があります。
+				// Android端末の場合、WebViewのCookieがアプリのCookieと同期しないので、手動でセットしてやる必要があります。
 				var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
 				cookies.forEach(function(cookie){
 					Ti.Network.addSystemCookie(cookie);
