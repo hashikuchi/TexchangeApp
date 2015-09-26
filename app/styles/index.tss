@@ -2,6 +2,11 @@
 	passwordMask: true
 },
 
+".btn-login":{
+	backgroundColor: "#00bfff",
+	color: "white"
+}
+
 ".facebook": {
 	backgroundColor: "#3b5998",
 	color: "white"
@@ -9,5 +14,10 @@
 
 ".twitter": {
 	backgroundColor: "#55ACEE",
+	color: "white"
+}
+
+".btn-register":{
+	backgroundColor: "#ff6c00",
 	color: "white"
 }

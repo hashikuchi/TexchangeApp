@@ -2,10 +2,10 @@
 	<Window class="container">
 		<TextField id="userId" color="#336699" top="40" left="35" hintText="ユーザ名"/>
 		<TextField id="password" color="#336699" top="130" left="35" hintText="パスワード"/>
-		<Button id="loginBtn" title="ログイン" onClick="login" top="200" width="200" height="60" />
-		<Button id="facebookLoginButton" class="facebook" title="Facebookでログイン" onClick="loginByFacebook" top="300" width="200"/>
-		<Button id="twitterLoginButton" class="twitter" title="Twitterでログイン" onClick="loginByTwitter" top="350" width="200"/>
-		<Switch id="remembermeSwitch" value="true" top="400" left="35"/><Label top="400" left="105">ログイン状態を維持</Label>
-		<Label color="#6495ed" onClick="openRegisterForm" top="450">新規登録はこちら</Label>
+		<Button id="loginBtn" class="btn-login" title="ログイン" onClick="login" top="200" width="200" height="60" />
+		<Button id="facebookLoginButton" class="facebook" title="Facebookでログイン" onClick="loginByFacebook" top="270" width="200" height="30"/>
+		<Button id="twitterLoginButton" class="twitter" title="Twitterでログイン" onClick="loginByTwitter" top="310" width="200" height="30"/>
+		<Switch id="remembermeSwitch" value="true" top="370" left="35"/><Label top="370" left="105">ログイン状態を維持</Label>
+		<Button id="registerBtn" class="btn-register" title="新規登録はこちら" onClick="openRegisterForm" top="450" width="200" height="60" />
 	</Window>
 </Alloy>
