@@ -10,13 +10,10 @@
 //
 // Alloy.Globals.someGlobalFunction = function(){};
 
-var configJSON;
-var config;
-
-configJSON = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'config.json');
+var configJSON = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'config.json');
 // switch test mode and production mode
 
-config = JSON.parse(configJSON.read().toString()).test;
+var config = JSON.parse(configJSON.read().toString()).test;
 //config = JSON.parse(configJSON.read().toString()).production;
 
 Alloy.Globals.config = config;
