@@ -7,7 +7,6 @@ var osversion = Ti.Platform.getVersion();
 var cookie;
 
 facebook.appid = Alloy.Globals.config.facebook.appid;
-facebook.permissions = ['publish_stream', 'offline_access'];
 facebook.addEventListener('login', function (e) {
     if (e.success) {
         facebook.requestWithGraphPath('me', {}, 'GET', function (e) {
@@ -69,46 +68,22 @@ function login(){
 	});
 }
 
-function jumpToFacebookLoginLink(){
-	var url = Alloy.Globals.config.baseurl;
-	var pattern = /https:\/\/www.facebook.com\/dialog\/oauth.*scope=email/;
-	
+// アプリのトップ画面からソーシャルログインを選択した場合に、Web画面トップにあるソーシャルログインリンクを自動的に踏ませるための関数です。
+// アプリのログインとWebのログインは別物のため、別個に処理する必要があるためです。
+// @pattern: String ソーシャルログインボタンのhref属性にマッチする正規表現パターン
+function jumpToSocialLoginLink(pattern){
 	var loginClient = Ti.Network.createHTTPClient({
 		onload: function(e){
-			var mainWin = Alloy.createController('main',{
-				url: this.responseText.match(pattern)?this.responseText.match(pattern)[0]:Alloy.Globals.config.baseurl
-			}).getView();
-			if(osname == 'android'){
-				// Save cookie for Android WebView
-				var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
-				cookies.forEach(function(cookie){
-					Ti.Network.addSystemCookie(cookie);
-				});
-			}
-			mainWin.open();
-		},
-		onerror: function(e){
-			Ti.API.debug(e.error);
-			var errorDialog = Alloy.Globals.getConnectionErrorDialog();
-			errorDialog.show();
-		},
-		timeout: 8000
-	});
-	loginClient.open("GET", url); 
-	loginClient.send();
-}
-
-function jumpToTwitterLoginLink(){
-	var url = Alloy.Globals.config.baseurl;
-	var loginClient = Ti.Network.createHTTPClient({
-		onload: function(e){			
+			// 正規表現でログインリンクを取得
+			// もしマッチしなかった場合はトップページに遷移しますが、単なる異常終了回避なので、正規表現を確認しなおしてください。
+			var url = this.responseText.match(pattern)?this.responseText.match(pattern)[0]:Alloy.Globals.config.baseurl;
 			var mainController = Alloy.createController('main',{
-				url: Alloy.Globals.config.baseurl,
-				twitterlogin: true
+				url: url
 			});
 			var mainWin = mainController.getView();
 			if(osname == 'android'){
 				// Save cookie for Android WebView
+				// Android端末の場合、WebViewのCookieがHTTPClientのCookieと同期しないので、手動でセットしてやる必要があります。
 				var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
 				cookies.forEach(function(cookie){
 					Ti.Network.addSystemCookie(cookie);
@@ -123,9 +98,26 @@ function jumpToTwitterLoginLink(){
 		},
 		timeout: 8000
 	});
-	loginClient.open("GET", url); 
+	loginClient.open("POST", Alloy.Globals.config.baseurl); // メソッドはPOSTを使用しないとiOSでCookieが正しく引き継がれない。
 	loginClient.send();
 }
+
+// Facebookでログイン時に、「Facebookでログイン」ボタンを踏ませます。
+// patternはGianismのバージョンによって変える必要がある可能性があるので注意してください。
+// 現在のパターンはver.1.3.1に合わせてあります。
+function jumpToFacebookLoginLink(){
+	var pattern = /https:\/\/www.facebook.com\/dialog\/oauth.*scope=email/;
+	jumpToSocialLoginLink(pattern);
+}
+
+// Twitterでログイン時に、「Twitterでログイン」ボタンを踏ませます。
+// patternはGianismのバージョンによって変える必要がある可能性があるので注意してください。
+// 現在のパターンはver.1.3.1に合わせてあります。
+function jumpToTwitterLoginLink(){
+	var pattern = /https:\/\/api.twitter.com\/oauth\/authenticate\?oauth_token=[0-9a-zA-Z-_]*/;
+	jumpToSocialLoginLink(pattern);
+}
+
 
 function loginByFacebook(){
 	facebook.authorize();
@@ -220,6 +212,12 @@ function openIndexWindow(){
 	$.index.open();
 }
 
+// メールアドレスによる新規登録フォームを外部ブラウザで開く
+function openRegisterForm(){
+	var url = Alloy.Globals.config.baseurl + "/register/";
+	Ti.Platform.openURL(url);
+}
+
 twitter = require('twitter').Twitter({
 	consumerKey: Alloy.Globals.config.twitter.consumerKey,
 	consumerSecret: Alloy.Globals.config.twitter.consumerSecret,
@@ -229,17 +227,6 @@ twitter = require('twitter').Twitter({
 
 Ti.API.info("osname =" + osname);
 Ti.API.info("osname =" + osversion);
-
-// 検証すべき内容
-// 1. 新規ユーザとしてログインした際にデバイストークンが登録されるか？
-// 2. プッシュ通知を受け取ることができるか？
-// 以上2点をiphone新旧 および Androidにて検証する
-
-// checklist
-// android ログイン完了。
-// iphone ios6 デバイストークンの登録、サジェスト登録はされるが、ウェブサービスからのプッシュ通知がうまくいってない
-// iphone ios8　デバイストークンの登録、サジェスト登録はされるが、ウェブサービスからのプッシュ通知がうまくいってない
-// appceleratorのログを見るとプッシュ通知は送信されているようだが、届いてない
 
 if(osname == "android"){
 	var CloudPush= require("ti.cloudpush"); // import cloud push module for Android devices
