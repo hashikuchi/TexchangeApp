@@ -17,7 +17,7 @@ var getThreadsClient = Ti.Network.createHTTPClient({
 		for(var i=0;i<threads.length;i++){
 			var thread = threads[i];
 			var backgroundColor, font;
-			
+
 			if(thread.unread === true){
 				backgroundColor = '#fff9db';
 				font = {fontWeight: 'bold'};
@@ -25,7 +25,7 @@ var getThreadsClient = Ti.Network.createHTTPClient({
 				backgroundColor = '#f5f5f5';
 				font = {fontWeight: 'normal'};
 			}
-			
+
 			var listItem = 	{
 				template:Ti.UI.LIST_ITEM_TEMPLATE_SUBTITLE,
 				properties: {

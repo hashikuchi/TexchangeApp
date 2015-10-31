@@ -13,8 +13,9 @@
 var configJSON = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'config.json');
 // switch test mode and production mode
 
-var config = JSON.parse(configJSON.read().toString()).test;
-//config = JSON.parse(configJSON.read().toString()).production;
+// var config = JSON.parse(configJSON.read().toString()).test2;
+var config = JSON.parse(configJSON.read().toString()).test3;
+// var config = JSON.parse(configJSON.read().toString()).production;
 
 Alloy.Globals.config = config;
 
@@ -45,3 +46,5 @@ Alloy.Globals.addCookieValueToHTTPClient = function(httpClient){
 };
 
 Alloy.Globals.deviceToken = null;
+
+Alloy.Globals.loggedinId = 0;

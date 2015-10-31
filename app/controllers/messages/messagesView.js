@@ -1,8 +1,9 @@
 var args = arguments[0] || {};
+var sendUrl = Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php?action=get_update_messages_JSON_from_ajax';
 
 // メッセージ一覧表示用のビュー
 var scrollView = Titanium.UI.createScrollView({
-	backgroundColor:'#f5f5f5',
+	backgroundColor:'#C2EEFF',
 	contentWidth: 'auto',
 	contentHeight: Ti.UI.SIZE,
 	width: 'auto',
@@ -47,6 +48,17 @@ var sendButton = Ti.UI.createButton({
 newMessageView.add(newMessageArea);
 newMessageView.add(sendButton);
 
+//メッセージをwebへ送信するClient
+var sendMessageClient = Ti.Network.createHTTPClient({
+	onload: function(e){
+		Ti.API.info("success!");
+	},
+	onerror: function(e){
+		Ti.API.debug(e.error);
+	},
+	timeout: 5000
+});
+
 /*
  * イベント定義 (define events)
  */
@@ -67,17 +79,20 @@ sendButton.addEventListener("click", function(e){
 	var content = newMessageArea.value.trim();
 	if(content.length <= 0) return;
 	addMyNewMessage(content);
-	
+
 	var time = new Date();
 	addMyTimeLabel(time.getHours() + ":" + time.getMinutes());
-	
-	// virtual messages...
-	addTheirNewMessage("返信ありがとうございます！\nとかなんとか");
-	addTheirTimeLabel(time.getHours() + ":" + time.getMinutes());
-	
+
 	newMessageArea.value = ""; // clear the value
 	newMessageArea.blur();
 	scrollView.scrollToBottom();
+
+	//内容をwebへ送信
+	var sendDataUrl = sendUrl + "&thread_id=" + args['thread_id'] + "&content=" + content;
+	sendMessageClient = Alloy.Globals.addCookieValueToHTTPClient(sendMessageClient);
+	sendMessageClient.open('GET', sendDataUrl);
+	sendMessageClient.send();
+
 });
 
 // スクロールビューにフォーカスしたとき、テキストフィールドからフォーカスを外す
@@ -121,7 +136,7 @@ var getMessagesClient = Ti.Network.createHTTPClient({
 			}
 		}
 	},
-	
+
 	onerror:function(e){
 		Ti.API.info("error");
 	},
@@ -140,6 +155,7 @@ function addNewMessage(content, name, avatarUrl){
 		backgroundLeftCap: 20,
 		backgroundTopCap: 0,
 		textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
+		backgroundColor: "#77EEFF",
 		editable: false,
 		scrollable: false
 	};
@@ -156,9 +172,9 @@ function addNewMessage(content, name, avatarUrl){
 	if(name){
 		messageParams.left = 50;
 		messageParams.top = 18;
-		messageParams.backgroundImage = 'images/chat/chat_others.png';
+		// messageParams.backgroundImage = 'images/chat/chat_others.png';
 		area.add(Ti.UI.createLabel({
-			color: "#FFF",
+			color: "#000000",
 			text: name,
 			left: 50,
 			top: 5,
@@ -173,12 +189,13 @@ function addNewMessage(content, name, avatarUrl){
 		}));
 	}else{
 		messageParams.right = 10;
-		messageParams.backgroundImage = 'images/chat/chat_mine.png';
+		messageParams.top = 10;
+		// messageParams.backgroundImage = 'images/chat/chat_mine.png'
 	}
-	
+
 	var newText = Titanium.UI.createTextArea(messageParams);
 
-	area.add(newText);	
+	area.add(newText);
 	scrollView.add(area);
 }
 
@@ -188,13 +205,13 @@ function addTimeLabel(time, mine){
 		text: time,
 		font: {fontSize: 9}
 	};
-	
+
 	if(mine === true){
 		params.right = 10;
 	}else{
 		params.left = 50;
 	}
-		
+
 	var label = Ti.UI.createLabel(params);
 	scrollView.add(label);
 }
