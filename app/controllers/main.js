@@ -27,3 +27,40 @@ function openTroubleshootingWindow(){
 	    modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET
 	});
 }
+
+// ログアウト処理です。
+function onLogoutClick(){
+	var confirm = Ti.UI.createAlertDialog({
+		title: "ログアウトします",
+		message: "よろしいですか？",
+		cancel: 0,
+		confirm: 1,
+		buttonNames: ["キャンセル", "はい"]
+	});
+	confirm.addEventListener("click", function(e){
+		if (e.index === e.source.confirm){
+			logout();
+    	}
+	});
+	confirm.show();
+}
+
+function logout(){
+	// アプリからのログアウト
+	// ログイン情報を消す
+	var loginData = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt');
+	if(loginData){
+		loginData.deleteFile();
+		Ti.API.info("del");
+	}
+
+	// facebookからログアウト
+	var facebook = Alloy.Globals.Facebook;
+	facebook.logout();
+
+	// 今の画面を閉じてindexに遷移する
+	var index = Alloy.createController('index').getView();
+	index.open();
+	$.mainTabGroup.close();
+}
+

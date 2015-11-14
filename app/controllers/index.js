@@ -52,6 +52,7 @@ function login(){
 					});
 				}
 				mainWin.open();
+				$.index.close(); // 戻るボタンで戻ってこれないように画面を閉じる
 			}
 		},
 		onerror: function(e){
@@ -90,6 +91,7 @@ function jumpToSocialLoginLink(pattern){
 				});
 			}
 			mainWin.open();
+			$.index.close(); // 戻るボタンで戻ってこれないように画面を閉じる
 		},
 		onerror: function(e){
 			Ti.API.debug(e.error);
