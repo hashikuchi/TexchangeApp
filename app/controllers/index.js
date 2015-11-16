@@ -1,7 +1,7 @@
 var Cloud = require("ti.cloud");
 var facebook = Alloy.Globals.Facebook;
 var data;
-var twitter;
+var twitter = Alloy.Globals.Twitter;
 var osname = Ti.Platform.getOsname();
 var osversion = Ti.Platform.getVersion();
 var cookie;
@@ -219,13 +219,6 @@ function openRegisterForm(){
 	var url = Alloy.Globals.config.baseurl + "/register/";
 	Ti.Platform.openURL(url);
 }
-
-twitter = require('twitter').Twitter({
-	consumerKey: Alloy.Globals.config.twitter.consumerKey,
-	consumerSecret: Alloy.Globals.config.twitter.consumerSecret,
-	accessTokenKey: Ti.App.Properties.getString('twitterAccessTokenKey', ''),
-	accessTokenSecret: Ti.App.Properties.getString('twitterAccessTokenSecret', '')
-});
 
 Ti.API.info("osname =" + osname);
 Ti.API.info("osname =" + osversion);

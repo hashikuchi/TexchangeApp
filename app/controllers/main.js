@@ -48,15 +48,24 @@ function onLogoutClick(){
 function logout(){
 	// アプリからのログアウト
 	// ログイン情報を消す
-	var loginData = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt');
-	if(loginData){
-		loginData.deleteFile();
-		Ti.API.info("del");
+	try{
+		var loginData = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt');
+		if(loginData){
+			loginData.deleteFile();
+			Ti.API.info("del");
+		}
+	}catch(e){
+		Ti.API.warn(e);
 	}
 
 	// facebookからログアウト
 	var facebook = Alloy.Globals.Facebook;
 	facebook.logout();
+	// twitter からログアウト
+	Alloy.Globals.Twitter.logout();
+
+	// Cookieをすべて消す
+	Ti.Network.removeAllHTTPCookies();
 
 	// 今の画面を閉じてindexに遷移する
 	var index = Alloy.createController('index').getView();

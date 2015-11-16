@@ -134,7 +134,6 @@ exports.Twitter = (function(global) {
 					webViewWindow.leftNavButton = closeButton;
 				}
 
-
 				if (isAndroid && event.source.url === self.authorizeUrl){
                     // Android かつ PINコード表示画面の場合は、evalJSでPINを取得できないため
                     // 手入力での認証を行います
@@ -163,7 +162,7 @@ exports.Twitter = (function(global) {
                     pinButton.addEventListener('click', function() {
 	                    if (!pinField.value) {
                             alert('PINコードを入力してください');
-                       	}else{
+                        }else{
 							oauth.accessTokenUrl = "https://api.twitter.com/oauth/access_token?oauth_verifier=" + pinField.value;
 							oauth.fetchAccessToken(function(data) {
 								self.fireEvent('login', {
@@ -181,7 +180,7 @@ exports.Twitter = (function(global) {
 									result : data
 								});
 							});
-                    	}
+						}
 	                });
 				}else{
 					// Grab the PIN code out of the DOM
@@ -312,7 +311,7 @@ exports.Twitter = (function(global) {
 		this.accessTokenSecret = null;
 		this.authorized = false;
 
-		callback();
+		if(typeof callback === "function") callback();
 	};
 
 	/*

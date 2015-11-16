@@ -14,11 +14,18 @@ var configJSON = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirect
 // switch test mode and production mode
 
 var config = JSON.parse(configJSON.read().toString()).test;
-//config = JSON.parse(configJSON.read().toString()).production;
+//var config = JSON.parse(configJSON.read().toString()).production;
 
 Alloy.Globals.config = config;
 
 Alloy.Globals.Facebook = require('facebook');
+
+Alloy.Globals.Twitter = require('twitter').Twitter({
+	consumerKey: Alloy.Globals.config.twitter.consumerKey,
+	consumerSecret: Alloy.Globals.config.twitter.consumerSecret,
+	accessTokenKey: Ti.App.Properties.getString('twitterAccessTokenKey', ''),
+	accessTokenSecret: Ti.App.Properties.getString('twitterAccessTokenSecret', '')
+});
 
 Alloy.Globals.getConnectionErrorDialog = function(){
 	return Ti.UI.createAlertDialog({
