@@ -59,13 +59,41 @@ function logout(){
 	}
 
 	// facebookからログアウト
-	var facebook = Alloy.Globals.Facebook;
-	facebook.logout();
+	Alloy.Globals.Facebook.logout();
 	// twitter からログアウト
 	Alloy.Globals.Twitter.logout();
-
 	// Cookieをすべて消す
 	Ti.Network.removeAllHTTPCookies();
+
+	// Texchange の Webからログアウト
+	var logoutClient = Ti.Network.createHTTPClient({
+		onload: function(){
+			Ti.API.info(this.responseText);
+			var loClient = Ti.Network.createHTTPClient({
+				onload: function(){
+					Ti.API.info(this.responseText);
+				},
+				
+				onerror: function(){
+					Ti.API.info("logout error");
+				},
+				timeout: 5000
+			});
+			loClient.open("POST", Alloy.Globals.config.baseurl + '/wp-login.php');
+			loClient.send({
+				"action": "logout",
+				"_wpnonce": this.responseText
+			});
+		},
+		onerror: function(){
+			
+		},
+		timeout: 5000
+	});
+	logoutClient.open("POST", Alloy.Globals.ajaxUrl);
+	logoutClient.send({
+		"action": "log-out"
+	});
 
 	// 今の画面を閉じてindexに遷移する
 	var index = Alloy.createController('index').getView();

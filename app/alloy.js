@@ -18,6 +18,8 @@ var config = JSON.parse(configJSON.read().toString()).test;
 
 Alloy.Globals.config = config;
 
+Alloy.Globals.ajaxUrl = Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php'; // ajax API 呼び出し用URL
+
 Alloy.Globals.Facebook = require('facebook');
 
 Alloy.Globals.Twitter = require('twitter').Twitter({
