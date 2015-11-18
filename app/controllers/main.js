@@ -27,3 +27,77 @@ function openTroubleshootingWindow(){
 	    modalStyle: Ti.UI.iPhone.MODAL_PRESENTATION_FORMSHEET
 	});
 }
+
+// ログアウト処理です。
+function onLogoutClick(){
+	var confirm = Ti.UI.createAlertDialog({
+		title: "ログアウトします",
+		message: "よろしいですか？",
+		cancel: 0,
+		confirm: 1,
+		buttonNames: ["キャンセル", "はい"]
+	});
+	confirm.addEventListener("click", function(e){
+		if (e.index === e.source.confirm){
+			logout();
+    	}
+	});
+	confirm.show();
+}
+
+function logout(){
+	// アプリからのログアウト
+	// ログイン情報を消す
+	try{
+		var loginData = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt');
+		if(loginData){
+			loginData.deleteFile();
+			Ti.API.info("del");
+		}
+	}catch(e){
+		Ti.API.warn(e);
+	}
+
+	// facebookからログアウト
+	Alloy.Globals.Facebook.logout();
+	// twitter からログアウト
+	Alloy.Globals.Twitter.logout();
+	// Cookieをすべて消す
+	Ti.Network.removeAllHTTPCookies();
+
+	// Texchange の Webからログアウト
+	var logoutClient = Ti.Network.createHTTPClient({
+		onload: function(){
+			Ti.API.info(this.responseText);
+			var loClient = Ti.Network.createHTTPClient({
+				onload: function(){
+					Ti.API.info(this.responseText);
+				},
+				
+				onerror: function(){
+					Ti.API.info("logout error");
+				},
+				timeout: 5000
+			});
+			loClient.open("POST", Alloy.Globals.config.baseurl + '/wp-login.php');
+			loClient.send({
+				"action": "logout",
+				"_wpnonce": this.responseText
+			});
+		},
+		onerror: function(){
+			
+		},
+		timeout: 5000
+	});
+	logoutClient.open("POST", Alloy.Globals.ajaxUrl);
+	logoutClient.send({
+		"action": "log-out"
+	});
+
+	// 今の画面を閉じてindexに遷移する
+	var index = Alloy.createController('index').getView();
+	index.open();
+	$.mainTabGroup.close();
+}
+

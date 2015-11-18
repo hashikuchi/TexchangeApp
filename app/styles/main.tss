@@ -9,3 +9,7 @@
 	icon: "images/menus/help-48.png",
     title: 'help'
 }
+"#menuLogout": {
+	icon: "images/menus/logout-48.png",
+    title: 'logout'
+}
