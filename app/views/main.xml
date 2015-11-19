@@ -1,5 +1,5 @@
 <Alloy>
-	<TabGroup id="mainTabGroup">
+	<TabGroup id="mainTabGroup" title="ユーザ名: ">
         <Menu platform="android">
         	<MenuItem id="menuReload" onClick="reloadWindowAndroid" />
         	<MenuItem id="menuTroubleshooting" onClick="openTroubleshootingWindow" />

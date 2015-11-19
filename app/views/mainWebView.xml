@@ -1,5 +1,5 @@
 <Alloy>
-	<Window id="mainWindow" title="テクスチェンジ">
+	<Window id="mainWindow" title="Tex">
 		<LeftNavButton platform="ios">
             <Button title="Back" onClick="goBack" />
         </LeftNavButton>
