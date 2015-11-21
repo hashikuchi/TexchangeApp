@@ -92,6 +92,12 @@ function exhibit(){
 	});
 }
 
+function onExhibitionButtonClicked(){
+	$.exhibit.enabled = false;
+	exhibit();
+	$.exhibit.enabled = true;
+}
+
 function openCategoryWindow(name, args, callback){
 	var win = Alloy.createController('exhibition/categories/' + name, args);
 	var detailWindow = win.getView();
