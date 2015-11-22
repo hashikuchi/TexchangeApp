@@ -39,6 +39,7 @@ $.categoriesView.addEventListener("itemclick", function(e){
 });
 
 function exhibit(){
+	$.exhibit.removeEventListener('click', exhibit);
 	// error check
 	// return if subcategory is not selected
 	if(subCategory.categoryId < 0 || subCategory.categoryId == null){
@@ -46,6 +47,7 @@ function exhibit(){
 			title: "学部を選択してください",
 			message: "大学と学部を両方選択する必要があります。"
 		}).show();
+		$.exhibit.addEventListener('click', exhibit);
 		return;
 	}
 	
@@ -64,6 +66,7 @@ function exhibit(){
 			Ti.API.debug(e.error);
 			var errorDialog = Alloy.Globals.getConnectionErrorDialog();
 			errorDialog.show();
+			$.exhibit.addEventListener('click', exhibit);
 		},
 		timeout: 5000
 	});
