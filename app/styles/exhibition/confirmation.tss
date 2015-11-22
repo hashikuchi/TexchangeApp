@@ -1,15 +1,24 @@
 ".container": {
 	backgroundColor: "white"
 },
-"#itemTitle": {
-	top: 50,
-	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
+"#itemImage": {
+	top: 50
 },
 "#itemTitle[platform=android]": {
 	color: "black"
 },
-"#itemImage": {
-	top: 100
+"#itemTitle": {
+	top: 150,
+	textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
+},
+"#itemAuthor": {
+    top: 170,
+    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER
+},
+"#itemPrice": {
+    top: 200,
+    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+    color: "#b42800"
 },
 "#categoriesView": {
 	height: 100,
