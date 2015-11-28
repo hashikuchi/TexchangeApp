@@ -114,8 +114,10 @@ function openCategoryWindow(name, args, callback) {
     var detailWindow = win.getView();
     if (os == "iphone") {
         $.confirmationRootWindow.openWindow(detailWindow);
+		win.on('select', function(){$.confirmationRootWindow.closeWindow(detailWindow);});
     } else {
         detailWindow.open();
+		win.on('select', function(){detailWindow.close();});
     }
     win.on('select', callback);
 }
