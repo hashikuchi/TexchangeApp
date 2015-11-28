@@ -223,6 +223,11 @@ function openRegisterForm(){
 Ti.API.info("osname =" + osname);
 Ti.API.info("osname =" + osversion);
 
+
+// DELETE PUSH NOTIFICATION TEMPORARILY
+// プッシュ通知登録を一時的に削除します。
+// 必要になった段階で再活性化してください
+/**
 if(osname == "android"){
 	var CloudPush= require("ti.cloudpush"); // import cloud push module for Android devices
 	// Obtain device token for android devices
@@ -267,6 +272,7 @@ if(osname == "android"){
 		});
 	}
 }
+*/
 
 // TODO call registerUserNotificationSettings method here
 
