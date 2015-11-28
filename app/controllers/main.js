@@ -23,7 +23,8 @@ var getUserLoginInfoClient = Ti.Network.createHTTPClient({
     },
     timeout: 5000
 });
-getUserLoginInfoClient = Alloy.Globals.addCookieValueToHTTPClient(getUserLoginInfoClient);
+// Cookieのセットが何か悪さをしてユーザ名が取れない場合がある。原因要調査
+//getUserLoginInfoClient = Alloy.Globals.addCookieValueToHTTPClient(getUserLoginInfoClient);
 getUserLoginInfoClient.open('POST', Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php');
 getUserLoginInfoClient.send({
     'action': 'get_login_user_info'
@@ -89,14 +90,14 @@ function logout(){
 			Ti.API.info(this.responseText);
 			var loClient = Ti.Network.createHTTPClient({
 				onload: function(){
-					Ti.API.info(this.responseText);
-				},
-				
+					Ti.API.info("logout success!");
+				},				
 				onerror: function(){
 					Ti.API.info("logout error");
 				},
 				timeout: 5000
 			});
+			loClient = Alloy.Globals.addCookieValueToHTTPClient(loClient);
 			loClient.open("POST", Alloy.Globals.config.baseurl + '/wp-login.php');
 			loClient.send({
 				"action": "logout",
@@ -104,13 +105,15 @@ function logout(){
 			});
 		},
 		onerror: function(){
-			
+        	Ti.API.debug(e.error);
 		},
 		timeout: 5000
 	});
-	logoutClient.open("POST", Alloy.Globals.ajaxUrl);
+	logoutClient = Alloy.Globals.addCookieValueToHTTPClient(logoutClient);
+	logoutClient.open("POST",  Alloy.Globals.ajaxUrl);
 	logoutClient.send({
-		"action": "log-out"
+		"action": "get_nonce_from_app",
+		"nonce_action": "log-out"
 	});
 
 	// 今の画面を閉じてindexに遷移する
