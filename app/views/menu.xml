@@ -1,0 +1,8 @@
+<Alloy>
+	<Window id="menuWin">
+		<TableView id="menuTable">
+			<TableViewRow title="本を探す" id="searchBooks"/>
+			<TableViewRow title="本をあげる" id="donateBooks"/>
+		</TableView>
+	</Window>
+</Alloy>

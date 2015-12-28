@@ -1,0 +1,5 @@
+<Alloy>
+	<Window id="mainWin" class="container">
+		<Label text="donate"/>
+	</Window>
+</Alloy>

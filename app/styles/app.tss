@@ -1,5 +1,9 @@
 ".container": {
-	backgroundColor: "white"
+	backgroundColor: "white",
+	borderWidth: 1,
+	borderColor: "black",
+	viewShadowColor: "black",
+	width: Ti.Platform.displayCaps.platformWidth
 },
 ".cancel": {
 	backgroundColor: "#d3d3d3"
