@@ -3,8 +3,9 @@
 	borderWidth: 1,
 	borderColor: "black",
 	viewShadowColor: "black",
-	width: Ti.Platform.displayCaps.platformWidth
+	opacity:1.0
 },
+
 ".cancel": {
 	backgroundColor: "#d3d3d3"
 },

@@ -9,22 +9,70 @@ for(var i=0, len=menus.length; i<len; i++){
 
 var searchBooksWindow = Alloy.createController('searchBooks').getView();
 
-$.menuTable.addEventListener("click", function(e){
-	var animation = Ti.UI.createAnimation({
-		duration: 200,
-		left: 0
-	});
-	var id = e.row.id;
-	var win = menuWindows[id];
-	win.open();
-	win.opened = true; // turn on the flag
-	win.animate(animation);
+// open each function screen
+$.menuTable.addEventListener("singletap", function(e){
+	if(e.row){
+		var animation = Ti.UI.createAnimation({
+			duration: 200,
+			right: "100%",
+			left: "-60%"
+		});
+		$.menuTable.animate(animation, function(){
+			var id = e.row.id;
+			var win = menuWindows[id];
+			win.open();
+			$.menuWin.close();
+		});	
+	}
 });
 
-// open default window
-$.menuWin.addEventListener("open", function(){
-	$.menuWin.visible = true;
-	var defaultWin = menuWindows["searchBooks"];
-	defaultWin.left = 0; // reset the position of default window
-	defaultWin.open();
+
+/**
+ * horizontal scroll action
+ */
+var touchBeginX = 0;
+
+$.menuWin.addEventListener("touchstart", function(e){
+	// save the point touch started
+	touchBeginX = e.x;
+});
+
+$.menuWin.addEventListener("touchend", function(e){
+	var thresholdCloseMenu = $.menuTable.size.width * 0.4;
+	if($.menuTable.left < -thresholdCloseMenu){
+		// close the menu window
+		$.menuTable.animate({
+			duration: 200,
+			right: "100%",
+			left: "-60%"
+		}, function(){$.menuWin.close();});
+	}else{
+		// put back the menu on the default position
+		$.menuTable.animate({
+			left: 0,
+			duration: 100
+		});	
+	}
+});
+
+$.menuWin.addEventListener("touchmove", function(e){
+	var type = e.source.toString();
+	if(type.indexOf("TableView") != -1){
+		// When the event was fired on the menu table view,
+		// adjust the value of x then fire the event of the window.
+		$.menuWin.fireEvent("touchmove",{
+			x: e.x + $.menuTable.left,
+			source: $.menuWin
+		});
+		return;
+	}
+	
+	var x = e.x;
+	var left = x - touchBeginX;
+	if(left < 0){
+		$.menuTable.animate({
+			left: left,
+			duration: 0
+		});
+	}
 });

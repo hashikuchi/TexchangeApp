@@ -68,13 +68,13 @@ Alloy.Globals.createCommonHeader = function(window){
 		top: 30
 	});
 	hamburger.addEventListener("touchend", function(){
-		var left = window.opened?"80%":"0";
+		var menuWin = Alloy.createController("menu").getView();
 		var animation = Ti.UI.createAnimation({
 			duration: 200,
-			left: left
+			left:0
 		});
-	 	window.animate(animation);
-	 	window.opened = window.opened?false:true; // toggle the flg
+		menuWin.open();
+		menuWin.getChildren()[0].animate(animation);
 	});
 	headerView.add(hamburger);
 	return headerView;

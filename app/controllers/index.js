@@ -38,8 +38,7 @@ function login(){
 				alert('IDとパスワードの組合せが不正です。');	
 			}else{
 				rememberme('texchange');
-				registerDeviceToken();
-				var mainWin = Alloy.createController('menu').getView();
+				var mainWin = Alloy.createController('searchBooks').getView();
 				if(osname == 'android'){
 					// Save cookie for Android WebView
 					var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
@@ -47,7 +46,6 @@ function login(){
 						Ti.Network.addSystemCookie(cookie);
 					});
 				}
-				mainWin.visible = false;
 				mainWin.open();
 				$.index.close(); // 戻るボタンで戻ってこれないように画面を閉じる
 			}
