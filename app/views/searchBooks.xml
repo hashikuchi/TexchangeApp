@@ -1,5 +1,14 @@
 <Alloy>
 	<Window id="mainWin" class="container">
 		<Label text="search"/>
+	<TabGroup id="headerMenu">
+		<Tab id="nav1" title='first link' />
+		<Tab id="nav2" title='second link' />
+		<Tab id="nav3" title='third link' />
+	</TabGroup>
+        <Menu platform="Book">
+        	<MenuItem id="book1" icon="book image path" title="title written below the image" />
+        </Menu>
+        		
 	</Window>
 </Alloy>
