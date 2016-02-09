@@ -55,7 +55,7 @@ Alloy.Globals.addCookieValueToHTTPClient = function(httpClient){
 
 Alloy.Globals.deviceToken = null;
 
-Alloy.Globals.createCommonHeader = function(window){
+Alloy.Globals.createCommonHeader = function(elements){
 	var headerView = Ti.UI.createView({
 		borderColor: "black",
 		borderWidth: 1,
@@ -77,6 +77,12 @@ Alloy.Globals.createCommonHeader = function(window){
 		menuWin.getChildren()[0].animate(animation);
 	});
 	headerView.add(hamburger);
+	
+	if(elements && elements.length > 0){
+		for(var i=0; i<elements.length; i++){
+			headerView.add(elements[i]);
+		}	
+	}
 	return headerView;
 };
 
