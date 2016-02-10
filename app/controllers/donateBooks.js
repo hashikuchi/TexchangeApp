@@ -60,8 +60,8 @@ var nextMonth = Ti.UI.createButton({
 var monthTitle = Ti.UI.createLabel({
     top : 4,
     width : '200dp',
-    height : '24dp',
-//    height : '40dp',
+//    height : '24dp',
+    height : '40dp',
     textAlign : 'center',
     color : '#3a4756',
     font : {
@@ -90,7 +90,9 @@ var toolBarTitle = Ti.UI.createView({
     //top : '3dp',
     top : '3dp',
     width : '322dp',
-    height : '24dp'
+    /* Change here!!! */
+    //    height : '24dp'
+    height : '40dp'
 });
 
 /* Look at this!!!!! */
