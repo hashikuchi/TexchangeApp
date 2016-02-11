@@ -22,12 +22,11 @@ if (Ti.Platform.osname === 'android') {
 
 // Main Window of the Month View.
 var win = Ti.UI.createWindow({
-    backgroundColor : '#FF000000',
+    backgroundColor : '#FFFFFF',
     /* If you change this, the position of something like base window
      * changes.
      */
     top : '50dp',
-//    height : 200,
     navBarHidden : true
 });
 
@@ -95,7 +94,6 @@ var toolBarTitle = Ti.UI.createView({
     height : '40dp'
 });
 
-/* Look at this!!!!! */
 toolBarTitle.add(prevMonth);
 toolBarTitle.add(monthTitle);
 toolBarTitle.add(nextMonth);
@@ -202,7 +200,6 @@ toolBarDays.saturday = Ti.UI.createLabel({
     color : '#3a4756'
 });
 
-/* Look at this!!!!! */
 toolBarDays.add(toolBarDays.sunday);
 toolBarDays.add(toolBarDays.monday);
 toolBarDays.add(toolBarDays.tuesday);
