@@ -1,5 +1,5 @@
+/* Reference: http://stackoverflow.com/questions/9312717/create-calendar-with-events-appcelerator-titanium */
 /* Problems */
-// The month is overlapped by the iphone's menu
 // Change the height of the place where shows month
 // Change the message below
 // Think carefully about the color and layout
@@ -220,7 +220,6 @@ dayView = function(e) {
 	height : '44dp',
 	/* Spaces between the lines */
 //	top : '20dp',
-	// Is this color code correct?
 	backgroundColor : '#FFDCDCDF',
 	text : e.day,
 	textAlign : 'center',
