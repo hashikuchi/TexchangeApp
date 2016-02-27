@@ -21,7 +21,7 @@
  * interact with the View and Model components of the application or widget.
  *
  * For guides on using Alloy, see
- * [Alloy Framework](http://docs.appcelerator.com/platform/latest/#!/guide/Alloy_Framework).
+ * [Alloy Framework](http://docs.appcelerator.com/titanium/latest/#!/guide/Alloy_Framework).
  */
 var _ = require('alloy/underscore')._,
 	Backbone = require('alloy/backbone'),
@@ -483,10 +483,10 @@ exports.isTablet = (function() {
 			Ti.Platform.displayCaps.platformHeight,
 			Ti.Platform.displayCaps.platformWidth
 		) >= 400;
-	// } else if (OS_BLACKBERRY) {
-	// 	// Tablets not currently supported by BB TiSDK
-	// 	// https://jira.appcelerator.org/browse/TIMOB-13225
-	// 	return false;
+	} else if (OS_BLACKBERRY) {
+		// Tablets not currently supported by BB TiSDK
+		// https://jira.appcelerator.org/browse/TIMOB-13225
+		return false;
 	} else if (OS_WINDOWS) {
 		// per http://www.extremetech.com/computing/139768-windows-8-smartphones-and-windows-phone-8-tablets
 		// tablets should be >= 1024x768 and phones could be lower, though current phones are running at

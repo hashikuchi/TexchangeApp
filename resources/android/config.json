@@ -1,8 +1,8 @@
 {
 	"test":{
-		"baseurl":"http://beak.sakura.ne.jp/texchg_test2",
+		"baseurl":"http://beak.sakura.ne.jp/texchg_test3",
 		"domain":"beak.sakura.ne.jp",
-		"cookiepath": "/texchg_test2/",
+		"cookiepath": "/texchg_test3/",
 		"twitter":{
 			"consumerKey": "XStSxQ8Pu70NabWZDuQ6CdwW7",
 			"consumerSecret": "X3fFKTgtkDYi4TFRSaTsIaHOfseFmQsVbCoE9EMvD7zqL3iev2"
