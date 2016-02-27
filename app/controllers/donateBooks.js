@@ -1,6 +1,5 @@
 /* Reference: http://stackoverflow.com/questions/9312717/create-calendar-with-events-appcelerator-titanium */
 /* Problems */
-// Change the height of the place where shows month
 // Change the message below
 // Think carefully about the color and layout
 // Improve the sensibility
@@ -10,6 +9,9 @@ $.mainWin.add(Alloy.Globals.createCommonHeader());
 // Taking Screen Width
 var screenWidth = 322;
 var needToChangeSize = false;
+
+// Taking the actual screen size
+var pWidth = Ti.Platform.displayCaps.platformWidth;
 
 var screenWidthActual = Ti.Platform.displayCaps.platformWidth;
 
@@ -21,14 +23,16 @@ if (Ti.Platform.osname === 'android') {
 }
 
 // Main Window of the Month View.
-var win = Ti.UI.createWindow({
+var win = $.mainWin;
+/*({
     backgroundColor : '#FFFFFF',
-    /* If you change this, the position of something like base window
-     * changes.
-     */
+    If you change this, the position of something like base window
+     changes.
+     
     top : '50dp',
     navBarHidden : true
 });
+*/
 
 // Button at the buttom side
 var backButton = Ti.UI.createButton({
@@ -71,10 +75,8 @@ var monthTitle = Ti.UI.createLabel({
 
 // Tool Bar
 // Yellow zone which locates on the top.
-// but, the lower part of the string can't be seen.
-// => This issue can't be solved?
 var toolBar = Ti.UI.createView({
-    top : '0dp',
+    top : '50dp',
     width : '322dp',
     //    height : '50dp',
     height : '70dp',
@@ -285,7 +287,7 @@ var calView = function(a, b, c) {
 	height : 'auto',
 	/* Previous */
 	//	top : '50dp'
-	top : '70dp'
+	top : '120dp'
     });
 
     //set the time
@@ -422,37 +424,36 @@ win.add(prevCalendarView);
 win.add(backButton);
 
 // yeah, open the window, why not?
-win.open({
-    modal : true
-});
+// win.open({
+//     modal : true
+// });
 
 var slideNext = Titanium.UI.createAnimation({
-    // left : '-322',
     duration : 500
 });
 
 slideNext.left = (screenWidth * -1);
 
 var slideReset = Titanium.UI.createAnimation({
-    // left : '-1',
     duration : 500
 });
 
 if (needToChangeSize == false) {
     slideReset.left = '-1';
 } else {
-    slideReset.left = ((screenWidth - 644) / 2);
+    //      slideReset.left = ((screenWidth - 644) / 2);
+    slideReset.left = (pWidth - screenWidth) / 2;
+    //    slideReset.left = (screenWidthActual - screenWidth) / 2;
 }
 
 var slidePrev = Titanium.UI.createAnimation({
-    // left : '322',
     duration : 500
 });
 
+// Locate calendar from 'screenWidth' dp left
 slidePrev.left = screenWidth;
 
 // Next Month Click Event
-// I need to change here because of the severe sensisensibility
 nextMonth.addEventListener('click', function() {
     if (b == 11) {
 	b = 0;
@@ -464,6 +465,7 @@ nextMonth.addEventListener('click', function() {
     thisCalendarView.animate(slideNext);
     nextCalendarView.animate(slideReset);
 
+    // What is this doing?
     setTimeout(function() {
 	thisCalendarView.left = (screenWidth * -1) + 'dp';
 	if (needToChangeSize == false) {
@@ -492,13 +494,16 @@ prevMonth.addEventListener('click', function() {
     } else {
 	b--;
     }
+    
     thisCalendarView.animate(slidePrev);
     prevCalendarView.animate(slideReset);
+    
     setTimeout(function() {
 	thisCalendarView.left = screenWidth + 'dp';
 	if (needToChangeSize == false) {
 	    prevCalendarView.left = '-1dp';
 	} else {
+	    prevCalendarView.left = '-1dp';
 	    prevCalendarView.left = ((screenWidth - 644) / 2);
 	}
 	nextCalendarView = thisCalendarView;
