@@ -8,6 +8,9 @@ function __processArg(obj, key) {
 }
 
 function Controller() {
+    function pixelsToDPUnits(pixel) {
+        return pixel / (Titanium.Platform.displayCaps.dpi / 160);
+    }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "donateBooks";
     this.args = arguments[0] || {};
@@ -48,11 +51,7 @@ function Controller() {
         screenWidth = screenWidthActual;
         needToChangeSize = true;
     }
-    var win = Ti.UI.createWindow({
-        backgroundColor: "#FFFFFF",
-        top: "50dp",
-        navBarHidden: true
-    });
+    var win = $.mainWin;
     var backButton = Ti.UI.createButton({
         bottom: "20dp",
         height: "40dp",
@@ -62,16 +61,18 @@ function Controller() {
         left: "15dp",
         width: "auto",
         height: "auto",
-        title: "<"
+        title: "<",
+        enabled: "true"
     });
     var nextMonth = Ti.UI.createButton({
         right: "15dp",
         width: "auto",
         height: "auto",
-        title: ">"
+        title: ">",
+        enabled: "true"
     });
     var monthTitle = Ti.UI.createLabel({
-        top: 4,
+        top: "7dp",
         width: "200dp",
         height: "40dp",
         textAlign: "center",
@@ -82,24 +83,24 @@ function Controller() {
         }
     });
     var toolBar = Ti.UI.createView({
-        top: "0dp",
+        top: "70dp",
         width: "322dp",
-        height: "70dp",
+        height: "80dp",
         backgroundColor: "#FFFFD800",
         layout: "vertical"
     });
     var toolBarTitle = Ti.UI.createView({
-        top: "3dp",
+        top: "7dp",
         width: "322dp",
-        height: "40dp"
+        height: "50dp"
     });
     toolBarTitle.add(prevMonth);
     toolBarTitle.add(monthTitle);
     toolBarTitle.add(nextMonth);
     var toolBarDays = Ti.UI.createView({
-        top: "2dp",
+        height: "20dp",
+        top: "0dp",
         width: "322dp",
-        height: "22dp",
         layout: "horizontal",
         left: "-1dp"
     });
@@ -269,7 +270,7 @@ function Controller() {
             layout: "horizontal",
             width: "322dp",
             height: "auto",
-            top: "70dp"
+            top: "150dp"
         });
         var daysInMonth = 32 - new Date(a, b, 32).getDate();
         var dayOfMonth = new Date(a, b, c).getDate();
@@ -352,9 +353,6 @@ function Controller() {
     win.add(nextCalendarView);
     win.add(prevCalendarView);
     win.add(backButton);
-    win.open({
-        modal: true
-    });
     var slideNext = Titanium.UI.createAnimation({
         duration: 500
     });
@@ -362,7 +360,7 @@ function Controller() {
     var slideReset = Titanium.UI.createAnimation({
         duration: 500
     });
-    slideReset.left = false == needToChangeSize ? "-1" : (screenWidth - 644) / 2;
+    slideReset.left = false == needToChangeSize ? "-1" : (pixelsToDPUnits(screenWidthActual) - 322) / 2;
     var slidePrev = Titanium.UI.createAnimation({
         duration: 500
     });
@@ -372,6 +370,7 @@ function Controller() {
             b = 0;
             a++;
         } else b++;
+        nextMonth.enabled = "false";
         thisCalendarView.animate(slideNext);
         nextCalendarView.animate(slideReset);
         setTimeout(function() {
@@ -384,17 +383,24 @@ function Controller() {
             nextCalendarView.left = screenWidth + "dp";
             win.add(nextCalendarView);
         }, 500);
+        setTimeout(function() {
+            nextMonth.enabled = "true";
+        }, 1e3);
     });
     prevMonth.addEventListener("click", function() {
         if (0 == b) {
             b = 11;
             a--;
         } else b--;
+        prevMonth.enabled = "false";
         thisCalendarView.animate(slidePrev);
         prevCalendarView.animate(slideReset);
         setTimeout(function() {
             thisCalendarView.left = screenWidth + "dp";
-            prevCalendarView.left = false == needToChangeSize ? "-1dp" : (screenWidth - 644) / 2;
+            if (false == needToChangeSize) prevCalendarView.left = "-1dp"; else {
+                prevCalendarView.left = "-1dp";
+                prevCalendarView.left = (screenWidth - 644) / 2;
+            }
             nextCalendarView = thisCalendarView;
             thisCalendarView = prevCalendarView;
             prevCalendarView = 0 == b ? calView(a - 1, 11, c) : calView(a, b - 1, c);
@@ -402,6 +408,9 @@ function Controller() {
             prevCalendarView.left = -1 * screenWidth + "dp";
             win.add(prevCalendarView);
         }, 500);
+        setTimeout(function() {
+            prevMonth.enabled = "true";
+        }, 1e3);
     });
     _.extend($, exports);
 }
