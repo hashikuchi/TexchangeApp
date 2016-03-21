@@ -2,15 +2,101 @@
 /* Problems */
 // Change the message below
 // Think carefully about the color and layout
-// Improve the sensibility
 
 $.mainWin.add(Alloy.Globals.createCommonHeader());
 
-// Taking Screen Width
+// module: get bookfair information by ajax
+function getBookfairInfo(y, m, d)
+{
+
+    var response = undefined;
+    
+    var url = 'http://beak.sakura.ne.jp/texchg_test2/wp-admin/admin-ajax.php';
+    var giveMeInfoClient = Ti.Network.createHTTPClient({
+	onload: function(e) {
+	    var res = this.responseText;
+	    if (!res)
+	    {
+		alert("No response found...");
+		return;
+	    }
+	    Ti.API.info("The response is " + res);
+	    var jsRes = JSON.parse(res); // converts to a JS object
+
+	    Ti.API.info("a => " + y + ", b => " + m + ", c => " + d);
+
+	    // the year of bookfair
+	    var byear = new Array();
+	    for (var i = 0; i < 4; i++)
+	    {
+		byear[i] = jsRes[0].date[i];
+	    }
+	    byear = byear.join("");
+	    Ti.API.info("byear is " + byear);
+
+	    // the month of bookfair
+	    var bmonth = new Array();
+	    for (var i = 5; i < 7; i++)
+	    {
+		// when the month has only one digit
+		if (i == 5 && jsRes[0].date[5] == '0')
+		{
+		    bmonth[0] = jsRes[0].date[i + 1];
+		    break;
+		}
+		bmonth[i - 5] = jsRes[0].date[i];
+	    }
+	    bmonth = bmonth.join("");
+	    Ti.API.info("bmonth is " + bmonth);
+
+	    // the date of bookfair
+	    var bdate = new Array();
+	    for (var i = 8; i < 10; i++)
+	    {
+		// when the date has only one digit
+		if (i == 8 && jsRes[0].date[8] == '0')
+		{
+		    bdate[0] = jsRes[0].date[i + 1];
+		    break;
+		}
+		bdate[i - 8] = jsRes[0].date[i];
+	    }
+	    bdate = bdate.join("");
+	    Ti.API.info("bdate is " + bdate);
+
+	    if (byear == y && bmonth == m && bdate == d)
+	    {
+		response = true;
+	    }
+	    else
+	    {
+		response = false;
+	    }
+	    
+	},
+	onerror: function(e) 
+	{
+            Ti.API.debug(e.error);
+            var errorDialog = Alloy.Globals.getConnectionErrorDialog();
+            errorDialog.addEventListener('click', function (e) {
+		// picker.startScanning();
+	    });
+            errorDialog.show();
+	}, timeout: 3000
+    });
+    giveMeInfoClient.open('GET',
+			  url + '?action=get_bookfair_info_of_all_by_ajax',
+			  false);
+    giveMeInfoClient.send();
+
+    return response;
+}
+
+// taking Screen Width
 var screenWidth = 322;
 var needToChangeSize = false;
 
-// Taking the actual screen size
+// taking the actual screen size
 var screenWidthActual = Ti.Platform.displayCaps.platformWidth;
 
 if (Ti.Platform.osname === 'android') {
@@ -20,18 +106,8 @@ if (Ti.Platform.osname === 'android') {
     }
 }
 
-// Main Window of the Month View.
+// main Window of the Month View
 var win = $.mainWin;
-/*
-({
-    backgroundColor : '#FFFFFF',
-    If you change this, the position of something like base window
-     changes.
-     
-    top : '50dp',
-    navBarHidden : true
-});
-*/
 
 // Button at the buttom side
 var backButton = Ti.UI.createButton({
@@ -212,14 +288,12 @@ toolBarDays.add(toolBarDays.saturday);
 toolBar.add(toolBarTitle);
 toolBar.add(toolBarDays);
 
-// Function which create day view template
+// Function which create day view template. 1 - 31 days
 dayView = function(e) {
     var label = Ti.UI.createLabel({
 	current : e.current,
 	width : '46dp',
 	height : '44dp',
-	/* Spaces between the lines */
-	//	top : '20dp',
 	backgroundColor : '#FFDCDCDF',
 	text : e.day,
 	textAlign : 'center',
@@ -289,18 +363,19 @@ var calView = function(a, b, c)
 	top : '150dp'
     });
 
-    //set the time
+    // set the time
     var daysInMonth = 32 - new Date(a, b, 32).getDate();
     var dayOfMonth = new Date(a, b, c).getDate();
     var dayOfWeek = new Date(a, b, 1).getDay();
     var daysInLastMonth = 32 - new Date(a, b - 1, 32).getDate();
     var daysInNextMonth = (new Date(a, b, daysInMonth).getDay()) - 6;
 
-    //set initial day number
+    // set initial day number
     var dayNumber = daysInLastMonth - dayOfWeek + 1;
 
-    //get last month's days
-    for ( i = 0; i < dayOfWeek; i++) {
+    // get last month's days
+    for ( i = 0; i < dayOfWeek; i++)
+    {
 	mainView.add(new dayView({
 	    day : dayNumber,
 	    color : '#8e959f',
@@ -313,18 +388,20 @@ var calView = function(a, b, c)
     // reset day number for current month
     dayNumber = 1;
 
-    //get this month's days
-    for ( i = 0; i < daysInMonth; i++) {
-	var newDay = new dayView({
+    // get this month's days
+    for ( i = 0; i < daysInMonth; i++)
+    {
+	var newDay = new dayView
+	({
 	    day : dayNumber,
 	    color : '#3a4756',
 	    current : 'yes',
 	    dayOfMonth : dayOfMonth
 	});
 	mainView.add(newDay);
-	if (newDay.text == dayOfMonth) {
+	if (newDay.text == dayOfMonth)
+	{
 	    newDay.color = 'white';
-	    // newDay.backgroundImage='../libraries/calendar/pngs/monthdaytiletoday_selected.png';
 	    newDay.backgroundColor = '#FFFFF000';
 	    var oldDay = newDay;
 	}
@@ -332,7 +409,7 @@ var calView = function(a, b, c)
     };
     dayNumber = 1;
 
-    //get remaining month's days
+    // get remaining month's days
     for ( i = 0; i > daysInNextMonth; i--)
     {
 	mainView.add(new dayView({
@@ -344,32 +421,39 @@ var calView = function(a, b, c)
 	dayNumber++;
     };
 
-    // this is the new "clicker" function, although it doesn't have a name anymore, it just is.
+    // this is the new "clicker" function,
+    // although it doesn't have a name anymore, it just is.
     mainView.addEventListener('click', function(e) {
 	if (e.source.current == 'yes') {
 
 	    // reset last day selected
 	    if (oldDay.text == dayOfMonth) {
 		oldDay.color = 'white';
-		// oldDay.backgroundImage='../libraries/calendar/pngs/monthdaytiletoday.png';
 		oldDay.backgroundColor = '#FFFFF000';
 	    } else {
 		oldDay.color = '#3a4756';
-		// oldDay.backgroundImage='../libraries/calendar/pngs/monthdaytile-Decoded.png';
 		oldDay.backgroundColor = '#FFDCDCDF'
 	    }
 	    oldDay.backgroundPaddingLeft = '0dp';
 	    oldDay.backgroundPaddingBottom = '0dp';
 
 	    // set window title with day selected, for testing purposes only
-	    backButton.title = nameOfMonth + ' ' + e.source.text + ', ' + a;
+	    var isFound = getBookfairInfo(a, b + 1, e.source.text);
+	    Ti.API.info("isFound is " + isFound);
+	    if (isFound)
+	    {
+		backButton.title = "[古本市開催!]";
+	    }
+	    else
+	    {
+		backButton.title = nameOfMonth + ' ' + e.source.text + ', ' + a;
+	    }
+	    Ti.API.info("e.source.text is " + e.source.text);
 
 	    // set characteristic of the day selected
 	    if (e.source.text == dayOfMonth) {
-		// e.source.backgroundImage='../libraries/calendar/pngs/monthdaytiletoday_selected.png';
 		e.source.backgroundColor = '#FFFF00FF';
 	    } else {
-		// e.source.backgroundImage='../libraries/calendar/pngs/monthdaytile_selected.png';
 		e.source.backgroundColor = '#FFFF0000';
 	    }
 	    e.source.backgroundPaddingLeft = '1dp';
@@ -415,7 +499,17 @@ if (needToChangeSize == false)
 
 monthTitle.text = monthName(b) + ' ' + a;
 
-backButton.title = monthName(b) + ' ' + c + ', ' + a;
+// The text box which locates at the lower part.
+// This is executed at the first time.
+var isFound = getBookfairInfo(a, b + 1, c);
+if (isFound)
+{
+    backButton.title = "[古本市開催!]";
+}
+else
+{
+    backButton.title = monthName(b) + ' ' + c + ', ' + a;
+}
 
 // add everything to the window
 win.add(toolBar);
@@ -429,6 +523,7 @@ win.add(backButton);
 //     modal : true
 // });
 
+// the display width comes in pixel, so convert it to dpi
 function pixelsToDPUnits(pixel)
 {
     return (pixel / (Titanium.Platform.displayCaps.dpi / 160));
