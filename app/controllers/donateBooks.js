@@ -8,88 +8,90 @@ $.mainWin.add(Alloy.Globals.createCommonHeader());
 // module: get bookfair information by ajax
 function getBookfairInfo(y, m, d)
 {
-
-    var response = undefined;
-    
     var url = 'http://beak.sakura.ne.jp/texchg_test2/wp-admin/admin-ajax.php';
-    var giveMeInfoClient = Ti.Network.createHTTPClient({
-	onload: function(e) {
-	    var res = this.responseText;
-	    if (!res)
-	    {
-		alert("No response found...");
-		return;
-	    }
-	    Ti.API.info("The response is " + res);
-	    var jsRes = JSON.parse(res); // converts to a JS object
+    var giveMeInfoClient = Ti.Network.createHTTPClient();
 
-	    Ti.API.info("a => " + y + ", b => " + m + ", c => " + d);
+    giveMeInfoClient.onload
+	=  function(e)
+    {
+	var res = this.responseText; // response
+	if (!res)
+	{
+	    alert("No response found...");
+	    return;
+	}
+	Ti.API.info("The response is " + res);
+	var jsRes = JSON.parse(res); // convert to a JS object
 
-	    // the year of bookfair
-	    var byear = new Array();
-	    for (var i = 0; i < 4; i++)
-	    {
-		byear[i] = jsRes[0].date[i];
-	    }
-	    byear = byear.join("");
-	    Ti.API.info("byear is " + byear);
+	Ti.API.info("a => " + y + ", b => " + m + ", c => " + d);
 
-	    // the month of bookfair
-	    var bmonth = new Array();
-	    for (var i = 5; i < 7; i++)
-	    {
-		// when the month has only one digit
-		if (i == 5 && jsRes[0].date[5] == '0')
-		{
-		    bmonth[0] = jsRes[0].date[i + 1];
-		    break;
-		}
-		bmonth[i - 5] = jsRes[0].date[i];
-	    }
-	    bmonth = bmonth.join("");
-	    Ti.API.info("bmonth is " + bmonth);
+	// the year of bookfair
+	var byear = new Array();
+	for (var i = 0; i < 4; i++)
+	{
+	    byear[i] = jsRes[0].date[i];
+	}
+	byear = byear.join("");
+	Ti.API.info("byear is " + byear);
 
-	    // the date of bookfair
-	    var bdate = new Array();
-	    for (var i = 8; i < 10; i++)
+	// the month of bookfair
+	var bmonth = new Array();
+	for (var i = 5; i < 7; i++)
+	{
+	    // when the month has only one digit
+	    if (i == 5 && jsRes[0].date[5] == '0')
 	    {
-		// when the date has only one digit
-		if (i == 8 && jsRes[0].date[8] == '0')
-		{
-		    bdate[0] = jsRes[0].date[i + 1];
-		    break;
-		}
-		bdate[i - 8] = jsRes[0].date[i];
+		bmonth[0] = jsRes[0].date[i + 1];
+		break;
 	    }
-	    bdate = bdate.join("");
-	    Ti.API.info("bdate is " + bdate);
+	    bmonth[i - 5] = jsRes[0].date[i];
+	}
+	bmonth = bmonth.join("");
+	Ti.API.info("bmonth is " + bmonth);
 
-	    if (byear == y && bmonth == m && bdate == d)
+	// the date of bookfair
+	var bdate = new Array();
+	for (var i = 8; i < 10; i++)
+	{
+	    // when the date has only one digit
+	    if (i == 8 && jsRes[0].date[8] == '0')
 	    {
-		response = true;
+		bdate[0] = jsRes[0].date[i + 1];
+		break;
 	    }
-	    else
-	    {
-		response = false;
-	    }
-	    
-	},
-	onerror: function(e) 
+	    bdate[i - 8] = jsRes[0].date[i];
+	}
+	bdate = bdate.join("");
+	Ti.API.info("bdate is " + bdate);
+
+	if (byear == y && bmonth == m && bdate == d)
+	{
+	    backButton.title = "[古本市開催!]";
+	}
+	else
+	{
+	    backButton.title = monthName(m) + ' ' + d + ', ' + y;
+	}	
+    };
+
+giveMeInfoClient.onerror
+    = function(e) 
 	{
             Ti.API.debug(e.error);
-            var errorDialog = Alloy.Globals.getConnectionErrorDialog();
-            errorDialog.addEventListener('click', function (e) {
-		// picker.startScanning();
-	    });
-            errorDialog.show();
-	}, timeout: 3000
-    });
+            // var errorDialog = Alloy.Globals.getConnectionErrorDialog();
+            // errorDialog.addEventListener('click', function (e) {
+	    // 	picker.startScanning();
+	    // });
+	};
+
+    
     giveMeInfoClient.open('GET',
 			  url + '?action=get_bookfair_info_of_all_by_ajax',
 			  false);
     giveMeInfoClient.send();
 
-    return response;
+    Ti.API.info(giveMeInfoClient);
+    return giveMeInfoClient;
 }
 
 // taking Screen Width
@@ -438,16 +440,8 @@ var calView = function(a, b, c)
 	    oldDay.backgroundPaddingBottom = '0dp';
 
 	    // set window title with day selected, for testing purposes only
-	    var isFound = getBookfairInfo(a, b + 1, e.source.text);
-	    Ti.API.info("isFound is " + isFound);
-	    if (isFound)
-	    {
-		backButton.title = "[古本市開催!]";
-	    }
-	    else
-	    {
-		backButton.title = nameOfMonth + ' ' + e.source.text + ', ' + a;
-	    }
+	    getBookfairInfo(a, b + 1, e.source.text);	    
+	    //	    backButton.title = nameOfMonth + ' ' + e.source.text + ', ' + a;
 	    Ti.API.info("e.source.text is " + e.source.text);
 
 	    // set characteristic of the day selected
@@ -501,15 +495,15 @@ monthTitle.text = monthName(b) + ' ' + a;
 
 // The text box which locates at the lower part.
 // This is executed at the first time.
-var isFound = getBookfairInfo(a, b + 1, c);
-if (isFound)
-{
-    backButton.title = "[古本市開催!]";
-}
-else
-{
-    backButton.title = monthName(b) + ' ' + c + ', ' + a;
-}
+getBookfairInfo(a, b + 1, c);
+// if (isFound)
+// {
+//     backButton.title = "[古本市開催!]";
+// }
+// else
+// {
+//     backButton.title = monthName(b) + ' ' + c + ', ' + a;
+// }
 
 // add everything to the window
 win.add(toolBar);
