@@ -391,8 +391,9 @@ monthName = function(e) {
 var calView = function(a, b, c)
 {
     // use to check that the selected day is today
-    var currentMonth = new Date();
-    currentMonth = currentMonth.getMonth();
+    var currentDate = new Date();
+    currentMonth = currentDate.getMonth();
+    currentYear = currentDate.getFullYear();
     
     var nameOfMonth = monthName(b);
 
@@ -444,12 +445,13 @@ var calView = function(a, b, c)
 
 	mainView.add(newDay);
 	// if today
-	if (newDay.text == dayOfMonth)
+	var oldDay;
+	if (newDay.text == dayOfMonth && b == currentMonth && a == currentYear)
 	{
 	    newDay.color = 'white';
 	    //	    newDay.backgroundColor = '#FFFFF000';
 	    newDay.backgroundColor = 'orange'; // today's first color
-	    var oldDay = newDay;
+	    oldDay = newDay;
 	}
 	dayNumber++;
     };
@@ -473,24 +475,37 @@ var calView = function(a, b, c)
 	if (e.source.current == 'yes') {
 
 	    // reset last day selected
-	    if (oldDay.text == dayOfMonth) {
+	    if (oldDay != undefined && oldDay.text == dayOfMonth &&
+		b == currentMonth && a == currentYear) {
 		oldDay.color = 'white';
 		//		oldDay.backgroundColor = '#FFFFF000';
-		// the color appears when we select other days
+		// if this was not set, dark orange remains forever
 		oldDay.backgroundColor = 'orange';
+	    } else if (oldDay == undefined) {
+		e.source.color = 'white';
+		e.source.backgroundColor = 'grey';
 	    } else {
 		oldDay.color = '#3a4756';
 		oldDay.backgroundColor = '#FFDCDCDF'
 	    }
-	    oldDay.backgroundPaddingLeft = '0dp';
-	    oldDay.backgroundPaddingBottom = '0dp';
+	    if (oldDay != undefined)
+	    {
+		oldDay.backgroundPaddingLeft = '0dp';
+		oldDay.backgroundPaddingBottom = '0dp';
+	    }
+	    else
+	    {
+		e.source.backgroundPaddingLeft = '0dp';
+		e.source.backgroundPaddingBottom = '0dp';
+	    }
 
-	    // set window title with day selected, for testing purposes only
+	    // set window title with day selected
 	    showBookfairPresence(a, b + 1, e.source.text);	    
 	    //	    backButton.title = nameOfMonth + ' ' + e.source.text + ', ' + a;
 
 	    // set characteristic of the day selected
-	    if (e.source.text == dayOfMonth) {
+	    if (e.source.text == dayOfMonth && b == currentMonth &&
+		a == currentYear) {
 		//		e.source.backgroundColor = '#FFFF00FF';
 		e.source.backgroundColor = '#D05800';
 	    } else {
