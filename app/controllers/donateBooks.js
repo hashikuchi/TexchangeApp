@@ -12,7 +12,7 @@ function is(type, obj) {
 }
 
 // module: get bookfair information by ajax
-function getBookfairInfo(ad, m, d)
+function showBookfairPresence(ad, m, d)
 {
     var url = 'http://beak.sakura.ne.jp/texchg_test2/wp-admin/admin-ajax.php';
     var giveMeInfoClient = Ti.Network.createHTTPClient();
@@ -121,10 +121,6 @@ giveMeInfoClient.onerror
     = function(e) 
 	{
             Ti.API.debug(e.error);
-            // var errorDialog = Alloy.Globals.getConnectionErrorDialog();
-            // errorDialog.addEventListener('click', function (e) {
-	    // 	picker.startScanning();
-	    // });
 	};
 
     
@@ -192,15 +188,16 @@ var monthTitle = Ti.UI.createLabel({
     }
 });
 
-// Tool Bar
-// Yellow zone which locates on the top.
+// tool bar
+// the orange zone which locates on the top.
 var toolBar = Ti.UI.createView({
     //    top : '50dp',
     top: '70dp',
     width : '322dp',
     //    height : '50dp',
     height : '80dp',
-    backgroundColor : '#FFFFD800',
+    //    backgroundColor : '#FFFFD800',
+    backgroundColor: '#FF8A21',
     layout : 'vertical'
 });
 
@@ -393,6 +390,10 @@ monthName = function(e) {
 // Calendar Main Function
 var calView = function(a, b, c)
 {
+    // use to check that the selected day is today
+    var currentMonth = new Date();
+    currentMonth = currentMonth.getMonth();
+    
     var nameOfMonth = monthName(b);
 
     // Create main calendar view
@@ -440,11 +441,14 @@ var calView = function(a, b, c)
 	    current : 'yes',
 	    dayOfMonth : dayOfMonth
 	});
+
 	mainView.add(newDay);
+	// if today
 	if (newDay.text == dayOfMonth)
 	{
 	    newDay.color = 'white';
-	    newDay.backgroundColor = '#FFFFF000';
+	    //	    newDay.backgroundColor = '#FFFFF000';
+	    newDay.backgroundColor = 'orange'; // today's first color
 	    var oldDay = newDay;
 	}
 	dayNumber++;
@@ -471,7 +475,9 @@ var calView = function(a, b, c)
 	    // reset last day selected
 	    if (oldDay.text == dayOfMonth) {
 		oldDay.color = 'white';
-		oldDay.backgroundColor = '#FFFFF000';
+		//		oldDay.backgroundColor = '#FFFFF000';
+		// the color appears when we select other days
+		oldDay.backgroundColor = 'orange';
 	    } else {
 		oldDay.color = '#3a4756';
 		oldDay.backgroundColor = '#FFDCDCDF'
@@ -480,15 +486,16 @@ var calView = function(a, b, c)
 	    oldDay.backgroundPaddingBottom = '0dp';
 
 	    // set window title with day selected, for testing purposes only
-	    getBookfairInfo(a, b + 1, e.source.text);	    
+	    showBookfairPresence(a, b + 1, e.source.text);	    
 	    //	    backButton.title = nameOfMonth + ' ' + e.source.text + ', ' + a;
-	    Ti.API.info("e.source.text is " + e.source.text);
 
 	    // set characteristic of the day selected
 	    if (e.source.text == dayOfMonth) {
-		e.source.backgroundColor = '#FFFF00FF';
+		//		e.source.backgroundColor = '#FFFF00FF';
+		e.source.backgroundColor = '#D05800';
 	    } else {
-		e.source.backgroundColor = '#FFFF0000';
+		//		e.source.backgroundColor = '#FFFF0000';
+		e.source.backgroundColor = 'grey';
 	    }
 	    e.source.backgroundPaddingLeft = '1dp';
 	    e.source.backgroundPaddingBottom = '1dp';
@@ -535,7 +542,7 @@ monthTitle.text = monthName(b) + ' ' + a;
 
 // The text box which locates at the lower part.
 // This is executed at the first time.
-getBookfairInfo(a, b + 1, c);
+showBookfairPresence(a, b + 1, c);
 
 // add everything to the window
 win.add(toolBar);
