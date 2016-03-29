@@ -5,8 +5,14 @@
 
 $.mainWin.add(Alloy.Globals.createCommonHeader());
 
+// judge variable types
+function is(type, obj) {
+    var clas = Object.prototype.toString.call(obj).slice(8, -1);
+    return obj !== undefined && obj !== null && clas === type;
+}
+
 // module: get bookfair information by ajax
-function getBookfairInfo(y, m, d)
+function getBookfairInfo(ad, m, d)
 {
     var url = 'http://beak.sakura.ne.jp/texchg_test2/wp-admin/admin-ajax.php';
     var giveMeInfoClient = Ti.Network.createHTTPClient();
@@ -14,7 +20,7 @@ function getBookfairInfo(y, m, d)
     giveMeInfoClient.onload
 	=  function(e)
     {
-	var res = this.responseText; // response
+	var res = this.responseText; // bookfair info with JSON format
 	if (!res)
 	{
 	    alert("No response found...");
@@ -23,55 +29,92 @@ function getBookfairInfo(y, m, d)
 	Ti.API.info("The response is " + res);
 	var jsRes = JSON.parse(res); // convert to a JS object
 
-	Ti.API.info("a => " + y + ", b => " + m + ", c => " + d);
+	Ti.API.info("ad => " + ad + ", m => " + m + ", d => " + d);
 
 	// the year of bookfair
-	var byear = new Array();
-	for (var i = 0; i < 4; i++)
+	var byear = new Array(jsRes.length);
+	for (var i = 0; i < jsRes.length; i++)
 	{
-	    byear[i] = jsRes[0].date[i];
+	    byear[i] = new Array(4);
 	}
-	byear = byear.join("");
-	Ti.API.info("byear is " + byear);
+	for (var x = 0; x < jsRes.length; x++)
+	{
+	    for (var y = 0; y < 4; y++)
+	    {
+		byear[x][y] = jsRes[x].date[y];
+	    }
+	}
+	for (var i = 0; i < jsRes.length; i++)
+	{
+	    // convert elements to a string each record
+	    byear[i] = byear[i].join("");
+	    Ti.API.info("byear is " + byear[i]);
+	}
 
 	// the month of bookfair
-	var bmonth = new Array();
-	for (var i = 5; i < 7; i++)
+	var bmonth = new Array(jsRes.length);
+	for (var i = 0; i < jsRes.length; i++)
 	{
-	    // when the month has only one digit
-	    if (i == 5 && jsRes[0].date[5] == '0')
-	    {
-		bmonth[0] = jsRes[0].date[i + 1];
-		break;
-	    }
-	    bmonth[i - 5] = jsRes[0].date[i];
+	    bmonth[i] = new Array(2);
 	}
-	bmonth = bmonth.join("");
-	Ti.API.info("bmonth is " + bmonth);
+	for (var x = 0; x < jsRes.length; x++)
+	{
+	    for (var y = 0; y < 2; y++)
+	    {
+		// when the month has only one digit
+		if (jsRes[x].date[5] == '0')
+		{
+		    bmonth[x][0] = jsRes[x].date[6];
+		    break;
+		}
+		bmonth[x][y] = jsRes[x].date[y + 5];
+	    }
+	}
+	for (var i = 0; i < jsRes.length; i++)
+	{
+	    // convert elements to a string each record
+	    bmonth[i] = bmonth[i].join("");
+	    Ti.API.info("bmonth is " + bmonth[i]);	    
+	}
 
 	// the date of bookfair
-	var bdate = new Array();
-	for (var i = 8; i < 10; i++)
+	var bdate = new Array(2);
+	for (var i = 0; i < jsRes.length; i++)
 	{
-	    // when the date has only one digit
-	    if (i == 8 && jsRes[0].date[8] == '0')
+	    bdate[i] = new Array(2);
+	}
+	for (var x = 0; x < jsRes.length; x++)
+	{
+	    for (var y = 0; y < 2; y++)
 	    {
-		bdate[0] = jsRes[0].date[i + 1];
-		break;
+		// when the date has only one digit
+		if (jsRes[x].date[8] == '0')
+		{
+		    bdate[x][0] = jsRes[x].date[9];
+		    break;
+		}
+		bdate[x][y] = jsRes[x].date[y + 8];
 	    }
-	    bdate[i - 8] = jsRes[0].date[i];
 	}
-	bdate = bdate.join("");
-	Ti.API.info("bdate is " + bdate);
+	for (var i = 0; i < jsRes.length; i++)
+	{
+	    // convert elements to a string each record	    
+	    bdate[i] = bdate[i].join("");
+	    Ti.API.info("bdate is " + bdate[i]);
+	}
 
-	if (byear == y && bmonth == m && bdate == d)
+	// the judgement
+	for (var i = 0; i < jsRes.length; i++)
 	{
-	    backButton.title = "[古本市開催!]";
+	    if (ad == byear[i] && m == bmonth[i] && d == bdate[i])
+	    {
+		backButton.title = "[古本市開催!]";
+	    }
+	    else
+	    {
+		backButton.title = "Nothing in particular";
+	    }
 	}
-	else
-	{
-	    backButton.title = monthName(m) + ' ' + d + ', ' + y;
-	}	
     };
 
 giveMeInfoClient.onerror
@@ -89,9 +132,6 @@ giveMeInfoClient.onerror
 			  url + '?action=get_bookfair_info_of_all_by_ajax',
 			  false);
     giveMeInfoClient.send();
-
-    Ti.API.info(giveMeInfoClient);
-    return giveMeInfoClient;
 }
 
 // taking Screen Width
@@ -496,14 +536,6 @@ monthTitle.text = monthName(b) + ' ' + a;
 // The text box which locates at the lower part.
 // This is executed at the first time.
 getBookfairInfo(a, b + 1, c);
-// if (isFound)
-// {
-//     backButton.title = "[古本市開催!]";
-// }
-// else
-// {
-//     backButton.title = monthName(b) + ' ' + c + ', ' + a;
-// }
 
 // add everything to the window
 win.add(toolBar);
