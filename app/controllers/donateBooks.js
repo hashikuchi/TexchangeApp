@@ -103,6 +103,9 @@ function showBookfairPresence(ad, m, d)
 	    Ti.API.info("bdate is " + bdate[i]);
 	}
 
+	// show colored bookfair dates on the calendar
+	
+
 	// the judgement
 	for (var i = 0; i < jsRes.length; i++)
 	{
