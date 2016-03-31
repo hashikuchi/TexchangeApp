@@ -69,8 +69,8 @@ function calendar(jsRes)
     // Button at the buttom side
     var backButton = Ti.UI.createButton({
 	bottom : '20dp',
-	height : '40dp',
-	width : '200dp'
+	height : '100dp',
+	width : '322dp'
     });
 
     // Previous Button - Tool Bar
@@ -287,10 +287,10 @@ function calendar(jsRes)
 		current : e.current,
 		width : '46dp',
 		height : '44dp',
-		backgroundColor : 'purple',
-		text : e.day,
+		backgroundColor : '#FFDCDCDF',
+		text : '市',
 		textAlign : 'center',
-		color : e.color,
+		color : '#006400',
 		font : {
 		    fontSize : 20,
 		    fontWeight : 'bold'
@@ -423,7 +423,14 @@ function calendar(jsRes)
 	    var oldDay;
 	    if (newDay.text == dayOfMonth && b == currentMonth && a == currentYear)
 	    {
-		newDay.color = 'white';
+		if (newDay.text == '市')
+		{
+		    newDay.color = '#006400';
+		}
+		else
+		{
+		    newDay.color = 'white'
+		}
 		//	    newDay.backgroundColor = '#FFFFF000';
 		newDay.backgroundColor = 'orange'; // today's first color
 		oldDay = newDay;
@@ -452,15 +459,36 @@ function calendar(jsRes)
 		// reset last day selected
 		if (oldDay != undefined && oldDay.text == dayOfMonth &&
 		    b == currentMonth && a == currentYear) {
-		    oldDay.color = 'white';
-		    //		oldDay.backgroundColor = '#FFFFF000';
+		    if (oldDay.text == '市')
+		    {
+			oldDay.color = '#006400';
+		    }
+		    else
+		    {
+			oldDay.color = 'white';
+		    }
 		    // if this was not set, dark orange remains forever
 		    oldDay.backgroundColor = 'orange';
 		} else if (oldDay == undefined) {
-		    e.source.color = 'white';
+		    // like after moving to other months
+		    if (e.source.text == '市')
+		    {
+			// do nothing
+		    }
+		    else
+		    {
+			e.source.color = 'white';
+		    }
 		    e.source.backgroundColor = 'grey';
 		} else {
-		    oldDay.color = '#3a4756';
+		    if (oldDay.text == '市')
+		    {
+			oldDay.color = '#006400'
+		    }
+		    else
+		    {
+			oldDay.color = '#3a4756';
+		    }
 		    oldDay.backgroundColor = '#FFDCDCDF'
 		}
 		if (oldDay != undefined)
@@ -475,16 +503,16 @@ function calendar(jsRes)
 		}
 
 		// set window title with day selected
-//		showBookfairPresence(a, b + 1, e.source.text);	    
-		//	    backButton.title = nameOfMonth + ' ' + e.source.text + ', ' + a;
+		backButton.title = e.source.text;
 
 		// set characteristic of the day selected
 		if (e.source.text == dayOfMonth && b == currentMonth &&
-		    a == currentYear) {
-		    //		e.source.backgroundColor = '#FFFF00FF';
+		    a == currentYear)
+		{
 		    e.source.backgroundColor = '#D05800';
-		} else {
-		    //		e.source.backgroundColor = '#FFFF0000';
+		}
+		else
+		{
 		    e.source.backgroundColor = 'grey';
 		}
 		e.source.backgroundPaddingLeft = '1dp';
