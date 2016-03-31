@@ -247,20 +247,72 @@ function calendar(jsRes)
     toolBar.add(toolBarDays);
 
     // Function which create day view template. 1 - 31 days
-    dayView = function(e) {
-	var label = Ti.UI.createLabel({
-	    current : e.current,
-	    width : '46dp',
-	    height : '44dp',
-	    backgroundColor : '#FFDCDCDF',
-	    text : e.day,
-	    textAlign : 'center',
-	    color : e.color,
-	    font : {
-		fontSize : 20,
-		fontWeight : 'bold'
+    dayView = function(e)
+    {
+	// managing bookfair info
+	var fairDate = new Array(jsRes.length);
+	var result = new Array(3);               // year, month, day
+	var byear = new Array(fairDate.length);  // bookfair year
+	var bmonth = new Array(fairDate.length); // bookfair month
+	var bday = new Array(fairDate.length);   // bookfair day
+	for (var i = 0; i < jsRes.length; i++)
+	{
+	    var fairDateAndTime = jsRes[i].date;
+	    var tempData = fairDateAndTime.split(' ');
+	    fairDate[i] = tempData[0];
+	    result = fairDate[i].split("-");
+	    byear[i]  = result[0];
+	    bmonth[i] = result[1];
+	    bday[i]   = parseInt(result[2]);
+	    Ti.API.info("byear = " + byear[i]);
+	    Ti.API.info("bmonth = " + bmonth[i]);
+	    Ti.API.info("bday = " + bday[i]);
+	}
+	Ti.API.info("e.year, e.month, e.day = " + e.year + e.month, e.day);
+
+	var found = 0;
+	for (var i = 0; i < jsRes.length; i++)
+	{
+	    if (e.year == byear[i] && e.month  == bmonth[i] &&
+		e.day == bday[i])
+	    {
+		found = 1;
+		break;
 	    }
-	});
+	}
+
+	if (found)
+	{
+	    var label = Ti.UI.createLabel({
+		current : e.current,
+		width : '46dp',
+		height : '44dp',
+		backgroundColor : 'purple',
+		text : e.day,
+		textAlign : 'center',
+		color : e.color,
+		font : {
+		    fontSize : 20,
+		    fontWeight : 'bold'
+		}
+	    }); 
+	}
+	else
+	{
+	    var label = Ti.UI.createLabel({
+		current : e.current,
+		width : '46dp',
+		height : '44dp',
+		backgroundColor : '#FFDCDCDF',
+		text : e.day,
+		textAlign : 'center',
+		color : e.color,
+		font : {
+		    fontSize : 20,
+		    fontWeight : 'bold'
+		}
+	    });
+	}
 	return label;
     };
 
@@ -332,14 +384,16 @@ function calendar(jsRes)
 	var dayOfWeek = new Date(a, b, 1).getDay();
 	var daysInLastMonth = 32 - new Date(a, b - 1, 32).getDate();
 	var daysInNextMonth = (new Date(a, b, daysInMonth).getDay()) - 6;
-
+	
 	// set initial day number
 	var dayNumber = daysInLastMonth - dayOfWeek + 1;
-
+	
 	// get last month's days
 	for ( i = 0; i < dayOfWeek; i++)
 	{
 	    mainView.add(new dayView({
+		year: a,
+		month: b,
 		day : dayNumber,
 		color : '#8e959f',
 		current : 'no',
@@ -350,14 +404,14 @@ function calendar(jsRes)
 
 	// reset day number for current month
 	dayNumber = 1;
-
-	
 	
 	// get this month's days
 	for ( i = 0; i < daysInMonth; i++)
 	{
 	    var newDay = new dayView
 	    ({
+		year: a,
+		month: b + 1,
 		day : dayNumber,
 		color : '#3a4756',
 		current : 'yes',
