@@ -255,6 +255,7 @@ function calendar(jsRes)
 	var byear = new Array(fairDate.length);  // bookfair year
 	var bmonth = new Array(fairDate.length); // bookfair month
 	var bday = new Array(fairDate.length);   // bookfair day
+	var bvenue = new Array(jsRes.length);    // bookfair venue
 	for (var i = 0; i < jsRes.length; i++)
 	{
 	    var fairDateAndTime = jsRes[i].date;
@@ -264,11 +265,8 @@ function calendar(jsRes)
 	    byear[i]  = result[0];
 	    bmonth[i] = result[1];
 	    bday[i]   = parseInt(result[2]);
-	    Ti.API.info("byear = " + byear[i]);
-	    Ti.API.info("bmonth = " + bmonth[i]);
-	    Ti.API.info("bday = " + bday[i]);
+	    bvenue[i] = jsRes[i].venue;
 	}
-	Ti.API.info("e.year, e.month, e.day = " + e.year + e.month, e.day);
 
 	var found = 0;
 	for (var i = 0; i < jsRes.length; i++)
@@ -277,20 +275,28 @@ function calendar(jsRes)
 		e.day == bday[i])
 	    {
 		found = 1;
+		var venue = bvenue[i]; // setting up the venue!
 		break;
 	    }
 	}
 
-	if (found)
+	if (found) // if found a bookfair
 	{
+	    // if NOT last month's day
+	    if (e.color != '#8e959f')
+	    {
+		e.color = '#006400';
+	    }
 	    var label = Ti.UI.createLabel({
 		current : e.current,
 		width : '46dp',
 		height : '44dp',
 		backgroundColor : '#FFDCDCDF',
 		text : '市',
+		day: e.day,
+		venue: '[古本市]\n' + venue + 'にて開催!',
 		textAlign : 'center',
-		color : '#006400',
+		color : e.color,
 		font : {
 		    fontSize : 20,
 		    fontWeight : 'bold'
@@ -305,6 +311,8 @@ function calendar(jsRes)
 		height : '44dp',
 		backgroundColor : '#FFDCDCDF',
 		text : e.day,
+		day: e.day,
+		venue: '',
 		textAlign : 'center',
 		color : e.color,
 		font : {
@@ -421,7 +429,7 @@ function calendar(jsRes)
 	    mainView.add(newDay);
 	    // if today
 	    var oldDay;
-	    if (newDay.text == dayOfMonth && b == currentMonth && a == currentYear)
+	    if (newDay.day == dayOfMonth && b == currentMonth && a == currentYear)
 	    {
 		if (newDay.text == '市')
 		{
@@ -431,8 +439,8 @@ function calendar(jsRes)
 		{
 		    newDay.color = 'white'
 		}
-		//	    newDay.backgroundColor = '#FFFFF000';
 		newDay.backgroundColor = 'orange'; // today's first color
+		backButton.title = newDay.venue;
 		oldDay = newDay;
 	    }
 	    dayNumber++;
@@ -443,6 +451,8 @@ function calendar(jsRes)
 	for ( i = 0; i > daysInNextMonth; i--)
 	{
 	    mainView.add(new dayView({
+		year: a,
+		month: b + 2,
 		day : dayNumber,
 		color : '#8e959f',
 		current : 'no',
@@ -457,7 +467,7 @@ function calendar(jsRes)
 	    if (e.source.current == 'yes') {
 
 		// reset last day selected
-		if (oldDay != undefined && oldDay.text == dayOfMonth &&
+		if (oldDay != undefined && oldDay.day == dayOfMonth &&
 		    b == currentMonth && a == currentYear) {
 		    if (oldDay.text == '市')
 		    {
@@ -503,10 +513,10 @@ function calendar(jsRes)
 		}
 
 		// set window title with day selected
-		backButton.title = e.source.text;
+		backButton.title = e.source.venue;
 
 		// set characteristic of the day selected
-		if (e.source.text == dayOfMonth && b == currentMonth &&
+		if (e.source.day == dayOfMonth && b == currentMonth &&
 		    a == currentYear)
 		{
 		    e.source.backgroundColor = '#D05800';
@@ -518,7 +528,7 @@ function calendar(jsRes)
 		e.source.backgroundPaddingLeft = '1dp';
 		e.source.backgroundPaddingBottom = '1dp';
 		e.source.color = 'white';
-		//this day becomes old :(
+		// this day becomes old :(
 		oldDay = e.source;
 	    }
 	});
@@ -557,10 +567,6 @@ function calendar(jsRes)
     }
 
     monthTitle.text = monthName(b) + ' ' + a;
-
-    // The text box which locates at the lower part.
-    // This is executed at the first time.
-//    showBookfairPresence(a, b + 1, c);
 
     // add everything to the window
     win.add(toolBar);
@@ -614,6 +620,8 @@ function calendar(jsRes)
 	    b++;
 	}
 
+	backButton.title = ''; // clear box
+
 	nextMonth.enabled = 'false';
 
 	thisCalendarView.animate(slideNext);
@@ -651,6 +659,8 @@ function calendar(jsRes)
 	} else {
 	    b--;
 	}
+
+	backButton.title = '';
 
 	prevMonth.enabled = 'false';
 
