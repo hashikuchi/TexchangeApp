@@ -263,7 +263,7 @@ function calendar(jsRes)
 	    fairDate[i] = tempData[0];
 	    result = fairDate[i].split("-");
 	    byear[i]  = result[0];
-	    bmonth[i] = result[1];
+	    bmonth[i] = result[1] - 1;
 	    bday[i]   = parseInt(result[2]);
 	    bvenue[i] = jsRes[i].venue;
 	}
@@ -369,6 +369,7 @@ function calendar(jsRes)
     // Calendar Main Function
     var calView = function(a, b, c)
     {
+	
 	// use to check that the selected day is today
 	var currentDate = new Date();
 	currentMonth = currentDate.getMonth();
@@ -382,7 +383,6 @@ function calendar(jsRes)
 	    layout : 'horizontal',
 	    width: '322dp',
 	    height : 'auto',
-	    //	top : '50dp'
 	    top : '150dp'
 	});
 
@@ -392,7 +392,7 @@ function calendar(jsRes)
 	var dayOfWeek = new Date(a, b, 1).getDay();
 	var daysInLastMonth = 32 - new Date(a, b - 1, 32).getDate();
 	var daysInNextMonth = (new Date(a, b, daysInMonth).getDay()) - 6;
-	
+
 	// set initial day number
 	var dayNumber = daysInLastMonth - dayOfWeek + 1;
 	
@@ -401,7 +401,7 @@ function calendar(jsRes)
 	{
 	    mainView.add(new dayView({
 		year: a,
-		month: b,
+		month: b - 1,
 		day : dayNumber,
 		color : '#8e959f',
 		current : 'no',
@@ -419,7 +419,7 @@ function calendar(jsRes)
 	    var newDay = new dayView
 	    ({
 		year: a,
-		month: b + 1,
+		month: b,
 		day : dayNumber,
 		color : '#3a4756',
 		current : 'yes',
@@ -440,7 +440,6 @@ function calendar(jsRes)
 		    newDay.color = 'white'
 		}
 		newDay.backgroundColor = 'orange'; // today's first color
-		backButton.title = newDay.venue;
 		oldDay = newDay;
 	    }
 	    dayNumber++;
@@ -452,7 +451,7 @@ function calendar(jsRes)
 	{
 	    mainView.add(new dayView({
 		year: a,
-		month: b + 2,
+		month: b + 1,
 		day : dayNumber,
 		color : '#8e959f',
 		current : 'no',
@@ -463,9 +462,9 @@ function calendar(jsRes)
 
 	// this is the new "clicker" function,
 	// although it doesn't have a name anymore, it just is.
-	mainView.addEventListener('click', function(e) {
+	mainView.addEventListener('click', function(e) {	    
 	    if (e.source.current == 'yes') {
-
+		
 		// reset last day selected
 		if (oldDay != undefined && oldDay.day == dayOfMonth &&
 		    b == currentMonth && a == currentYear) {
@@ -612,7 +611,7 @@ function calendar(jsRes)
     slidePrev.left = screenWidth;
 
     // Next Month Click Event
-    nextMonth.addEventListener('click', function() {
+    nextMonth.addEventListener('click', function(e) {
 	if (b == 11) {
 	    b = 0;
 	    a++;
@@ -660,13 +659,13 @@ function calendar(jsRes)
 	    b--;
 	}
 
-	backButton.title = '';
+	backButton.title = ''; // clear box
 
 	prevMonth.enabled = 'false';
 
 	thisCalendarView.animate(slidePrev);
 	prevCalendarView.animate(slideReset);
-	
+
 	setTimeout(function() {
 	    thisCalendarView.left = screenWidth + 'dp';
 	    if (needToChangeSize == false) {
