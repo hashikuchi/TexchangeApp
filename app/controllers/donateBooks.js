@@ -15,24 +15,10 @@ giveMeInfoClient.onload
     var res = this.responseText; // bookfair info with JSON format
     if (!res)
     {
-	alert("No response found...");
+	alert("データを取得できませんでした");
 	return;
     }
-    Ti.API.info("The response is " + res);
     var jsRes = JSON.parse(res); // convert to a JS object
-
-    // the judgement
-    // for (var i = 0; i < jsRes.length; i++)
-    // {
-    // 	if (ad == byear[i] && m == bmonth[i] && d == bdate[i])
-    // 	{
-    // 	    backButton.title = "[古本市開催!]";
-    // 	}
-    // 	else
-    // 	{
-    // 	    backButton.title = "Nothing in particular";
-    // 	}
-    // }
 
     calendar(jsRes);
 };
@@ -40,6 +26,7 @@ giveMeInfoClient.onload
 giveMeInfoClient.onerror
     = function(e) 
 {
+    alert("通信エラー");
     Ti.API.debug(e.error);
 };
 
