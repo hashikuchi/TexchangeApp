@@ -460,6 +460,7 @@ function calendar(jsRes)
 	    dayNumber++;
 	};
 
+
 	// this is the new "clicker" function,
 	// although it doesn't have a name anymore, it just is.
 	mainView.addEventListener('click', function(e) {	    
@@ -498,7 +499,7 @@ function calendar(jsRes)
 		    {
 			oldDay.color = '#3a4756';
 		    }
-		    oldDay.backgroundColor = '#FFDCDCDF'
+		    oldDay.backgroundColor = '#FFDCDCDF';
 		}
 		if (oldDay != undefined)
 		{
@@ -531,6 +532,15 @@ function calendar(jsRes)
 		oldDay = e.source;
 	    }
 	});
+
+	mainView.getOldDay = function()
+	{
+	    return oldDay;
+	}
+	// mainView.clearOldDay = function()
+	// {
+	//     oldDay = undefined;
+	// }
 
 	return mainView;
     };
@@ -619,6 +629,34 @@ function calendar(jsRes)
 	    b++;
 	}
 
+	oldDay = thisCalendarView.getOldDay();
+	if (oldDay != undefined)
+	{
+	    if (oldDay.backgroundColor == 'grey' &&
+		oldDay.text != '市')
+	    {
+		oldDay.color = '#3a4756';
+		oldDay.backgroundColor = '#FFDCDCDF';
+	    }
+	    else if (oldDay.backgroundColor == '#D05800' &&
+		     oldDay.text != '市')
+	    {
+		oldDay.color = '#3a4756';
+		oldDay.backgroundColor = 'orange';
+	    }
+	    else if (oldDay.backgroundColor == 'grey' &&
+		     oldDay.text == '市')
+	    {
+		oldDay.color = '#006400';
+		oldDay.backgroundColor = '#FFDCDCDF';
+	    }
+	    else
+	    {
+		oldDay.color = '#006400';
+		oldDay.backgroundColor = 'orange';
+	    }
+	}
+
 	backButton.title = ''; // clear box
 
 	nextMonth.enabled = 'false';
@@ -659,6 +697,34 @@ function calendar(jsRes)
 	    b--;
 	}
 
+	oldDay = thisCalendarView.getOldDay();
+	if (oldDay != undefined)
+	{
+	    if (oldDay.backgroundColor == 'grey' &&
+		oldDay.text != '市')
+	    {
+		oldDay.color = '#3a4756';
+		oldDay.backgroundColor = '#FFDCDCDF';
+	    }
+	    else if (oldDay.backgroundColor == '#D05800' &&
+		     oldDay.text != '市')
+	    {
+		oldDay.color = '#3a4756';
+		oldDay.backgroundColor = 'orange';
+	    }
+	    else if (oldDay.backgroundColor == 'grey' &&
+		     oldDay.text == '市')
+	    {
+		oldDay.color = '#006400';
+		oldDay.backgroundColor = '#FFDCDCDF';
+	    }
+	    else
+	    {
+		oldDay.color = '#006400';
+		oldDay.backgroundColor = 'orange';
+	    }
+	}
+	
 	backButton.title = ''; // clear box
 
 	prevMonth.enabled = 'false';
