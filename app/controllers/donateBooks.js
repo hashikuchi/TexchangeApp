@@ -12,7 +12,8 @@ var giveMeInfoClient = Ti.Network.createHTTPClient();
 giveMeInfoClient.onload
     =  function(e)
 {
-    var res = this.responseText; // bookfair info with JSON format
+    // bookfair info with JSON format
+    var res = this.responseText; 
     if (!res)
     {
 	alert("データを取得できませんでした");
@@ -238,21 +239,28 @@ function calendar(jsRes)
     {
 	// managing bookfair info
 	var fairDate = new Array(jsRes.length);
-	var result = new Array(3);               // year, month, day
-	var byear = new Array(fairDate.length);  // bookfair year
-	var bmonth = new Array(fairDate.length); // bookfair month
-	var bday = new Array(fairDate.length);   // bookfair day
-	var bvenue = new Array(jsRes.length);    // bookfair venue
+	var byear = new Array(fairDate.length);   // bookfair year
+	var bmonth = new Array(fairDate.length);  // bookfair month
+	var bday = new Array(fairDate.length);    // bookfair day
+	var stime = new Array(jsRes.length);      // bookfair starting time
+	var shour = new Array(jsRes.length);      // starting hour
+	var smin = new Array(jsRes.length);       // starting min
+	var etime = new Array(jsRes.length);      // bookfair ending time
+	var bvenue = new Array(jsRes.length);     // bookfair venue
+	var croom = new Array(jsRes.length);      // classroom
 	for (var i = 0; i < jsRes.length; i++)
 	{
-	    var fairDateAndTime = jsRes[i].date;
-	    var tempData = fairDateAndTime.split(' ');
-	    fairDate[i] = tempData[0];
-	    result = fairDate[i].split("-");
-	    byear[i]  = result[0];
-	    bmonth[i] = result[1] - 1;
+	    fairDate = jsRes[i].date;
+	    var result = fairDate.split("-");
+	    byear[i]  = result[0];	    
+	    bmonth[i] = result[1] - 1; // because month starts from 0
 	    bday[i]   = parseInt(result[2]);
+	    stime = jsRes[i].starting_time;
+	    var result2 = stime.split(":");
+	    shour[i] = parseInt(result2[0]);
+	    smin[i] = parseInt(result2[1]);
 	    bvenue[i] = jsRes[i].venue;
+	    croom[i] = jsRes[i].classroom;
 	}
 
 	var found = 0;
@@ -262,7 +270,16 @@ function calendar(jsRes)
 		e.day == bday[i])
 	    {
 		found = 1;
+		if (smin[i] == 0)
+		{
+		    var startTime = shour[i] + '時';
+		}
+		else
+		{
+		    var startTime = shour[i] + '時' + smin[i] + '分';
+		}
 		var venue = bvenue[i]; // setting up the venue!
+		var classroom = croom[i];
 		break;
 	    }
 	}
@@ -281,7 +298,7 @@ function calendar(jsRes)
 		backgroundColor : '#FFDCDCDF',
 		text : '市',
 		day: e.day,
-		venue: '[古本市]\n' + venue + 'にて開催!',
+		venue: '[古本市]\n' + startTime + 'より\n' + venue + ' ' + classroom + 'にて開催!',
 		textAlign : 'center',
 		color : e.color,
 		font : {
