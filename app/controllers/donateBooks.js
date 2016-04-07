@@ -317,12 +317,13 @@ function calendar(jsRes)
 	    }
 	    var label = Ti.UI.createLabel({
 		current : e.current,
+		bookfair: true,
 		width : '46dp',
 		height : '44dp',
 		backgroundColor : '#FFDCDCDF',
-		text : '市',
+		text : e.day,
 		day: e.day,
-		venue: '[古本市]\n' + time + '\n'
+		textbox: '[古本市]\n' + time + '\n'
 		    + venue + ' ' + classroom + 'にて開催!',
 		textAlign : 'center',
 		color : e.color,
@@ -336,12 +337,13 @@ function calendar(jsRes)
 	{
 	    var label = Ti.UI.createLabel({
 		current : e.current,
+		bookfair: false,
 		width : '46dp',
 		height : '44dp',
 		backgroundColor : '#FFDCDCDF',
 		text : e.day,
 		day: e.day,
-		venue: '',
+		textbox: '',
 		textAlign : 'center',
 		color : e.color,
 		font : {
@@ -460,7 +462,7 @@ function calendar(jsRes)
 	    var oldDay;
 	    if (newDay.day == dayOfMonth && b == currentMonth && a == currentYear)
 	    {
-		if (newDay.text == '市')
+		if (newDay.bookfair == true)
 		{
 		    newDay.color = '#006400';
 		}
@@ -498,7 +500,7 @@ function calendar(jsRes)
 		// reset last day selected
 		if (oldDay != undefined && oldDay.day == dayOfMonth &&
 		    b == currentMonth && a == currentYear) {
-		    if (oldDay.text == '市')
+		    if (oldDay.bookfair == true)
 		    {
 			oldDay.color = '#006400';
 		    }
@@ -510,7 +512,7 @@ function calendar(jsRes)
 		    oldDay.backgroundColor = 'orange';
 		} else if (oldDay == undefined) {
 		    // like after moving to other months
-		    if (e.source.text == '市')
+		    if (e.source.bookfair == true)
 		    {
 			// do nothing
 		    }
@@ -520,7 +522,7 @@ function calendar(jsRes)
 		    }
 		    e.source.backgroundColor = 'grey';
 		} else {
-		    if (oldDay.text == '市')
+		    if (oldDay.bookfair == true)
 		    {
 			oldDay.color = '#006400'
 		    }
@@ -542,7 +544,7 @@ function calendar(jsRes)
 		}
 
 		// set window title with day selected
-		backButton.title = e.source.venue;
+		backButton.title = e.source.textbox;
 
 		// set characteristic of the day selected
 		if (e.source.day == dayOfMonth && b == currentMonth &&
@@ -566,10 +568,6 @@ function calendar(jsRes)
 	{
 	    return oldDay;
 	}
-	// mainView.clearOldDay = function()
-	// {
-	//     oldDay = undefined;
-	// }
 
 	return mainView;
     };
