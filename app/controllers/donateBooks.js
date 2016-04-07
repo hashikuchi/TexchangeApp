@@ -245,7 +245,11 @@ function calendar(jsRes)
 	var stime = new Array(jsRes.length);      // bookfair starting time
 	var shour = new Array(jsRes.length);      // starting hour
 	var smin = new Array(jsRes.length);       // starting min
+	
 	var etime = new Array(jsRes.length);      // bookfair ending time
+	var ehour = new Array(jsRes.length);
+	var emin = new Array(jsRes.length);
+	
 	var bvenue = new Array(jsRes.length);     // bookfair venue
 	var croom = new Array(jsRes.length);      // classroom
 	for (var i = 0; i < jsRes.length; i++)
@@ -255,10 +259,17 @@ function calendar(jsRes)
 	    byear[i]  = result[0];	    
 	    bmonth[i] = result[1] - 1; // because month starts from 0
 	    bday[i]   = parseInt(result[2]);
+	    
 	    stime = jsRes[i].starting_time;
 	    var result2 = stime.split(":");
 	    shour[i] = parseInt(result2[0]);
 	    smin[i] = parseInt(result2[1]);
+
+	    etime = jsRes[i].ending_time;
+	    var result3 = etime.split(":");
+	    ehour[i] = parseInt(result3[0]);
+	    emin[i] = parseInt(result3[1]);
+	    
 	    bvenue[i] = jsRes[i].venue;
 	    croom[i] = jsRes[i].classroom;
 	}
@@ -270,14 +281,27 @@ function calendar(jsRes)
 		e.day == bday[i])
 	    {
 		found = 1;
-		if (smin[i] == 0)
+		if (smin[i] == 0 && emin[i] == 0)
 		{
-		    var startTime = shour[i] + '時';
+		    var time = shour[i] + '時' + ' - '
+			+ ehour[i] + '時';
+		}
+		else if (smin[i] == 0 && emin[i] != 0)
+		{
+		    var time = shour[i] + '時' + ' - '
+			+ ehour[i] + '時' + emin[i] + '分';
+		}
+		else if (smin[i] != 0 && emin[i] == 0)
+		{
+		    var time = shour[i] + '時' + smin[i] + '分'
+			+ ' - ' + ehour[i] + '時';
 		}
 		else
 		{
-		    var startTime = shour[i] + '時' + smin[i] + '分';
+		    var time = shour[i] + '時' + smin[i] + '分'
+			+ ' - ' + ehour[i] + '時' + emin[i] + '分';
 		}
+		
 		var venue = bvenue[i]; // setting up the venue!
 		var classroom = croom[i];
 		break;
@@ -298,7 +322,8 @@ function calendar(jsRes)
 		backgroundColor : '#FFDCDCDF',
 		text : '市',
 		day: e.day,
-		venue: '[古本市]\n' + startTime + 'より\n' + venue + ' ' + classroom + 'にて開催!',
+		venue: '[古本市]\n' + time + '\n'
+		    + venue + ' ' + classroom + 'にて開催!',
 		textAlign : 'center',
 		color : e.color,
 		font : {
