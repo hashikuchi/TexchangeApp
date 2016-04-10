@@ -1,0 +1,32 @@
+{
+	"test":{
+		"baseurl":"http://beak.sakura.ne.jp/texchg_test3",
+		"domain":"beak.sakura.ne.jp",
+		"cookiepath": "/texchg_test3/",
+		"twitter":{
+			"consumerKey": "XStSxQ8Pu70NabWZDuQ6CdwW7",
+			"consumerSecret": "X3fFKTgtkDYi4TFRSaTsIaHOfseFmQsVbCoE9EMvD7zqL3iev2"
+		},
+		"facebook":{
+			"appid":"616913395091992"
+		},
+		"scandit":{
+			"appKey": "3AU15vnIEeOTtjZAwaMb8kJj8PCFuC6h6olUpIUD8eI"
+		}
+	},
+	"production":{
+		"baseurl":"http://texchg.com",
+		"domain":"texchg.com",
+		"cookiepath": "/wp-admin",
+		"twitter":{
+			"consumerKey": "NOJcadQplQ37rKTxcpT8g",
+			"consumerSecret": "4vXEi5PfAUjDS6pauS3LL4FpQWqfgTij1CZVRiVkaUk"
+		},
+		"facebook":{
+			"appid":"523987747717891"
+		},
+		"scandit":{
+			"appKey": "3AU15vnIEeOTtjZAwaMb8kJj8PCFuC6h6olUpIUD8eI"
+		}
+	}
+}

@@ -54,3 +54,35 @@ Alloy.Globals.addCookieValueToHTTPClient = function(httpClient){
 };
 
 Alloy.Globals.deviceToken = null;
+
+Alloy.Globals.createCommonHeader = function(elements){
+	var headerView = Ti.UI.createView({
+		borderColor: "black",
+		borderWidth: 1,
+		height: 70,
+		top: 0
+	});
+	var hamburger = Ti.UI.createImageView({
+		image: "/images/hamburger.png",
+		left: 20,
+		top: 30
+	});
+	hamburger.addEventListener("touchend", function(){
+		var menuWin = Alloy.createController("menu").getView();
+		var animation = Ti.UI.createAnimation({
+			duration: 200,
+			left:0
+		});
+		menuWin.open();
+		menuWin.getChildren()[0].animate(animation);
+	});
+	headerView.add(hamburger);
+	
+	if(elements && elements.length > 0){
+		for(var i=0; i<elements.length; i++){
+			headerView.add(elements[i]);
+		}	
+	}
+	return headerView;
+};
+

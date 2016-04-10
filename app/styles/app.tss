@@ -1,6 +1,11 @@
 ".container": {
-	backgroundColor: "white"
+	backgroundColor: "white",
+	borderWidth: 1,
+	borderColor: "black",
+	viewShadowColor: "black",
+	opacity:1.0
 },
+
 ".cancel": {
 	backgroundColor: "#d3d3d3"
 },

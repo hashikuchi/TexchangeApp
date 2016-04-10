@@ -1,0 +1,12 @@
+//
+// PLACE ANY BUILD DEFINITIONS IN THIS FILE AND THEY WILL BE 
+// PICKED UP DURING THE APP BUILD FOR YOUR MODULE
+//
+// see the following webpage for instructions on the settings
+// for this file:
+// http://developer.apple.com/mac/library/documentation/DeveloperTools/Conceptual/XcodeBuildSystem/400-Build_Configurations/build_configs.html
+// 
+FRAMEWORK_SEARCH_PATHS=$(inherited) $(SRCROOT)/../../modules/iphone/com.mirasense.scanditsdk/4.11.0/platform /Library/Application\ Support/Titanium/modules/iphone/com.mirasense.scanditsdk/4.11.0/platform ~/Library/Application\ Support/Titanium/modules/iphone/com.mirasense.scanditsdk/4.11.0/platform
+
+OTHER_LDFLAGS=$(inherited) -framework CoreVideo -framework CoreMedia -framework CoreGraphics -framework AVFoundation -framework AudioToolbox -framework UIKit -framework QuartzCore -framework SystemConfiguration -liconv -lz -lc++ -framework ScanditBarcodeScanner -fobjc-arc
+

@@ -1,4 +1,3 @@
-var Cloud = require("ti.cloud");
 var facebook = Alloy.Globals.Facebook;
 var data;
 var twitter = Alloy.Globals.Twitter;
@@ -39,11 +38,7 @@ function login(){
 				alert('IDとパスワードの組合せが不正です。');	
 			}else{
 				rememberme('texchange');
-				registerDeviceToken();
-				var mainWin = Alloy.createController('main',{
-					url: Alloy.Globals.config.baseurl +  '/members/' + $.userId.value
-				}).getView();
-
+				var mainWin = Alloy.createController('searchBooks').getView();
 				if(osname == 'android'){
 					// Save cookie for Android WebView
 					var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
@@ -133,7 +128,6 @@ function loginByTwitter(){
             twitter.request('1.1/account/verify_credentials.json', {}, {}, 'GET', function (e) {
                 if (e.success) {
                 	rememberme('twitter');
-                    registerDeviceToken();
                   	jumpToTwitterLoginLink();
                 } else {
 					alert(e.result);
@@ -145,56 +139,6 @@ function loginByTwitter(){
         }
     });
     twitter.authorize();
-}
-
-// setting methods for push notifications
-// Process incoming push notifications
-
-// function called when device token is gotten
-// Save the device token for subsequent API calls
-function deviceTokenSuccess(e) {
-    Alloy.Globals.deviceToken = e.deviceToken;
-    subscribeToChannel();
-}
-
-// function called when device token cannot be taken
-function deviceTokenError(e) {
-    alert('プッシュ通知の登録に失敗しました。 ' + e.error);
-}
-
-function subscribeToChannel() {
-	Cloud.PushNotifications.subscribeToken({
-        device_token: Alloy.Globals.deviceToken,
-        channel: 'news_alerts',
-        type: Ti.Platform.name == 'android' ? 'android' : 'ios'
-    }, function (e) {
-        if (e.success) {
-			// do nothing
-        } else {
-            alert('Error:\n' + ((e.error && e.message) || JSON.stringify(e)));
-        }
-    });
-}
-
-function registerDeviceToken(){
-	var url = Alloy.Globals.config.baseurl + '/wp-admin/admin-ajax.php';
-	var registerClient = Ti.Network.createHTTPClient({
-		onload: function(e){
-			Ti.API.info("registerDeviceToken: device token is registered successfully");
-		},
-		onerror: function(e){
-			Ti.API.debug(e.error);
-			var errorDialog = Alloy.Globals.getConnectionErrorDialog();
-			errorDialog.show();
-		},
-		timeout: 5000
-	});
-	registerClient.open("POST", url);
-	Ti.API.info("device token is " + Alloy.Globals.deviceToken);
-	registerClient.send({
-		'action': 'register_app_information',
-		'deviceToken': Alloy.Globals.deviceToken
-	});
 }
 
 function rememberme(type){
@@ -223,72 +167,6 @@ function openRegisterForm(){
 Ti.API.info("osname =" + osname);
 Ti.API.info("osname =" + osversion);
 
-
-// DELETE PUSH NOTIFICATION TEMPORARILY
-// プッシュ通知登録を一時的に削除します。
-// 必要になった段階で再活性化してください
-/**
-if(osname == "android"){
-	var CloudPush= require("ti.cloudpush"); // import cloud push module for Android devices
-	// Obtain device token for android devices
-	CloudPush.retrieveDeviceToken({
-    	success: deviceTokenSuccess,
-    	error: deviceTokenError
-	});
-}else if(osname == "iphone"){
-	if(osversion.split(".")[0] >= 8){
-		// ios8 or later
-		function registerForPush() {
-	        Ti.Network.registerForPushNotifications({
-	            success: deviceTokenSuccess,
-	            error: deviceTokenError
-	        });
-	        // Remove event listener once registered for push notifications
-	        Ti.App.iOS.removeEventListener('usernotificationsettings', registerForPush);
-	    };
-
-		// Wait for user settings to be registered before registering for push notifications
-	    Ti.App.iOS.addEventListener('usernotificationsettings', registerForPush);
-
-	    // Register notification types to use
-	    Ti.App.iOS.registerUserNotificationSettings({
-		    types: [
-	            Ti.App.iOS.USER_NOTIFICATION_TYPE_ALERT,
-	            Ti.App.iOS.USER_NOTIFICATION_TYPE_SOUND,
-	            Ti.App.iOS.USER_NOTIFICATION_TYPE_BADGE
-	        ]
-	    });
-	}else{
-		// ios7 or older
-		Ti.Network.registerForPushNotifications({
-		    // Specifies which notifications to receive
-		    types: [
-		        Ti.Network.NOTIFICATION_TYPE_BADGE,
-		        Ti.Network.NOTIFICATION_TYPE_ALERT,
-		        Ti.Network.NOTIFICATION_TYPE_SOUND
-		    ],
-		    success: deviceTokenSuccess,
-		    error: deviceTokenError
-		});
-	}
-}
-*/
-
-// TODO call registerUserNotificationSettings method here
-
-// this method is for iOS devices only
-/* moved to if statement above...
-Ti.Network.registerForPushNotifications({
-    // Specifies which notifications to receive
-    types: [
-        Ti.Network.NOTIFICATION_TYPE_BADGE,
-        Ti.Network.NOTIFICATION_TYPE_ALERT,
-        Ti.Network.NOTIFICATION_TYPE_SOUND
-    ],
-    success: deviceTokenSuccess,
-    error: deviceTokenError
-});
-*/
 try{
 	data = JSON.parse(Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'appData.txt').read());
 	$.remembermeSwitch.value = data.rememberme;
