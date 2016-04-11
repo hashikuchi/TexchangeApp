@@ -7,26 +7,37 @@ searchBox.addEventListener("return", function(e){
 	var searchWin = Alloy.createController('searchBooks').getView();
 	searchWin.open();
 });
+ 
+var getCategoriesTreeClient = Ti.Network.createHTTPClient({
+	onload: function(e){
+		// Get categoris data, and create a categories table.
+		var categoriesTree = JSON.parse(this.responseText);
+		var header = Ti.UI.createTableViewSection({headerTitle: "カテゴリから検索"});		
+		var categoriesData = [header];
+		
+		for(var i=0;i<categoriesTree.length;i++){
+			var mainCategory = categoriesTree[i];
+			var mainSection = Ti.UI.createTableViewSection({headerTitle: mainCategory.cat_name});
+			var subCategories = mainCategory.subcategories;
+			for(var elm in subCategories){
+				var subCategory = subCategories[elm];
+				mainSection.add(createRow(subCategory.cat_name));
+			}
+			categoriesData.push(mainSection);
+		}
+		var categoriesTable = Ti.UI.createTableView({data:categoriesData});
+		categoriesTable.top = 70;
+		
+		$.searchMenuWin.add(categoriesTable);
+	}
+});
+
+getCategoriesTreeClient.open("POST", Alloy.Globals.ajaxUrl);
+getCategoriesTreeClient.send({
+	action: "echo_categories_tree_json"
+});
 
 $.searchMenuWin.add(Alloy.Globals.createCommonHeader([searchBox]));
-
-var header = Ti.UI.createTableViewSection({headerTitle: "カテゴリから検索"});
-var sectionNagoya = Ti.UI.createTableViewSection({headerTitle: "名古屋大学"});
-sectionNagoya.add(createRow("文学部"));
-sectionNagoya.add(createRow("理学部"));
-sectionNagoya.add(createRow("医学部"));
-
-var sectionNanzan = Ti.UI.createTableViewSection({headerTitle: "南山大学"});
-sectionNanzan.add(createRow("経済学部"));
-sectionNanzan.add(createRow("商学部"));
-sectionNanzan.add(createRow("工学部"));
-
-var categoriesData = [header, sectionNagoya, sectionNanzan];
-
-var categoriesTable = Ti.UI.createTableView({data:categoriesData});
-categoriesTable.top = 70;
-
-$.searchMenuWin.add(categoriesTable);
 
 function createRow(title){
 	var row = Ti.UI.createTableViewRow({
