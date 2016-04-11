@@ -172,16 +172,11 @@ exports.IMPLICIT_NAMESPACES = {
 	Option: NS_ALLOY_ABSTRACT,
 	Options: NS_ALLOY_ABSTRACT,
 	Templates: NS_ALLOY_ABSTRACT,
-	Preview: NS_ALLOY_ABSTRACT,
-	Actions: NS_ALLOY_ABSTRACT,
 
 	// Ti.Android
 	Menu: NS_TI_ANDROID,
 	MenuItem: NS_TI_ANDROID,
 	ActionBar: NS_TI_ANDROID,
-
-	// Ti.UI.Android
-	CardView: 'Ti.UI.Android',
 
 	// Ti.Map
 	Annotation: NS_TI_MAP,
@@ -195,15 +190,12 @@ exports.IMPLICIT_NAMESPACES = {
 	CoverFlowView: NS_TI_UI_IOS,
 	DocumentViewer: NS_TI_UI_IOS,
 	NavigationWindow: NS_TI_UI_IOS,
-	SplitWindow: NS_TI_UI_IOS,
 	TabbedBar: NS_TI_UI_IOS,
 	Toolbar: NS_TI_UI_IOS,
-	PreviewContext: NS_TI_UI_IOS,
-	PreviewAction: NS_TI_UI_IOS,
-	PreviewActionGroup: NS_TI_UI_IOS,
 
 	// Ti.UI.iPad
 	Popover: NS_TI_UI_IPAD,
+	SplitWindow: NS_TI_UI_IPAD,
 
 	// Ti.UI.iPhone
 	NavigationGroup: isTitanium && Ti.Platform.osname === 'mobileweb' ?

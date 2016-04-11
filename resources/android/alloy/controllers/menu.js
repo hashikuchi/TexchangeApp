@@ -33,6 +33,8 @@ function Controller() {
     var $ = this;
     var exports = {};
     $.__views.menuWin = Ti.UI.createWindow({
+        opacity: 1,
+        backgroundColor: "transparent",
         id: "menuWin"
     });
     $.__views.menuWin && $.addTopLevelView($.__views.menuWin);
@@ -49,6 +51,11 @@ function Controller() {
     });
     __alloyId9.push($.__views.donateBooks);
     $.__views.menuTable = Ti.UI.createTableView({
+        opacity: .7,
+        backgroundColor: "black",
+        color: "white",
+        width: "60%",
+        right: "100%",
         data: __alloyId9,
         id: "menuTable"
     });
