@@ -38,7 +38,6 @@ function login(){
 				alert('IDとパスワードの組合せが不正です。');	
 			}else{
 				rememberme('texchange');
-				var mainWin = Alloy.createController('searchBooks').getView();
 				if(osname == 'android'){
 					// Save cookie for Android WebView
 					var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
@@ -46,7 +45,16 @@ function login(){
 						Ti.Network.addSystemCookie(cookie);
 					});
 				}
-				mainWin.open();
+				var getSearchResultClient = Ti.Network.createHTTPClient({
+					onload: function(e){
+						var searchWin = Alloy.createController('searchBooks', {data: this.responseText}).getView();
+						searchWin.open();
+					}
+				});
+				getSearchResultClient.open("POST", Alloy.Globals.ajaxUrl);
+				getSearchResultClient.send({
+					action: "echo_posts_data_json"
+				});
 				$.index.close(); // 戻るボタンで戻ってこれないように画面を閉じる
 			}
 		},

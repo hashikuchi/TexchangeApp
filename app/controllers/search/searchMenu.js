@@ -4,8 +4,17 @@ var searchBox = Ti.UI.createTextField({
 	color: "black"
 });
 searchBox.addEventListener("return", function(e){
-	var searchWin = Alloy.createController('searchBooks').getView();
-	searchWin.open();
+	var getKeywordSearchResultClient = Ti.Network.createHTTPClient({
+		onload: function(e){
+			var searchWin = Alloy.createController('searchBooks', {data: this.responseText}).getView();
+			searchWin.open();
+		}
+	});
+	getKeywordSearchResultClient.open("POST", Alloy.Globals.ajaxUrl);
+	getKeywordSearchResultClient.send({
+		action: "echo_posts_data_json",
+		keyword: this.value
+	});
 });
  
 var getCategoriesTreeClient = Ti.Network.createHTTPClient({
@@ -21,7 +30,7 @@ var getCategoriesTreeClient = Ti.Network.createHTTPClient({
 			var subCategories = mainCategory.subcategories;
 			for(var elm in subCategories){
 				var subCategory = subCategories[elm];
-				mainSection.add(createRow(subCategory.cat_name));
+				mainSection.add(createRow(subCategory.cat_name, subCategory.cat_ID));
 			}
 			categoriesData.push(mainSection);
 		}
@@ -39,14 +48,24 @@ getCategoriesTreeClient.send({
 
 $.searchMenuWin.add(Alloy.Globals.createCommonHeader([searchBox]));
 
-function createRow(title){
+function createRow(title, catId){
 	var row = Ti.UI.createTableViewRow({
 		title: title,
+		catId: catId,
 		color: "black"
 	});
 	row.addEventListener("click", function(e){
-		var searchWin = Alloy.createController('searchBooks').getView();
-		searchWin.open();
+		var getSearchResultClient = Ti.Network.createHTTPClient({
+			onload: function(e){
+				var searchWin = Alloy.createController('searchBooks', {data: this.responseText}).getView();
+				searchWin.open();
+			}
+		});
+		getSearchResultClient.open("POST", Alloy.Globals.ajaxUrl);
+		getSearchResultClient.send({
+			action: "echo_posts_data_json",
+			category: this.catId
+		});
 	});
 	return row;
 }
