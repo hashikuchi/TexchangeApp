@@ -3,7 +3,7 @@
 // Change the message below
 // Think carefully about the color and layout
 
-// $.mainWin.add(Alloy.Globals.createCommonHeader());
+$.mainWin.add(Alloy.Globals.createCommonHeader());
 
 // module: get bookfair information by ajax
 var url = 'http://beak.sakura.ne.jp/texchg_test2/wp-admin/admin-ajax.php';

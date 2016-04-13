@@ -15,3 +15,16 @@ glassIcon.addEventListener("touchend", function(e){
 $.mainWin.add(Alloy.Globals.createCommonHeader([glassIcon]));
 
 Ti.API.info(data);
+
+var testLabel = Ti.UI.createView({
+	backgroundColor: '#f00',
+	font: { fontsize: 48 },
+	text: "TOEIC(R)",
+	color: '#0f0',
+	width: 100,
+	height: 100,
+	right: 50,
+	top: 200,
+});
+
+$.mainWin.add(testLabel);
