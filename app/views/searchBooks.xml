@@ -2,22 +2,4 @@
  <Window id="mainWin" class="container">
   <Label text="search"/>          
  </Window>
-        <TabGroup backgroundColor="white" >
-            <Tab id="tab1" title="Tab 1" icon="KS_nav_views.png">
-                <Window id="win1" title="Tab 1">
-                   <Label id="label1" color="#999">Tab one</Label>
-                </Window>
-            </Tab>
-            <Tab id="tab2" title="Tab 2" icon="KS_nav_views.png">
-                <Window id="win2" title="Tab 2">
-                    <Label id="label2" color="#999">Tab two</Label>
-                </Window>
-            </Tab>
-            <Tab id="tab3" title="Tab 3" icon="KS_nav_views.png">
-                <Window id="win3" title="Tab 3">
-                    <Label id="label3" color="#999">Tab three</Label>
-                </Window>
-            </Tab>
-            <!-- Use the Require tag to include external Ti.UI.Tab views -->
-        </TabGroup>
 </Alloy>

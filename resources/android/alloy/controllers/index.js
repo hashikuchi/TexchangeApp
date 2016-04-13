@@ -18,14 +18,24 @@ function Controller() {
             onload: function() {
                 if (this.responseText.match("login_error")) alert("IDとパスワードの組合せが不正です。"); else {
                     rememberme("texchange");
-                    var mainWin = Alloy.createController("searchBooks").getView();
                     if ("android" == osname) {
                         var cookies = Ti.Network.getHTTPCookiesForDomain(Alloy.Globals.config.domain);
                         cookies.forEach(function(cookie) {
                             Ti.Network.addSystemCookie(cookie);
                         });
                     }
-                    mainWin.open();
+                    var getSearchResultClient = Ti.Network.createHTTPClient({
+                        onload: function() {
+                            var searchWin = Alloy.createController("searchBooks", {
+                                data: this.responseText
+                            }).getView();
+                            searchWin.open();
+                        }
+                    });
+                    getSearchResultClient.open("POST", Alloy.Globals.ajaxUrl);
+                    getSearchResultClient.send({
+                        action: "echo_posts_data_json"
+                    });
                     $.index.close();
                 }
             },
