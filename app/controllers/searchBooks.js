@@ -29,24 +29,19 @@ for (var i = 0; i < parsedData.length; i++)
 	=  function(e)
     {
 	// urls of book images
-	var res = this.responseText;
-	Ti.API.info("res = " + res);
+	var res = JSON.parse(this.responseText);
+	Ti.API.info("ID, URL: " + res.ID + ', ' + res.URL);
 
-	if (!res)
+	if (res)
+	{
+	    listBooks(j, res.ID, res.URL);
+	}
+	else
 	{
 	    alert("データを取得できませんでした");
 	    return;
 	}
-	else
-	{
-	    imgURL[j] = res;
-	}
 	
-	if (j == parsedData.length - 1) // if the last element comes
-	{
-	    Ti.API.info("the last element!");
-	    listBooks(imgURL);
-	}
 	j += 1;
     };
 
@@ -57,7 +52,6 @@ for (var i = 0; i < parsedData.length; i++)
 	Ti.API.debug(e.error);
     };
 
-    Ti.API.info("parsedData[" + i + "].ID = " + parsedData[i].ID);
     giveMeImgURLClient.open('POST', Alloy.Globals.ajaxUrl);
     giveMeImgURLClient.send({
 	action: "echo_thumbnail_url",
@@ -71,55 +65,92 @@ function pixelsToDPUnits(pixel)
     return (pixel / (Titanium.Platform.displayCaps.dpi / 160));
 }
 
-function listBooks(iu)
+function limitCharNum(pt)
 {
-    var screenWidthActual = pixelsToDPUnits(Ti.Platform.displayCaps.platformWidth);
-    var screenHeightActual = pixelsToDPUnits(Ti.Platform.displayCaps.platformHeight);
-
-    var properTop = screenHeightActual / 4 - 50;
-    
-    for (var i = 0; i < iu.length; i++)
+    for (var i = 0; i < pt.length; i++) Ti.API.info(pt[i]);
+    var new_post_title = '';
+    for (var i = 0; i < 19; i++)
     {
-	Ti.API.info(parsedData[i].post_title);
-	if (i % 2 == 0)
-	{
-	    var thumbnail = Ti.UI.createImageView({
-		image: iu[i],
-		width: '110px',
-		height: '160px',
-		left: '20%',
-		top: properTop,
-	    });
-	    var title = Ti.UI.createLabel({
-		color: '#00A935',
-		width: '40%',
-		height: '30%',
-		left: '10%',
-		top: properTop + 50,
-		font: { fontsize: 5, fontFamily: 'Helvetica Neue' },
-		text: parsedData[i].post_title,
-	    });
-	}
-	else
-	{
-	    var thumbnail = Ti.UI.createImageView({
-		image: iu[i],
-		right: '20%',
-		top: properTop,
-	    });
-	    var title = Ti.UI.createLabel({
-		color: '#00A935',
-		width: '40%',
-		height: '30%',
-		left: screenWidthActual * 3 / 4 - 55,
-		top: properTop + 50,
-		font: { fontsize: 5, fontFamily: 'Helvetica Neue' },
-		text: parsedData[i].post_title,
-	    });
-	    properTop += screenHeightActual / 3;
-	}
-
-	$.mainWin.add(thumbnail);
-	$.mainWin.add(title);
+	if (i == pt.length) break;
+	new_post_title += pt[i];
+	if (i == 18) new_post_title += '...';
     }
+    return new_post_title;
+}
+
+var screenWidthActual = pixelsToDPUnits(Ti.Platform.displayCaps.platformWidth);
+var screenHeightActual = pixelsToDPUnits(Ti.Platform.displayCaps.platformHeight);
+var properTop = screenHeightActual / 20;
+
+var scrollView = Ti.UI.createScrollView({
+    top: 70, // this should be changed
+    showVerticalScrollIndicator: true,
+    showHorizontalScrollIndicator: true,
+});
+
+function listBooks(num, id, url)
+{
+    for (var i = 0; i < parsedData.length; i++)
+    {
+	if (parsedData[i].ID == id)
+	{
+	    var post_title = parsedData[i].post_title;
+	    break;
+	}
+    }
+    
+    if (num % 2 == 0)
+    {
+	var thumbnail = Ti.UI.createImageView({
+	    image: url,
+	    width: pixelsToDPUnits(110),
+	    height: pixelsToDPUnits(160),
+	    left: (screenWidthActual - (pixelsToDPUnits(110) * 2)) / 3,
+	    top: properTop,
+	});
+	var txt = limitCharNum(post_title)
+	var title = Ti.UI.createLabel({
+	    width: screenWidthActual * 30 / 100,
+	    height: '56dp',
+	    left: (screenWidthActual - (pixelsToDPUnits(110) * 2)) / 3
+		- screenWidthActual * 15 / 100 + pixelsToDPUnits(55),
+	    top: properTop + pixelsToDPUnits(160),
+
+	    color: '#00A935',	    
+	    font: { fontsize: 5, fontFamily: 'Helvetica Neue' },
+	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	    verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
+	    text: txt,
+	});
+    }
+    else
+    {
+	var thumbnail = Ti.UI.createImageView({
+	    image: url,
+	    width: '110px',
+	    height: '160px',
+	    left: ((screenWidthActual - (pixelsToDPUnits(110) * 2)) / 3) * 2
+		+ pixelsToDPUnits(110),
+	    top: properTop,
+	});
+	var txt = limitCharNum(post_title)
+	var title = Ti.UI.createLabel({
+	    color: '#00A935',
+	    width: screenWidthActual * 30 / 100,
+	    height: '56dp',
+	    left: ((screenWidthActual - (pixelsToDPUnits(110) * 2)) / 3) * 2
+		+ pixelsToDPUnits(110) - screenWidthActual * 15 / 100
+		+ pixelsToDPUnits(55),
+	    top: properTop + pixelsToDPUnits(160),
+	    font: { fontsize: 5, fontFamily: 'Helvetica Neue' },
+	    textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	    verticalAlign: Ti.UI.TEXT_VERTICAL_ALIGNMENT_TOP,
+	    text: txt,
+	});
+	properTop += screenHeightActual / 3;
+    }
+
+    scrollView.add(thumbnail);
+    scrollView.add(title);
+    $.mainWin.add(scrollView);
 }
