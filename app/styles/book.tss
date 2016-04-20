@@ -1,0 +1,28 @@
+".title" : {
+  font: {
+  	fontSize: "16pt"
+  },
+  color: "#000000",
+  width: "80%"
+},
+
+".book-body": {
+  font: {
+  	fontSize: "12pt"
+  },
+  color: "#555555"
+},
+
+".book-image":{
+  borderColor: "#555555",
+  borderWidth: 1
+},
+
+".book-info": {
+  borderColor: "#000000",
+  borderWidth: 1,
+  height: "30%",
+  width: "80%",
+  borderRadius: "20px",
+  backgroundColor: "#66CA3B"
+}
