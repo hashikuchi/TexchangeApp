@@ -1,5 +1,4 @@
 <Alloy>
  <Window id="mainWin" class="container">
-  <Label text="search"/>          
  </Window>
 </Alloy>
