@@ -1,0 +1,13 @@
+<Alloy>
+	<Window class="container" layout="vertical">
+		<Label id="book_title" class="title" top="5%"></Label>
+		<Label id="book_author" class="book-body" top="3%"></Label>
+		<ImageView id="book_image" class="book-image" top="5%" height="30%"/>
+		<View class="book-info" layout="vertical" top="8%">
+			<Label id="book_category" class="book-body" top="10%"></Label>
+			<Label id="book_point" class="book-body" top="6%"></Label>
+			<Label id="book_price" class="book-body" top="6%"></Label>
+			<Label id="book_count" class="book-body" top="6%"></Label>
+		</View>
+	</Window>
+</Alloy>
