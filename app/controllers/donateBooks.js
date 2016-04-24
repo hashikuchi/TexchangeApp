@@ -6,7 +6,7 @@
 $.mainWin.add(Alloy.Globals.createCommonHeader());
 
 // module: get bookfair information by ajax
-var url = 'http://beak.sakura.ne.jp/texchg_test2/wp-admin/admin-ajax.php';
+var url = Alloy.Globals.ajaxUrl;
 var giveMeInfoClient = Ti.Network.createHTTPClient();
 
 giveMeInfoClient.onload
