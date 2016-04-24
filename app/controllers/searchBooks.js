@@ -150,6 +150,7 @@ function listBooks(num, id, url) {
     		thumbnail.addEventListener('click', function(e){
     			openBookPage({
     				title: post_title,
+    				post_id: id,
     				author: customData.author,
     				image_url: url,
     				price: customData.price,
@@ -159,6 +160,7 @@ function listBooks(num, id, url) {
     		title.addEventListener('click', function(e){
     			openBookPage({
     				title: post_title,
+    				post_id: id,
     				author: customData.author,
     				image_url: url,
     				price: customData.price,
@@ -180,6 +182,7 @@ function listBooks(num, id, url) {
 function openBookPage(args){
 	var itemWin = Alloy.createController('book', {
 		title: args.title,
+		post_id: args.post_id,
 		image_url: args.url,
 		author: args.author,
 		category: args.category,
