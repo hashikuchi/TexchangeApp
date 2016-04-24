@@ -1,18 +1,31 @@
 var args = arguments[0] || {};
 var data = args.data || '{}'; //検索結果JSON
+var searchCondition = args.searchCondition || '';
+var headerItems = [];
 var glassIcon = Ti.UI.createImageView({
 	image: "/images/glass.png",
 	right: 30,
 	top: 25,
 	height: "30%"
 });
-
 glassIcon.addEventListener("touchend", function(e){
 	var searchMenu = Alloy.createController("search/searchMenu").getView();
 	searchMenu.open();
 });
+headerItems.push(glassIcon);
+
+if(searchCondition){
+	var conditionLabel = Ti.UI.createLabel({
+		top: 20,
+		left: '20%',
+		width: '60%',
+		color: '#000000',
+		text: '検索条件: ' + searchCondition
+	});
+	headerItems.push(conditionLabel);
+}
  
-$.mainWin.add(Alloy.Globals.createCommonHeader([glassIcon]));
+$.mainWin.add(Alloy.Globals.createCommonHeader(headerItems));
 
 var parsedData = JSON.parse(data);
 
@@ -158,7 +171,7 @@ function listBooks(num, id, url) {
     getCustomDataClient.send({
 		action: "echo_tc_custom_properties",
 		post_id: id,
-    });    
+    });
     scrollView.add(thumbnail);
     scrollView.add(title);
     $.mainWin.add(scrollView);

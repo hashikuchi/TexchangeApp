@@ -4,9 +4,13 @@ var searchBox = Ti.UI.createTextField({
 	color: "black"
 });
 searchBox.addEventListener("return", function(e){
+	var keyword = this.value;
 	var getKeywordSearchResultClient = Ti.Network.createHTTPClient({
 		onload: function(e){
-			var searchWin = Alloy.createController('searchBooks', {data: this.responseText}).getView();
+			var searchWin = Alloy.createController('searchBooks', {
+				data: this.responseText,
+				searchCondition: keyword
+			}).getView();
 			searchWin.open();
 		}
 	});
@@ -57,7 +61,10 @@ function createRow(title, catId){
 	row.addEventListener("click", function(e){
 		var getSearchResultClient = Ti.Network.createHTTPClient({
 			onload: function(e){
-				var searchWin = Alloy.createController('searchBooks', {data: this.responseText}).getView();
+				var searchWin = Alloy.createController('searchBooks', {
+					data: this.responseText,
+					searchCondition: title
+				}).getView();
 				searchWin.open();
 			}
 		});
