@@ -5,6 +5,9 @@ var searchBox = Ti.UI.createTextField({
 });
 searchBox.addEventListener("return", function(e){
 	var keyword = this.value;
+	if(!keyword){
+		return;
+	}
 	var getKeywordSearchResultClient = Ti.Network.createHTTPClient({
 		onload: function(e){
 			var searchWin = Alloy.createController('searchBooks', {
