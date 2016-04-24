@@ -74,9 +74,11 @@ var scrollView = Ti.UI.createScrollView({
 });
 
 function listBooks(num, id, url) {
+	var bookData = {};
     for (var i = 0; i < parsedData.length; i++) {
 		if (parsedData[i].ID == id) {
 	 		var post_title = parsedData[i].post_title;
+	 		bookData = parsedData[i];
 			break;
 		}
     }
@@ -104,15 +106,15 @@ function listBooks(num, id, url) {
 	    	text: txt,
 		});
     } else {
+    	var txt = limitCharNum(post_title);
 		var thumbnail = Ti.UI.createImageView({
 	    	image: url,
 	    	width: '110px',
 	    	height: '160px',
 	    	left: ((screenWidthActual - (pixelsToDPUnits(110) * 2)) / 3) * 2
 			+ pixelsToDPUnits(110),
-	    	top: properTop,
+	    	top: properTop
 		});
-		var txt = limitCharNum(post_title);
 		var title = Ti.UI.createLabel({
 	    	color: '#00A935',
 	    	width: screenWidthActual * 30 / 100,
@@ -128,8 +130,48 @@ function listBooks(num, id, url) {
 		});
 		properTop += screenHeightActual / 3;
     }
-
+    
+    var getCustomDataClient = Ti.Network.createHTTPClient({
+    	onload: function(e){
+    		var customData = JSON.parse(this.responseText);
+    		thumbnail.addEventListener('click', function(e){
+    			openBookPage({
+    				title: post_title,
+    				author: customData.author,
+    				image_url: url,
+    				price: customData.price,
+    				count: customData.book_count
+    			});
+    		});
+    		title.addEventListener('click', function(e){
+    			openBookPage({
+    				title: post_title,
+    				author: customData.author,
+    				image_url: url,
+    				price: customData.price,
+    				count: customData.book_count
+    			});
+    		});
+    	}
+    });
+    getCustomDataClient.open('POST', Alloy.Globals.ajaxUrl);
+    getCustomDataClient.send({
+		action: "echo_tc_custom_properties",
+		post_id: id,
+    });    
     scrollView.add(thumbnail);
     scrollView.add(title);
     $.mainWin.add(scrollView);
+}
+
+function openBookPage(args){
+	var itemWin = Alloy.createController('book', {
+		title: args.title,
+		image_url: args.url,
+		author: args.author,
+		category: args.category,
+		price: args.price,
+		count: args.count
+	}).getView();
+	itemWin.open();
 }
