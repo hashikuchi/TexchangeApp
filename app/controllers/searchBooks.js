@@ -42,7 +42,7 @@ for (var i = 0; i < parsedData.length; i++) {
 		if (res) {
 	    	listBooks(j, res.ID, res.URL);
 		} else {
-	    	alert("データを取得できませんでした");
+			Ti.API.debug(e.error);
 	    	return;
 		}
 	
@@ -50,7 +50,6 @@ for (var i = 0; i < parsedData.length; i++) {
     };
 
     giveMeImgURLClient.onerror = function(e) {
-		alert("通信エラー");
 		Ti.API.debug(e.error);
     };
 
