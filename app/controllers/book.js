@@ -2,7 +2,7 @@
 var args = $.args;
 var post_id = args.post_id;
 var title = args.title;
-var image_url = args.url;
+var image_url = args.image_url;
 var author = args.author || "(データ無し)";
 var category = args.category || "（カテゴリ無し）";
 var price = !isNaN(args.price) ? args.price : "(データ無し)";
@@ -18,6 +18,7 @@ if(isNaN(price)){
 $.book_title.text = title;
 $.book_author.text = "著者: " + author;
 $.book_image.image = image_url;
+Ti.API.info('url is ' + image_url);
 $.book_category.text = "カテゴリー: Loading...";
 $.book_point.text = "ポイント数: " + point;
 $.book_price.text = "Amazon価格: " + Number(price).toLocaleString('ja-JP') + "円";

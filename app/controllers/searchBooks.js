@@ -183,7 +183,7 @@ function openBookPage(args){
 	var itemWin = Alloy.createController('book', {
 		title: args.title,
 		post_id: args.post_id,
-		image_url: args.url,
+		image_url: args.image_url,
 		author: args.author,
 		category: args.category,
 		price: args.price,
