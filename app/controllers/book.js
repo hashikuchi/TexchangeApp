@@ -18,7 +18,6 @@ if(isNaN(price)){
 $.book_title.text = title;
 $.book_author.text = "著者: " + author;
 $.book_image.image = image_url;
-Ti.API.info('url is ' + image_url);
 $.book_category.text = "カテゴリー: Loading...";
 $.book_point.text = "ポイント数: " + point;
 $.book_price.text = "Amazon価格: " + Number(price).toLocaleString('ja-JP') + "円";
