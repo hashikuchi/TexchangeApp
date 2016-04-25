@@ -1,6 +1,6 @@
 ".title" : {
   font: {
-  	fontSize: "16pt"
+  	fontSize: "13pt"
   },
   color: "#000000",
   width: "80%"
@@ -8,7 +8,7 @@
 
 ".book-body": {
   font: {
-  	fontSize: "12pt"
+  	fontSize: "10pt"
   },
   color: "#555555"
 },
@@ -21,7 +21,8 @@
 ".book-info": {
   borderColor: "#000000",
   borderWidth: 1,
-  height: "30%",
+  height: Ti.UI.SIZE,
+  top: "5%",
   width: "80%",
   borderRadius: "20px",
   backgroundColor: "#66CA3B"
