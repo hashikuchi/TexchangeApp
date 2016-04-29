@@ -27,37 +27,20 @@ if(searchCondition){
  
 $.mainWin.add(Alloy.Globals.createCommonHeader(headerItems));
 
+var screenWidthActual = pixelsToDPUnits(Ti.Platform.displayCaps.platformWidth);
+var screenHeightActual = pixelsToDPUnits(Ti.Platform.displayCaps.platformHeight);
+var properTop = screenHeightActual / 20;
+
+var scrollView = Ti.UI.createScrollView({
+    top: 70, // this should be changed
+    showVerticalScrollIndicator: true,
+    showHorizontalScrollIndicator: true,
+});
+
 var parsedData = JSON.parse(data);
 
-var imgURL = new Array(parsedData.length); // thumbnail urls
-var j = 0;
 for (var i = 0; i < parsedData.length; i++) {
-    var giveMeImgURLClient = Ti.Network.createHTTPClient();
-
-    // can't guarantee the order...
-    giveMeImgURLClient.onload =  function(e) {
-		// urls of book images
-		var res = JSON.parse(this.responseText);
-
-		if (res) {
-	    	listBooks(j, res.ID, res.URL);
-		} else {
-			Ti.API.debug(e.error);
-	    	return;
-		}
-	
-		j += 1;
-    };
-
-    giveMeImgURLClient.onerror = function(e) {
-		Ti.API.debug(e.error);
-    };
-
-    giveMeImgURLClient.open('POST', Alloy.Globals.ajaxUrl);
-    giveMeImgURLClient.send({
-		action: "echo_thumbnail_url",
-		post_id: parsedData[i].ID,
-    });
+	listBooks(i, parsedData[i]);
 }
 
 // the display width comes in pixel, so convert it to dpi
@@ -75,35 +58,16 @@ function limitCharNum(pt) {
     return new_post_title;
 }
 
-var screenWidthActual = pixelsToDPUnits(Ti.Platform.displayCaps.platformWidth);
-var screenHeightActual = pixelsToDPUnits(Ti.Platform.displayCaps.platformHeight);
-var properTop = screenHeightActual / 20;
-
-var scrollView = Ti.UI.createScrollView({
-    top: 70, // this should be changed
-    showVerticalScrollIndicator: true,
-    showHorizontalScrollIndicator: true,
-});
-
-function listBooks(num, id, url) {
-	var bookData = {};
-    for (var i = 0; i < parsedData.length; i++) {
-		if (parsedData[i].ID == id) {
-	 		var post_title = parsedData[i].post_title;
-	 		bookData = parsedData[i];
-			break;
-		}
-    }
-    
+function listBooks(num, book) {
     if (num % 2 == 0) {
+		var txt = limitCharNum(book.post_title);
 		var thumbnail = Ti.UI.createImageView({
-	  	  	image: url,
+	  	  	image: book.image_url,
 	   	 	width: pixelsToDPUnits(110),
 	   		height: pixelsToDPUnits(160),
 	   	 	left: (screenWidthActual - (pixelsToDPUnits(110) * 2)) / 3,
 	    	top: properTop,
 		});
-		var txt = limitCharNum(post_title);
 		var title = Ti.UI.createLabel({
 	    	width: screenWidthActual * 30 / 100,
 	    	height: '56dp',
@@ -118,9 +82,9 @@ function listBooks(num, id, url) {
 	    	text: txt,
 		});
     } else {
-    	var txt = limitCharNum(post_title);
+    	var txt = limitCharNum(book.post_title);
 		var thumbnail = Ti.UI.createImageView({
-	    	image: url,
+	    	image: book.image_url,
 	    	width: '110px',
 	    	height: '160px',
 	    	left: ((screenWidthActual - (pixelsToDPUnits(110) * 2)) / 3) * 2
@@ -142,37 +106,26 @@ function listBooks(num, id, url) {
 		});
 		properTop += screenHeightActual / 3;
     }
-    
-    var getCustomDataClient = Ti.Network.createHTTPClient({
-    	onload: function(e){
-    		var customData = JSON.parse(this.responseText);
-    		thumbnail.addEventListener('click', function(e){
-    			openBookPage({
-    				title: post_title,
-    				post_id: id,
-    				author: customData.author,
-    				image_url: url,
-    				price: customData.price,
-    				count: customData.book_count
-    			});
-    		});
-    		title.addEventListener('click', function(e){
-    			openBookPage({
-    				title: post_title,
-    				post_id: id,
-    				author: customData.author,
-    				image_url: url,
-    				price: customData.price,
-    				count: customData.book_count
-    			});
-    		});
-    	}
-    });
-    getCustomDataClient.open('POST', Alloy.Globals.ajaxUrl);
-    getCustomDataClient.send({
-		action: "echo_tc_custom_properties",
-		post_id: id,
-    });
+	thumbnail.addEventListener('click', function(e){
+		openBookPage({
+			title: book.post_title,
+			author: book.author,
+			category: book.category[0].name,
+			image_url: book.image_url,
+			price: book.price,
+			count: book.book_count
+		});
+	});
+	title.addEventListener('click', function(e){
+		openBookPage({
+			title: book.post_title,
+			author: book.author,
+			category: book.category[0].name,
+			image_url: book.image_url,
+			price: book.price,
+			count: book.book_count
+		});
+	});
     scrollView.add(thumbnail);
     scrollView.add(title);
     $.mainWin.add(scrollView);
@@ -181,7 +134,6 @@ function listBooks(num, id, url) {
 function openBookPage(args){
 	var itemWin = Alloy.createController('book', {
 		title: args.title,
-		post_id: args.post_id,
 		image_url: args.image_url,
 		author: args.author,
 		category: args.category,

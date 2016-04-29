@@ -1,7 +1,7 @@
 <Alloy>
 	<Window class="container" layout="vertical">
 		<ScrollView layout="vertical">
-			<Label id="book_title" class="title" top="5%"></Label>
+			<Label id="book_title" class="title" top="5%" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
 			<Label id="book_author" class="book-body" top="3%"></Label>
 			<ImageView id="book_image" class="book-image" top="5%" height="30%"/>
 			<View class="book-info" layout="vertical">

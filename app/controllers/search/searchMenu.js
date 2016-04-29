@@ -19,7 +19,7 @@ searchBox.addEventListener("return", function(e){
 	});
 	getKeywordSearchResultClient.open("POST", Alloy.Globals.ajaxUrl);
 	getKeywordSearchResultClient.send({
-		action: "echo_posts_data_json",
+		action: "echo_posts_data_json_with_image_url_custom_properties",
 		keyword: this.value
 	});
 });
@@ -73,7 +73,7 @@ function createRow(title, catId){
 		});
 		getSearchResultClient.open("POST", Alloy.Globals.ajaxUrl);
 		getSearchResultClient.send({
-			action: "echo_posts_data_json",
+			action: "echo_posts_data_json_with_image_url_custom_properties",
 			category: this.catId
 		});
 	});
