@@ -36,8 +36,12 @@ var scrollView = Ti.UI.createScrollView({
     showVerticalScrollIndicator: true,
     showHorizontalScrollIndicator: true,
 });
+$.mainWin.add(scrollView);
 
 var parsedData = JSON.parse(data);
+if(parsedData.length >= 50) {
+	parsedData = parsedData.slice(0, 49);
+}
 
 for (var i = 0; i < parsedData.length; i++) {
 	listBooks(i, parsedData[i]);
@@ -128,7 +132,6 @@ function listBooks(num, book) {
 	});
     scrollView.add(thumbnail);
     scrollView.add(title);
-    $.mainWin.add(scrollView);
 }
 
 function openBookPage(args){
