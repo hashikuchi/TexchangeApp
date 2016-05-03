@@ -3,7 +3,8 @@
 	borderWidth: 1,
 	borderColor: "black",
 	viewShadowColor: "black",
-	opacity:1.0
+	opacity:1.0,
+	orientationModes: Ti.UI.PORTRAIT
 },
 
 ".cancel": {

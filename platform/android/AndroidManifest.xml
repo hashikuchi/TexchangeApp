@@ -2,15 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.texchg" android:versionCode="6" android:versionName="1.0.8">
 	<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21"/>
 	<application android:icon="@drawable/appicon" android:label="@string/app_name" android:name="TexchangeappApplication" android:debuggable="false" android:theme="@style/Theme.AppCompat">
-		<activity android:name=".TexchangeappActivity" android:label="@string/app_name" android:theme="@style/Theme.Titanium" android:configChanges="keyboardHidden|orientation|screenSize">
+		<activity android:name=".TexchangeappActivity" android:label="@string/app_name" android:theme="@style/Theme.Titanium" android:configChanges="keyboardHidden|orientation|screenSize" android:screenOrientation="portrait">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-		<activity android:name="org.appcelerator.titanium.TiActivity" android:configChanges="keyboardHidden|orientation|screenSize"/>
-		<activity android:name="org.appcelerator.titanium.TiTranslucentActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:theme="@style/Theme.AppCompat.Translucent"/>
-		<activity android:name="ti.modules.titanium.ui.android.TiPreferencesActivity" android:configChanges="screenSize"/>
+		<activity android:name="org.appcelerator.titanium.TiActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:screenOrientation="portrait"/>
+		<activity android:name="org.appcelerator.titanium.TiTranslucentActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:theme="@style/Theme.AppCompat.Translucent" android:screenOrientation="portrait"/>
+		<activity android:name="ti.modules.titanium.ui.android.TiPreferencesActivity" android:configChanges="screenSize" android:screenOrientation="portrait"/>
 		<service android:name="com.appcelerator.analytics.APSAnalyticsService" android:exported="false"/>
 		<receiver android:name="com.appcelerator.aps.IntentReceiver"/>
 		<receiver android:name="com.appcelerator.aps.GCMReceiver" android:permission="com.google.android.c2dm.permission.SEND">

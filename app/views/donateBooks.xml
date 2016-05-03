@@ -1,5 +1,4 @@
 <Alloy>
-	<Window id="mainWin" class="container">
-		<Label text="donate"/>
+	<Window id="mainWin" class="container" orientationModes="Titanium.UI.PORTRAIT">
 	</Window>
 </Alloy>
